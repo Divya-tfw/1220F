@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [1220]">
+  <test name="NACE_Reports(failed)">
+    <classes>
+      <class name="com.twelvetwenty.suite.nace_reports.Full_Time_Employment">
+        <methods>
+          <include name="afterTest"/>
+          <include name="afterMethod"/>
+          <include name="beforeTest"/>
+          <include name="beforeClass"/>
+          <include name="suiteEnd"/>
+          <include name="beforeSuite"/>
+          <include name="beforeMethod"/>
+        </methods>
+      </class> <!-- com.twelvetwenty.suite.nace_reports.Full_Time_Employment -->
+      <class name="com.twelvetwenty.suite.nace_reports.Military_Service">
+        <methods>
+          <include name="test_Military_Service" invocation-numbers="1 2 3 4 5 6 7 9"/>
+          <include name="afterMethod"/>
+          <include name="beforeClass"/>
+          <include name="beforeMethod"/>
+        </methods>
+      </class> <!-- com.twelvetwenty.suite.nace_reports.Military_Service -->
+      <class name="com.twelvetwenty.suite.nace_reports.Service_Organization">
+        <methods>
+          <include name="test_Service_Organization" invocation-numbers="1 5"/>
+          <include name="afterMethod"/>
+          <include name="beforeClass"/>
+          <include name="beforeMethod"/>
+        </methods>
+      </class> <!-- com.twelvetwenty.suite.nace_reports.Service_Organization -->
+      <class name="com.twelvetwenty.suite.nace_reports.Continuing_Education">
+        <methods>
+          <include name="afterMethod"/>
+          <include name="beforeClass"/>
+          <include name="beforeMethod"/>
+        </methods>
+      </class> <!-- com.twelvetwenty.suite.nace_reports.Continuing_Education -->
+      <class name="com.twelvetwenty.suite.nace_reports.Seeking_or_Unreported">
+        <methods>
+          <include name="afterMethod"/>
+          <include name="beforeClass"/>
+          <include name="beforeMethod"/>
+        </methods>
+      </class> <!-- com.twelvetwenty.suite.nace_reports.Seeking_or_Unreported -->
+      <class name="com.twelvetwenty.suite.nace_reports.Summary">
+        <methods>
+          <include name="afterMethod"/>
+          <include name="beforeClass"/>
+          <include name="test_Summary" invocation-numbers="1 2 3 4 5 6 7"/>
+          <include name="beforeMethod"/>
+        </methods>
+      </class> <!-- com.twelvetwenty.suite.nace_reports.Summary -->
+      <class name="com.twelvetwenty.suite.nace_reports.Part_Time_Employment">
+        <methods>
+          <include name="afterMethod"/>
+          <include name="beforeClass"/>
+          <include name="beforeMethod"/>
+        </methods>
+      </class> <!-- com.twelvetwenty.suite.nace_reports.Part_Time_Employment -->
+    </classes>
+  </test> <!-- NACE_Reports(failed) -->
+</suite> <!-- Failed suite [1220] -->

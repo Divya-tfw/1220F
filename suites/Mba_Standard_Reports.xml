@@ -1,0 +1,30 @@
+
+<suite name="1220">
+
+
+   <test name="MBA_Standard_Reports">
+    
+    <classes>
+      <class name="com.twelvetwenty.suite.mba_standard_reports.Graduating_Class_A_Report"/>
+       <class name="com.twelvetwenty.suite.mba_standard_reports.Comp_by_NA_GeographicRegions"/>
+       <class name="com.twelvetwenty.suite.mba_standard_reports.Compen_by_Professional_Exp"/>
+       <class name="com.twelvetwenty.suite.mba_standard_reports.Compen_by_Undergrduate_Major"/> 
+       <class name="com.twelvetwenty.suite.mba_standard_reports.Compensation_by_Industries"/>
+       <class name="com.twelvetwenty.suite.mba_standard_reports.Compensation_by_Prof_Functions"/>
+       <class name="com.twelvetwenty.suite.mba_standard_reports.Graduating_Class_B_Report"/>
+       <class name="com.twelvetwenty.suite.mba_standard_reports.PSofFullTimeJobAcceptances"/>
+       <class name="com.twelvetwenty.suite.mba_standard_reports.Timing_of_First_Job_Offer"/>
+       <class name="com.twelvetwenty.suite.mba_standard_reports.Timing_of_Job_Acceptances"/>
+        <class name="com.twelvetwenty.suite.mba_standard_reports.World_Regions_Breakdown"/>
+       
+      
+      </classes>     
+       
+  </test> 
+  
+  
+   
+  
+  
+
+</suite> 

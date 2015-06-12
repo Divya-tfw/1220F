@@ -1,0 +1,213 @@
+
+
+<project name="12Twenty" >  
+
+	<!-- ========== Initialize Properties =================================== -->
+	<property environment="env"/>
+	<property name="tc_home_path" value="D:/Allworkspace/FD/workspace/1220"/>
+	<property name="jars_path" value="D:/Allworkspace/jars"/>
+	<property name="run_path" value="D:/Allworkspace/Testresults/Celenium/FD/Build"/>
+	<property name="builddest_path" value="${run_path}/build"/>
+	<property name="src_path" value="src"/>
+	<property name="config_path" value="D:/Allworkspace/FD/workspace/1220/config/Config.properties"/>
+	<property name="browser_name" value="Firefox"/>
+	<property name="browser_path" value="Default"/>
+	<property name="environment_Name" value="QA"/>
+	<property name="build_Number" value="1"/>
+	<property name="test_cycle" value="1.5"/>
+	<property name="build_Type" value="BaseLine"/>
+	<property name="1220User_Name" value="admin@12twenty.com"/>
+	<property name="1220User_Pwd" value="Salaryview1!"/>
+	<property name="grid_run" value="N"/>
+	<property name="reports_path" value="D:/Allworkspace/testresults/Celenium/FD/Reports"/>
+		<property name="xslt_stylesheet_path" value="D:/Allworkspace/Cloudmunch/TCRunner/XSLT_Stylesheet"/>
+		<property name="testng_report_path" value="${reports_path}/test-output"/>
+
+
+		<!-- setClassPath - If jars_classpath is not set -->
+	<target name="setClassPath_pathnotset" unless="classpath">
+		<path id="classpath_jars_path">
+			<fileset dir="${jars_path}" includes="*.jar"/>
+		</path>
+		<pathconvert pathsep=":" property="test_classpath" refid="classpath_jars_path"/>
+	</target>
+
+	<!-- setClassPath - If jars_classpath is set by the user -->
+	<target name="setClassPath_pathset" if="classpath">
+		<path id="classpath_jars_path">
+			<fileset dir="${classpath}" includes="*.jar"/>
+		</path>
+		<pathconvert pathsep=":" property="test_classpath" refid="classpath_jars_path"/>
+	</target>
+	
+
+	<!-- init -->
+	<target name="init" depends="setClassPath_pathnotset, setClassPath_pathset">
+		<tstamp>
+			<format property="start.time" pattern="MM/dd/yyyy hh:mm aa" />
+		</tstamp>
+		<condition property="ANT" 
+			value="${env.ANT_HOME}/bin/ant.bat" 
+			else="${env.ANT_HOME}/bin/ant">
+			<os family="unix" />
+		</condition>
+
+		<taskdef name="testng" classpath="${test_classpath}" classname="org.testng.TestNGAntTask" />
+	</target>
+	
+    	
+	<!-- all -->
+	<target name="all">
+	</target>
+	
+
+	<!-- clean -->
+	<target name="clean">
+		<delete dir="${run_path}"/>
+	</target>
+
+	<!-- compile -->
+	<target name="compile" depends="init, clean" > 
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${builddest_path}" includes="**/*"/>
+		</delete>
+	
+		<mkdir dir="${run_path}"/>
+ 
+		<mkdir dir="${builddest_path}"/>
+		
+		
+    		
+					
+		
+		<javac 
+			debug="true" 
+			destdir="${builddest_path}" 
+			srcdir="${tc_home_path}/${src_path}" 
+			target="1.8"
+			classpath="${test_classpath}"
+			includeantruntime="false"
+		/>
+			
+		<copy todir="${builddest_path}">
+			<fileset dir="${tc_home_path}" excludes="**/*.java, **/${src_path}/**"/>
+		</copy>
+	</target>
+
+
+	<!-- build -->
+	<target name="build" depends="init">
+	</target>
+	<target name="run" depends="init">
+		    	<mkdir dir="${reports_path}"/>
+		    	<java jar="${jars_path}/changebrowser.jar" fork="true">			
+        		<arg line="${config_path} ${browser_name}"/>				
+    		</java>
+		
+		<java jar="${jars_path}/ChangeBrowserPath.jar" fork="true">
+		        		<arg line="${config_path} ${browser_path}"/>			
+		    		</java>
+				
+	
+		
+		<java jar="${jars_path}/ChangeEnvironment.jar" fork="true">
+				        		<arg line="${config_path} ${environment_Name}"/>			
+				    		</java>
+		
+		<java jar="${jars_path}/ChangeBuildType.jar" fork="true">
+				        		<arg line="${config_path} ${build_Type}"/>			
+				    		</java>
+				    		
+		<java jar="${jars_path}/ChangeUserName.jar" fork="true">
+				        		<arg line="${config_path} ${1220User_Name}"/>			
+				    		</java>
+				    		
+		<java jar="${jars_path}/ChangeUserPassword.jar" fork="true">
+				        		<arg line="${config_path} ${1220User_Pwd}"/>			
+				    		</java>
+			
+		
+		<java jar="${jars_path}/ChangeBuildNumber.jar" fork="true">
+					        		<arg line="${config_path} ${build_Number}"/>			
+					    		</java>
+			
+		
+		
+		
+		<java jar="${jars_path}/ChangeTestCycle.jar" fork="true">
+					        		<arg line="${config_path} ${test_cycle}"/>			
+					    		</java>
+			
+		
+		<java jar="${jars_path}/GridRun.jar" fork="true">
+							        		<arg line="${config_path} ${grid_run}"/>			
+							    		</java>
+			<testng classpath="${test_classpath}:${builddest_path}" suitename="MBA_Standard_Reports"
+			     outputdir="${testng_report_path}">	
+				<xmlfileset dir="${builddest_path}/suites" includes="Mba_Standard_Reports.xml" />
+				
+			</testng>
+	    	</target>
+			
+	
+	
+			<target name="makexsltreports" depends="setxsltjars_pathnotset, setxsltjars_pathset">
+		<mkdir dir="${reports_path}/XSLT_Reports/output"/>
+		<xslt in="${testng_report_path}/testng-results.xml" style="${xslt_stylesheet_path}/testng-results.xsl"
+	              out="${reports_path}/XSLT_Reports/output/index.html" classpathref="test.c" processor="SaxonLiaison">
+			<param name="testNgXslt.outputDir" expression="${reports_path}/XSLT_Reports/output/"/>
+			<param name="testNgXslt.showRuntimeTotals" expression="true"/>
+		</xslt>
+	</target>
+	<target name="setxsltjars_pathnotset" unless="classpath">	
+		<path id="test.c">
+			<fileset dir="${jars_path}" includes="*.jar"/>
+		</path>
+	</target>
+
+	<target name="setxsltjars_pathset" if="classpath">	
+		<path id="test.c">
+			<fileset dir="${classpath}" includes="*.jar"/>
+		</path>
+	</target>
+	
+	
+	<target name="sendXSLT"  >
+	<zip destfile="${reports_path}/XSLT_Reports/output.zip" basedir="${reports_path}/XSLT_Reports/output"/>
+	<mail
+	tolist="bsivanathan@thoughtframeworks.com"
+	from="testtfw@gmail.com"
+	subject="Automation_XSLT_Report"
+	mailhost="smtp.gmail.com"
+	mailport="465"
+	ssl="true"
+	user="testtfw@gmail.com"
+	password="auto@123">
+	<attachments>
+	<fileset dir="${reports_path}/XSLT_Reports/">
+	<include name="**/*.zip"/>
+	</fileset>
+	</attachments>
+	</mail>
+	</target>
+	
+		<target name="sendATUReport"  >
+	<zip destfile="D:/ATU/ATU_Reports.zip" basedir="D:/ATU/ATU_Reporter/"/>
+	<mail
+	tolist="testtfw@gmail.com"
+	from="testtfw@gmail.com"
+	subject="ATU_Report"
+	mailhost="smtp.gmail.com"
+	mailport="465"
+	ssl="true"
+	user="testtfw@gmail.com"
+	password="auto@123">
+	<attachments>
+	<fileset dir="D:/ATU/ATU_Reporter/">
+	<include name="**/*.zip"/>
+	</fileset>
+	</attachments>
+	</mail>
+	</target>
+	
+</project>

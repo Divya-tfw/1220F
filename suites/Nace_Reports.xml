@@ -1,0 +1,24 @@
+
+<suite name="1220">
+
+
+   <test name="NACE_Reports">
+    
+    <classes>
+       <class name="com.twelvetwenty.suite.nace_reports.Continuing_Education"/>
+       <class name="com.twelvetwenty.suite.nace_reports.Full_Time_Employment"/>
+        <class name="com.twelvetwenty.suite.nace_reports.Military_Service"/>
+         <class name="com.twelvetwenty.suite.nace_reports.Part_Time_Employment"/>
+          <class name="com.twelvetwenty.suite.nace_reports.Seeking_or_Unreported"/>
+           <class name="com.twelvetwenty.suite.nace_reports.Service_Organization"/>
+            <class name="com.twelvetwenty.suite.nace_reports.Summary"/>
+      
+      </classes>     
+       
+  </test> 
+  
+  
+  
+  
+
+</suite> 
