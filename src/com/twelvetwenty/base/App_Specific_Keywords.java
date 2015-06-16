@@ -1096,7 +1096,7 @@ public class App_Specific_Keywords extends Keywords
 						 			  					   
 						 			  }	
 						 			 
-					// fetch table row contents
+					
 						 			 
 				 			// Fetch the contents of table from row 3 to last 7th row
 						 			 for (int row=3; row<6; row++)
@@ -1470,7 +1470,7 @@ public class App_Specific_Keywords extends Keywords
 		 			  colVal++;	 			   
 	 			  }	
 	 			  
-	 			// second row pan content
+	 			// second row span content
 		 			
 		 		Columns_header = rows_table.get(8).findElements(By.tagName("th"));
 		 		// fetch from 0th cell
@@ -1946,7 +1946,9 @@ public class App_Specific_Keywords extends Keywords
 			 		 FileInputStream fis=new FileInputStream(filePath);
 			 	     Workbook wb=WorkbookFactory.create(fis);
 			 			//get row size
-			 		 int rows_count = rows_table.size();	 			 
+			 		 int rows_count = rows_table.size();
+			 		 
+			 		 //System.out.println("Row count of table is --->"+rows_count);
 			 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
 			 			 
 			 			
@@ -1985,10 +1987,11 @@ public class App_Specific_Keywords extends Keywords
 			 			 // fetch 2nd row contents 
 				 			  r1=s.createRow(1);
 			 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+			 			 //System.out.println(Columns_header.size());
 			 			 int cellVal=1;
 			 			 int colVal=0;
 			 			 // enter values to cols 1 to 18 
-			 			  while(cellVal<12 &&colVal<11)
+			 			  while(cellVal<11 &&colVal<10)
 			 			  {
 			 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 			 			  cellVal++;
@@ -2029,7 +2032,7 @@ public class App_Specific_Keywords extends Keywords
 		 
 				 }//
 				 else if(subReportName.equalsIgnoreCase
-						 ("Full and Part-time Jobs by Employer Type") )
+						 (TestBaseConstants.FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE) )
 				 {
 					//fetch table xpath
 			 		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
@@ -2040,11 +2043,9 @@ public class App_Specific_Keywords extends Keywords
 			 		 FileInputStream fis=new FileInputStream(filePath);
 			 	     Workbook wb=WorkbookFactory.create(fis);
 			 			//get row size
-			 		 int rows_count = rows_table.size();	 			 
+			 		 int rows_count = rows_table.size();
+			 		// System.out.println("Row count is -->"+rows_count);
 			 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
-			 			 
-			 			
-			 		
 			 			 
 			 			 /*** Fetch headers and store to excel of 1st col**/
 			 			 // first row of header
@@ -2089,22 +2090,13 @@ public class App_Specific_Keywords extends Keywords
 			 			// Fetch the contents of table from row 3 to last 7th row
 				 			 for (int row=2; row<rows_count; row++)
 				 			 {
-				 			 List<WebElement> Columns_row = rows_table.get(row).
-				 					 findElements(By.tagName("th"));
-				 			
-				 		
-				 			 Row r=s.createRow(row);
-				 			 String celtext = Columns_row.get(0).getText();
-				 			
-				 			 r.createCell(0).setCellValue(celtext);	 
-				 			 
-				 			
-				 				   //To locate columns(cells) of that specific row.
-				 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-				 				     
+				 				 //To locate columns(cells) of that specific row.
+				 				 Row r=s.createRow(row);
+				 				 List<WebElement>	  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+				 				    /* System.out.println(Columns_row.size());*/
 				 				   cellVal=0;
 				 					  colVal=0;
-				 					  while(cellVal<6 &&colVal<6)
+				 					  while(cellVal<7 &&colVal<7)
 				 					  {
 				 					  r.createCell(cellVal).
 				 					  setCellValue(Columns_row.get(colVal).getText());
@@ -2328,13 +2320,14 @@ catch(Exception e)
 		 			  
 		 			 for (int row=2; row<rows_count; row++)
 		 			 {
-		 			 List<WebElement> Columns_row = rows_table.get(row).
+		 			/* List<WebElement> Columns_row = rows_table.get(row).
 		 					 findElements(By.tagName("th"));
 		 			updateError(row,0,s.getRow(row).getCell(0).getStringCellValue()
-							  , Columns_row.get(0).getText());		 			
+							  , Columns_row.get(0).getText());	*/	 			
 		 			
 		 			 //To locate columns(cells) of that specific row.
-	 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));   
+		 			 List<WebElement>  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+		 			 System.out.println(Columns_row.size());
 	 				   cellVal=0;
 	 					  colVal=0;
 	 					  while(cellVal<16 &&colVal<17)
@@ -2360,7 +2353,7 @@ catch(Exception e)
 				  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
 				  //To calculate no of rows In table.
 				  int rows_count = rows_table.size();
-				  
+				 // System.out.println("Row count is -->"+rows_count);
 				  ///headers
 				  List<WebElement> Columns_header = rows_table.get(0).
 						  findElements(By.tagName("th"));
@@ -2388,32 +2381,31 @@ catch(Exception e)
 				  				  
 				  // fetch 2nd row contents 
 		 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
-		 			 int cellVal=1;
+		 			//System.out.println(Columns_header.size() );
+		 			  
+			 		 int cellVal=1;
 		 			 int colVal=0;
 		 			 // enter values to cols 2 to 18 
-		 			  while(cellVal<12 &&colVal<11)
-		 			  {		 		
+		 			  while(cellVal<11 &colVal<10)
+		 			  {		
+		 				  
 		 				  updateError(1,0,s.getRow(1).getCell(cellVal).getStringCellValue()
 							  ,Columns_header.get(colVal).getText());
 		 			  cellVal++;
 		 			  colVal++;	 			   
 		 			  }	
 		 			  
-		 			  
 		 			// Fetch the contents of table from 2nd row till last row
 		 			  
 		 			 for (int row=2; row<rows_count; row++)
 		 			 {
-		 			 List<WebElement> Columns_row = rows_table.get(row).
-		 					 findElements(By.tagName("th"));
-		 			updateError(row,0,s.getRow(row).getCell(0).getStringCellValue()
-							  , Columns_row.get(0).getText());		 			
-		 			
+		 			 
 		 			 //To locate columns(cells) of that specific row.
-	 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));   
+		 			 List<WebElement>  Columns_row = rows_table.get(row).
+		 					 findElements(By.tagName("td"));   
 	 				   cellVal=0;
 	 					  colVal=0;
-	 					  while(cellVal<11 &&colVal<11)
+	 					  while(cellVal<10 &&colVal<10)
 	 					  {
 	 					
 	 						  updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
@@ -2427,7 +2419,7 @@ catch(Exception e)
 			 }//end if 
 			 
 			 else if(subReportName.equalsIgnoreCase
-					 ("Full and Part-time Jobs by Employer Type") )
+					 (TestBaseConstants.FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE) )
 			 {
 				 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 				  //To locate rows of table.
@@ -2461,30 +2453,28 @@ catch(Exception e)
 		 			 int colVal=0;
 		 			 // enter values to cols 2 to 18 
 		 			  while(cellVal<7 &&colVal<6)
-		 			  {		 		
+		 			  {	
 		 				  updateError(1,cellVal,s.getRow(1).getCell(cellVal).getStringCellValue()
 							  ,Columns_header.get(colVal).getText());
-		 			  cellVal++;
-		 			  colVal++;	 			   
+		 			  colVal++;
+		 			 cellVal++;
 		 			  }	
 		 			  
 		 			  
-		 			// Fetch the contents of table from 2nd row till last row
+		 			// Fetch the contents of table from 3rd row till last row
 		 			  
 		 			 for (int row=2; row<rows_count; row++)
 		 			 {
-		 			 List<WebElement> Columns_row = rows_table.get(row).
-		 					 findElements(By.tagName("th"));
-		 			updateError(row,0,s.getRow(row).getCell(0).getStringCellValue()
-							  , Columns_row.get(0).getText());		 			
+		 				 			
 		 			
 		 			 //To locate columns(cells) of that specific row.
-	 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));   
+		 				List<WebElement>Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+	 				    
 	 				   cellVal=0;
 	 					  colVal=0;
+	 					 
 	 					  while(cellVal<7 &&colVal<7)
-	 					  {
-	 					
+	 					  {	 					
 	 						  updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
 								  ,Columns_row.get(colVal).getText());	
 	 					  
@@ -2492,7 +2482,8 @@ catch(Exception e)
 	 					  colVal++;	 					   
 	 					  }
 		 			 
-		 			}//end for	 
+		 			}//end for	
+		 			
 			 }// end if
 			 
 			 else if(subReportName.equalsIgnoreCase("Employer Types by Gender") ||
@@ -2936,8 +2927,684 @@ catch(Exception e)
 	}
   
 
+	/********************************************************************************************
+	 *		Author 						:	DivyaRaju.R
+	 *		LastModifiedDate			:	1st may 2015
+	 *		Method name					:	mT1_TCN_LST_ReadXLSX
+	 *		Description					:	This method is used for fetching data from 1220
+	 *										 application
+	 *										 and writing that excel
+	 *
+	*********************************************************************************************/
+ 
+	public static void mT1_TCN_LST_ReadXLSX(String excelSheetName,String automationId,
+				String xpath,String subReportName,String msg) 
+	{
+		GlobalVariables.testCaseIdentifier=automationId;
+		try
+	    {
+			 String path=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
+					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
+					 "/"+TestBaseConstants.BASELINE_BUILD_TYPE+"/"+
+					 GlobalVariables.testCaseIdentifier+".xlsx";
+			 //System.out.println("Path of file is -->"+path);
+			 FileInputStream fis=new FileInputStream(path);
+				Workbook wb=WorkbookFactory.create(fis); 
+				 
+			 //wb.createSheet(year);
+			 Sheet s=wb.getSheet(excelSheetName); 
+			 
+			//To locate table.
+			  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
+			  //To locate rows of table.
+			  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			  //To calculate no of rows In table.
+			  int rows_count = rows_table.size();
+			  
+			  ///headers
+			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			 
+			  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
+						 subReportName.equalsIgnoreCase("Compensation by Industries") ||
+						 subReportName.equalsIgnoreCase("World Regions Breakdown") ||
+					     subReportName.equalsIgnoreCase("Compensation by North American Geographic Regions") ||
+					     subReportName.equalsIgnoreCase("Compensation by Undergraduate Major") ||
+					     subReportName.equalsIgnoreCase("Compensation by Professional Experience"))
+					
+				{	// compare 1st cell				
+					updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+							,Columns_header.get(0).getText());
+					//compare 2nd cell
+					updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
+							,Columns_header.get(1).getText());					
+					//compare 3rd cell
+					updateError(0,3,s.getRow(0).getCell(3).getStringCellValue()
+							,Columns_header.get(2).getText());
+					//compare 4th cell
+					updateError(0,4,s.getRow(0).getCell(4).getStringCellValue()
+							,Columns_header.get(3).getText());
+					//compare 5th cell
+					updateError(0,5,s.getRow(0).getCell(5).getStringCellValue()
+							,Columns_header.get(4).getText());
+					//compare 6th cell
+					updateError(0,6,s.getRow(0).getCell(6).getStringCellValue()
+							,Columns_header.get(5).getText());	
+				}	
+			  else if(subReportName.equalsIgnoreCase("Primary Source of Full-Time Job Acceptances") )
+			  {
+				// compare 1st cell				
+					updateError(0,0,s.getRow(0).getCell(1).getStringCellValue()
+							,Columns_header.get(1).getText());
+					//compare 2nd cell
+					updateError(0,1,s.getRow(0).getCell(3).getStringCellValue()
+							,Columns_header.get(2).getText());	 
+			  }
+			  else if(subReportName.equalsIgnoreCase("Location of Instate Jobs"))
+			  {
+				// compare 1st cell				
+					updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+							,Columns_header.get(0).getText());
+					//compare 2nd cell
+					updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
+							,Columns_header.get(1).getText());					
+					//compare 3rd cell
+					updateError(0,2,s.getRow(0).getCell(2).getStringCellValue()
+							,Columns_header.get(2).getText());
+			  }
+			  
+			  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
+					  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
+					  subReportName.equalsIgnoreCase("Summary")||
+					  subReportName.equalsIgnoreCase("Full-Time Employment")||
+					  subReportName.equalsIgnoreCase("Part-Time Employment")||
+					  subReportName.equalsIgnoreCase("Service Organization")||
+					  subReportName.equalsIgnoreCase("Military Service")||
+					  subReportName.equalsIgnoreCase("Continuing Education")||
+					  subReportName.equalsIgnoreCase("Seeking or Unreported")||
+					  subReportName.equalsIgnoreCase("Employment Status")||
+					  subReportName.equalsIgnoreCase("Law School/University Funded Positions")||
+					  subReportName.equalsIgnoreCase("Employment Type")||
+					  subReportName.equalsIgnoreCase("Employment Location")
+					  )
+			  {
+				  for(int col=0;col<Columns_header.size();col++)
+				  {
+					  updateError(0,col,s.getRow(0).getCell(col).getStringCellValue()
+								,Columns_header.get(col).getText());
+				  }
+			  }
+			 
+			//Loop will execute till the last row of table.
+			  for (int row=1; row<rows_count; row++)
+			  {
+			   //To locate columns(cells) of that specific row.
+			   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+			   Row r=s.getRow(row);
+			   //To calculate no of columns(cells) In that specific row.
+			   int columns_count = Columns_row.size();		   
+			   
+			    		//Loop will execute till the last cell of that specific row.
+			   			for (int column=0; column<columns_count; column++)
+			   			{
+			   			//To retrieve text from that specific cell.
+			   				String webtext = Columns_row.get(column).getText();
+			   				String xltext = r.getCell(column).getStringCellValue();
+			   				updateError(row,column,xltext,webtext);
+			   			}   				
+			   		
+			  }  			 
+			 
+			 FileOutputStream fos=new FileOutputStream(path);
+				wb.write(fos);
+				fos.close();
+				GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+		  		 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		  		 rATUStatus(GlobalVariables.result,msg);		
+			 }
+			catch(Exception e)
+			{
+				GlobalVariables.exceptionMsgVal=e.getMessage();
+				String ermsg="Error while executing mT1_TCN_LST_ReadXLSX keyword";
+				keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+				GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+				GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+				GlobalVariables.APPICATION_LOGS.error(ermsg);
+				Logs.errorLog(ermsg);
+				rATUStatus(GlobalVariables.result,ermsg);
+			}
+		
+	}	
 	
+	/********************************************************************************************
+	 *		Author 						:	DivyaRaju.R
+	 *		LastModifiedDate			:	1st may 2015
+	 *		Method name					:	mT1_TCN_LST_WriteXLSX
+	 *		Description					:	This method is used for fetching data from 1220 application
+	 *										 and writing that excel
+	 *
+	*********************************************************************************************/
+	public static void mT1_TCN_LST_WriteXLSX(String sheetName,String excelFileName,String msg,
+		String tableXpath,String subReportName) 
+	{
+	boolean xlFileCreated=false;
+
+		try
+		{//Pre_Build_Number
+			// fetch the folder path to create work book
+			String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
+					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
+					 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";
+			//System.out.println("Build folder path is "+folderPath);
+			
+			 File  preBuildFolderPath=new File( folderPath);
+			 
+			 //Create directory
+			 boolean folderCreated=preBuildFolderPath.mkdirs();
+			 String filePath=preBuildFolderPath+"/"+GlobalVariables.testCaseIdentifier+".xlsx";
+			 File filePath1 =new File(filePath);
+			 //System.out.println("File Path is -->"+filePath);
+			 if(folderCreated||preBuildFolderPath.exists())
+			 {
+				 if(filePath1.exists())
+					{
+						filePath1.delete();
+						xlFileCreated= ExcelTestUtil.createXLS(filePath,GlobalVariables.testCaseIdentifier);		 
+					}
+					else 
+					{
+						xlFileCreated= ExcelTestUtil.createXLS(filePath,GlobalVariables.testCaseIdentifier);
+					}
+				 if(xlFileCreated)
+				 {
+					 FileInputStream fis=new FileInputStream(filePath);
+						Workbook wb=WorkbookFactory.create(fis);
+						 //wb.createSheet(year);
+						 Sheet s=wb.getSheet(sheetName);
+				 
+						//To locate table.
+						  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
+						  //To locate rows of table.
+						  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+						  //To calculate no of rows In table.
+						  int rows_count = rows_table.size();
+						  
+						  //headers
+						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+						  Row r1=s.createRow(0);
+						  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
+							 subReportName.equalsIgnoreCase("Compensation by Industries") ||
+							 subReportName.equalsIgnoreCase("World Regions Breakdown") ||
+						     subReportName.equalsIgnoreCase("Compensation by North American Geographic Regions") ||
+						     subReportName.equalsIgnoreCase("Compensation by Undergraduate Major") ||
+						     subReportName.equalsIgnoreCase("Compensation by Professional Experience") )
+							  {
+							  Logs.infoLog( "Sub report is "+subReportName);
+							  //1st cell of 1st header
+							  	r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+							  // 2nd cell of header
+								 r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+								 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
+								  //3rd cell
+								 r1.createCell(3).setCellValue(Columns_header.get(2).getText());								 
+								 //4th cell
+								 r1.createCell(4).setCellValue(Columns_header.get(3).getText());
+								 //5th cell
+								 r1.createCell(5).setCellValue(Columns_header.get(4).getText());
+								 //6th cell
+								 r1.createCell(6).setCellValue(Columns_header.get(5).getText());
+								 
+							  }
+						  
+						  else if(subReportName.equalsIgnoreCase("Primary Source of Full-Time Job Acceptances") )
+						  {
+							  Logs.infoLog( "Sub report is "+subReportName);
+							  //1st cell of 1st header
+							  	/*r1.createCell(0).setCellValue(Columns_header.get(0).getText()); */
+							 // 2nd cell of header
+							  	r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+								 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
+								 //3rd cell 
+								 r1.createCell(3).setCellValue(Columns_header.get(2).getText());
+								 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
+							  	
+						  }
+						  
+						  else if(subReportName.equalsIgnoreCase("Location of Instate Jobs"))
+						  {
+							  Logs.infoLog( "Sub report is "+subReportName);
+							//1st cell of 1st header
+							  	r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+							// 2nd cell of header
+							    r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+							 // 3rd cell   
+							    r1.createCell(2).setCellValue(Columns_header.get(2).getText());
+						  }
+						  
+						  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
+								  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
+								  subReportName.equalsIgnoreCase("Summary")||
+								  subReportName.equalsIgnoreCase("Full-Time Employment")||
+								  subReportName.equalsIgnoreCase("Part-Time Employment")||
+								  subReportName.equalsIgnoreCase("Service Organization")||
+								  subReportName.equalsIgnoreCase("Military Service")||
+								  subReportName.equalsIgnoreCase("Continuing Education")||
+								  subReportName.equalsIgnoreCase("Seeking or Unreported")||
+								  subReportName.equalsIgnoreCase("Employment Status")||
+								  subReportName.equalsIgnoreCase("Law School/University Funded Positions")||
+								  subReportName.equalsIgnoreCase("Employment Type")||
+								  subReportName.equalsIgnoreCase("Employment Location")
+								  )
+						  {
+							  Logs.infoLog( "Sub report is "+subReportName);
+							  for(int col=0;col<Columns_header.size();col++)
+							  {
+								  Logs.infoLog("Cell Value Of row number "+r1+" and column number "+col+" is "+Columns_header.get(col).getText());
+								  
+								  r1.createCell(col).setCellValue(Columns_header.get(col).getText());
+							  }
+						  }
+						  for (int row=1; row<rows_count; row++)
+						  {
+							   //To locate columns(cells) of that specific row.
+							   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+							   
+							   //To calculate no of columns(cells) In that specific row.
+							   int columns_count = Columns_row.size();
+							   
+							   Row r=s.createRow(row);
+							   
+							    		//Loop will execute till the last cell of that specific row.
+							   			for (int column=0; column<columns_count; column++)
+							   			{
+							   			//To retrieve text from that specific cell.
+							   				String celtext = Columns_row.get(column).getText();			   			
+							   				r.createCell(column).setCellValue(celtext);	
+							   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+							   				if(!celtext.isEmpty())
+					 		   				{
+					 		   					System.out.println("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+					 		   				}
+
+							   			}							   			
+							  } //for loop 
+							 FileOutputStream fos=new FileOutputStream(filePath);
+					 			wb.write(fos);
+					 			fos.close();	   			
+				 }	 
+				 else
+				 {
+					 //System.out.println("File not created");
+					 GlobalVariables.APPICATION_LOGS.error("File not created");
+					 Logs.errorLog("File not created");
+				 }
+			
+			 }
+			 else
+			 {
+				// System.out.println("Folder not created"); 
+				 GlobalVariables.APPICATION_LOGS.error("Folder not created");
+				 Logs.errorLog("Folder not created");
+			 }
+
+	 GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+	 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+	 rATUStatus(GlobalVariables.result,msg);
+
+
+
+	}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT1_TCN_LST_WriteXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,msg);
+	}
+		
 	
+  }	
+	/********************************************************************************************
+	 *		Author 						:	DivyaRaju.R
+	 *		LastModifiedDate			:	1st may 2015
+	 *		Method name					:	mT2_DIV_TH1_TCN_ReadXLSX
+	 *		Description					:	This method is used for fetching data from 1220
+	 *										 application
+	 *										 and writing that excel
+	 *
+	*********************************************************************************************/
+ 
+	public static void mT2_DIV_TH1_TCN_ReadXLSX(String excelSheetName,String automationId,
+				String xpath,String subReportName,String msg) 
+	{
+		GlobalVariables.testCaseIdentifier=automationId;
+		try
+	    {
+			 String path=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
+					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
+					 "/"+TestBaseConstants.BASELINE_BUILD_TYPE+"/"+
+					 GlobalVariables.testCaseIdentifier+".xlsx";
+			 //System.out.println("Path of file is -->"+path);
+			 FileInputStream fis=new FileInputStream(path);
+				Workbook wb=WorkbookFactory.create(fis); 
+				 
+			 //wb.createSheet(year);
+			 Sheet s=wb.getSheet(excelSheetName); 
+			 
+			//To locate table.
+			  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
+			  //To locate rows of table.
+			  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			  //To calculate no of rows In table.
+			  int rows_count = rows_table.size();
+			  
+			  ///headers
+			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			 
+			  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
+						 subReportName.equalsIgnoreCase("Compensation by Industries") ||
+						 subReportName.equalsIgnoreCase("World Regions Breakdown") ||
+					     subReportName.equalsIgnoreCase("Compensation by North American Geographic Regions") ||
+					     subReportName.equalsIgnoreCase("Compensation by Undergraduate Major") ||
+					     subReportName.equalsIgnoreCase("Compensation by Professional Experience"))
+					
+				{	// compare 1st cell				
+					updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+							,Columns_header.get(0).getText());
+					//compare 2nd cell
+					updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
+							,Columns_header.get(1).getText());					
+					//compare 3rd cell
+					updateError(0,3,s.getRow(0).getCell(3).getStringCellValue()
+							,Columns_header.get(2).getText());
+					//compare 4th cell
+					updateError(0,4,s.getRow(0).getCell(4).getStringCellValue()
+							,Columns_header.get(3).getText());
+					//compare 5th cell
+					updateError(0,5,s.getRow(0).getCell(5).getStringCellValue()
+							,Columns_header.get(4).getText());
+					//compare 6th cell
+					updateError(0,6,s.getRow(0).getCell(6).getStringCellValue()
+							,Columns_header.get(5).getText());	
+				}	
+			  else if(subReportName.equalsIgnoreCase("Primary Source of Full-Time Job Acceptances") )
+			  {
+				// compare 1st cell				
+					updateError(0,0,s.getRow(0).getCell(1).getStringCellValue()
+							,Columns_header.get(1).getText());
+					//compare 2nd cell
+					updateError(0,1,s.getRow(0).getCell(3).getStringCellValue()
+							,Columns_header.get(2).getText());	 
+			  }
+			  else if(subReportName.equalsIgnoreCase("Location of Instate Jobs"))
+			  {
+				// compare 1st cell				
+					updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+							,Columns_header.get(0).getText());
+					//compare 2nd cell
+					updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
+							,Columns_header.get(1).getText());					
+					//compare 3rd cell
+					updateError(0,2,s.getRow(0).getCell(2).getStringCellValue()
+							,Columns_header.get(2).getText());
+			  }
+			  
+			  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
+					  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
+					  subReportName.equalsIgnoreCase("Summary")||
+					  subReportName.equalsIgnoreCase("Full-Time Employment")||
+					  subReportName.equalsIgnoreCase("Part-Time Employment")||
+					  subReportName.equalsIgnoreCase("Service Organization")||
+					  subReportName.equalsIgnoreCase("Military Service")||
+					  subReportName.equalsIgnoreCase("Continuing Education")||
+					  subReportName.equalsIgnoreCase("Seeking or Unreported")||
+					  subReportName.equalsIgnoreCase("Employment Status")||
+					  subReportName.equalsIgnoreCase("Law School/University Funded Positions")||
+					  subReportName.equalsIgnoreCase("Employment Type")||
+					  subReportName.equalsIgnoreCase("Employment Location")
+					  )
+			  {
+				  for(int col=0;col<Columns_header.size();col++)
+				  {
+					  updateError(0,col,s.getRow(0).getCell(col).getStringCellValue()
+								,Columns_header.get(col).getText());
+				  }
+			  }
+			 
+			//Loop will execute till the last row of table.
+			  for (int row=1; row<rows_count; row++)
+			  {
+			   //To locate columns(cells) of that specific row.
+			   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+			   Row r=s.getRow(row);
+			   //To calculate no of columns(cells) In that specific row.
+			   int columns_count = Columns_row.size();		   
+			   
+			    		//Loop will execute till the last cell of that specific row.
+			   			for (int column=0; column<columns_count; column++)
+			   			{
+			   			//To retrieve text from that specific cell.
+			   				String webtext = Columns_row.get(column).getText();
+			   				String xltext = r.getCell(column).getStringCellValue();
+			   				updateError(row,column,xltext,webtext);
+			   			}   				
+			   		
+			  }  			 
+			 
+			 FileOutputStream fos=new FileOutputStream(path);
+				wb.write(fos);
+				fos.close();
+				GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+		  		 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		  		 rATUStatus(GlobalVariables.result,msg);		
+			 }
+			catch(Exception e)
+			{
+				GlobalVariables.exceptionMsgVal=e.getMessage();
+				String ermsg="Error while executing mT2_DIV_TH1_TCN_ReadXLSX keyword";
+				keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+				GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+				GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+				GlobalVariables.APPICATION_LOGS.error(ermsg);
+				Logs.errorLog(ermsg);
+				rATUStatus(GlobalVariables.result,ermsg);
+			}
+		
+	}	
 	
+	/********************************************************************************************
+	 *		Author 						:	DivyaRaju.R
+	 *		LastModifiedDate			:	1st may 2015
+	 *		Method name					:	mT2_DIV_TH1_TCN_WriteXLSX
+	 *		Description					:	This method is used for fetching data from 1220 application
+	 *										 and writing that excel
+	 *
+	*********************************************************************************************/
+	public static void mT2_DIV_TH1_TCN_WriteXLSX(String sheetName,String excelFileName,String msg,
+		String tableXpath,String subReportName) 
+	{
+	boolean xlFileCreated=false;
+
+		try
+		{//Pre_Build_Number
+			// fetch the folder path to create work book
+			String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
+					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
+					 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";
+			//System.out.println("Build folder path is "+folderPath);
+			
+			 File  preBuildFolderPath=new File( folderPath);
+			 
+			 //Create directory
+			 boolean folderCreated=preBuildFolderPath.mkdirs();
+			 String filePath=preBuildFolderPath+"/"+GlobalVariables.testCaseIdentifier+".xlsx";
+			 File filePath1 =new File(filePath);
+			 //System.out.println("File Path is -->"+filePath);
+			 if(folderCreated||preBuildFolderPath.exists())
+			 {
+				 if(filePath1.exists())
+					{
+						filePath1.delete();
+						xlFileCreated= ExcelTestUtil.createXLS(filePath,GlobalVariables.testCaseIdentifier);		 
+					}
+					else 
+					{
+						xlFileCreated= ExcelTestUtil.createXLS(filePath,GlobalVariables.testCaseIdentifier);
+					}
+				 if(xlFileCreated)
+				 {
+					 FileInputStream fis=new FileInputStream(filePath);
+						Workbook wb=WorkbookFactory.create(fis);
+						 //wb.createSheet(year);
+						 Sheet s=wb.getSheet(sheetName);
+				 
+						//To locate table.
+						  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
+						  //To locate rows of table.
+						  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+						  //To calculate no of rows In table.
+						  int rows_count = rows_table.size();
+						  
+						  //headers
+						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+						  Row r1=s.createRow(0);
+						  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
+							 subReportName.equalsIgnoreCase("Compensation by Industries") ||
+							 subReportName.equalsIgnoreCase("World Regions Breakdown") ||
+						     subReportName.equalsIgnoreCase("Compensation by North American Geographic Regions") ||
+						     subReportName.equalsIgnoreCase("Compensation by Undergraduate Major") ||
+						     subReportName.equalsIgnoreCase("Compensation by Professional Experience") )
+							  {
+							  Logs.infoLog( "Sub report is "+subReportName);
+							  //1st cell of 1st header
+							  	r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+							  // 2nd cell of header
+								 r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+								 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
+								  //3rd cell
+								 r1.createCell(3).setCellValue(Columns_header.get(2).getText());								 
+								 //4th cell
+								 r1.createCell(4).setCellValue(Columns_header.get(3).getText());
+								 //5th cell
+								 r1.createCell(5).setCellValue(Columns_header.get(4).getText());
+								 //6th cell
+								 r1.createCell(6).setCellValue(Columns_header.get(5).getText());
+								 
+							  }
+						  
+						  else if(subReportName.equalsIgnoreCase("Primary Source of Full-Time Job Acceptances") )
+						  {
+							  Logs.infoLog( "Sub report is "+subReportName);
+							  //1st cell of 1st header
+							  	/*r1.createCell(0).setCellValue(Columns_header.get(0).getText()); */
+							 // 2nd cell of header
+							  	r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+								 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
+								 //3rd cell 
+								 r1.createCell(3).setCellValue(Columns_header.get(2).getText());
+								 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
+							  	
+						  }
+						  
+						  else if(subReportName.equalsIgnoreCase("Location of Instate Jobs"))
+						  {
+							  Logs.infoLog( "Sub report is "+subReportName);
+							//1st cell of 1st header
+							  	r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+							// 2nd cell of header
+							    r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+							 // 3rd cell   
+							    r1.createCell(2).setCellValue(Columns_header.get(2).getText());
+						  }
+						  
+						  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
+								  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
+								  subReportName.equalsIgnoreCase("Summary")||
+								  subReportName.equalsIgnoreCase("Full-Time Employment")||
+								  subReportName.equalsIgnoreCase("Part-Time Employment")||
+								  subReportName.equalsIgnoreCase("Service Organization")||
+								  subReportName.equalsIgnoreCase("Military Service")||
+								  subReportName.equalsIgnoreCase("Continuing Education")||
+								  subReportName.equalsIgnoreCase("Seeking or Unreported")||
+								  subReportName.equalsIgnoreCase("Employment Status")||
+								  subReportName.equalsIgnoreCase("Law School/University Funded Positions")||
+								  subReportName.equalsIgnoreCase("Employment Type")||
+								  subReportName.equalsIgnoreCase("Employment Location")
+								  )
+						  {
+							  Logs.infoLog( "Sub report is "+subReportName);
+							  for(int col=0;col<Columns_header.size();col++)
+							  {
+								  Logs.infoLog("Cell Value Of row number "+r1+" and column number "+col+" is "+Columns_header.get(col).getText());
+								  
+								  r1.createCell(col).setCellValue(Columns_header.get(col).getText());
+							  }
+						  }
+						  for (int row=1; row<rows_count; row++)
+						  {
+							   //To locate columns(cells) of that specific row.
+							   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+							   
+							   //To calculate no of columns(cells) In that specific row.
+							   int columns_count = Columns_row.size();
+							   
+							   Row r=s.createRow(row);
+							   
+							    		//Loop will execute till the last cell of that specific row.
+							   			for (int column=0; column<columns_count; column++)
+							   			{
+							   			//To retrieve text from that specific cell.
+							   				String celtext = Columns_row.get(column).getText();			   			
+							   				r.createCell(column).setCellValue(celtext);	
+							   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+							   				if(!celtext.isEmpty())
+					 		   				{
+					 		   					System.out.println("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+					 		   				}
+
+							   			}							   			
+							  } //for loop 
+							 FileOutputStream fos=new FileOutputStream(filePath);
+					 			wb.write(fos);
+					 			fos.close();	   			
+				 }	 
+				 else
+				 {
+					 //System.out.println("File not created");
+					 GlobalVariables.APPICATION_LOGS.error("File not created");
+					 Logs.errorLog("File not created");
+				 }
+			
+			 }
+			 else
+			 {
+				// System.out.println("Folder not created"); 
+				 GlobalVariables.APPICATION_LOGS.error("Folder not created");
+				 Logs.errorLog("Folder not created");
+			 }
+
+	 GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+	 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+	 rATUStatus(GlobalVariables.result,msg);
+
+
+
+	}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT2_DIV_TH1_TCN_WriteXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,msg);
+	}
+		
 	
+  }	
 }

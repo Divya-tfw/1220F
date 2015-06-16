@@ -251,9 +251,9 @@ public static String MOBILE_APP_TYPE="Mobile";
 		public static String VERSION_VALUE="1.0";
 		public static String ATU_INDEX_PAGE_DESCRIPTION="12Twenty Reports of execution";
 		
+		//Nalp Report names
 		
-		
-	
+		public static String FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE="Full and Part-time Jobs by Employer Type";	
 		
 		
 }
