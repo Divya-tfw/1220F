@@ -78,19 +78,7 @@ public class TestBaseConstants
 	public static String RESULT_SKIPVALUE="Skip";
 	
 	
-	// Browser Constants
-
-	
-	//User Defined Constants
-
-	
-	
 	// Time formats
-
-	
-	
-	
-
 	
 	// Run from values
 	public static String RUN_FROM_ECLIPSE="Eclipse";
@@ -201,7 +189,11 @@ public static String MOBILE_APP_TYPE="Mobile";
 		public static String BASELINE_BUILD_TYPE="Baseline";
 		public static String ACTUAL_BUILD_TYPE="Actual";
 		public static String BUILD_TYPE="buildType";
+		//Table related
 		
+		public static String TABLE_ROW_TAG="tr";
+		public static String TABLE_HEAD_TAG="th";
+		public static String TABLE_COLUMN_TAG="td";
 		//Script constants
 		
 		public static String AUTOMATION_ID="Automation_Id";
@@ -253,7 +245,63 @@ public static String MOBILE_APP_TYPE="Mobile";
 		
 		//Nalp Report names
 		
-		public static String FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE="Full and Part-time Jobs by Employer Type";	
+		//--mT1_TH2_TBH1_TCN
+		public static String NALP_FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE="Full and Part-time Jobs by Employer Type";	
+		
+		public static String NALP_EMPLOYER_DETAIL_BY_GENDER="Employer Detail by Gender";
+		public static String NALP_EMPLOYEE_DETAIL_BY_RACE_OR_ETHINICITY="Employer Detail by Race/Ethnicity";
+		public static String NALP_SOURCE_OF_JOB_BY_EMPLOYER_TYPE="Source of Job by Employer Type";
+		public static String NALP_EMPLOYER_TYPE_BY_AGE_AT_GRADUATION="Employer Types by Age at Graduation";
+		public static String NALP_EMPLOYER_TYPES_BY_RACE_OR_ETHNICITY="Employer Types by Race/Ethnicity";
+		public static String NALP_PRIVATE_PRACTICE_DETAIL_BY_RACE_OR_ETHNICITY="Private Practice Detail by Race/Ethnicity";
+		
+		public static String NALP_EMPLOYER_TYPES_BY_GENDER="Employer Types by Gender";
+		public static String NALP_PRIVATE_PRACTICE_DETAIL_BY_GENDER="Private Practice Detail by Gender";
+		
+		
+		
+		//NALP--mT1_TH2_TBH2_TCN
+		public static String NALP_EMPLOYMENT_STATUS_BY_GENDER="Employment Status by Gender";
+		public static String NALP_EMPLOYMENT_STATUS_BY_AGE_AT_GRADUATION="Employment Status by Age at Graduation";
+		public static String NALP_EMPLOYMENT_STATUS_BY_RACE_OR_ETHNICITY="Employment Status by Race/Ethnicity";
+		
+		//NALP--T1-TH1-TCN
+		public static String NALP_NUMBER_OF_JOBS_REPORTED_TAKEN_BY_STATE="Number of Jobs Reported Taken by State";
+		
+		//nalp  mT2_TH2_TCN
+		public static String NALP_CLASS_SUMMARY="Class Summary";
+		public static String NALP_GRADUATE_DEMOGRAPHICS="Graduate Demographics";
+		
+		//Nace report
+		public static String SERVICE_ORGANISATION_REPORT="CareerInsights | Manage the recruiting"
+				+ " cycle from orientation to graduation - Powered by 12Twenty";
+		
+		//MBA standard report
+		
+		public static String MBA_COMPENSATION_REPORT="Compensation Report";
+		//Folder & excel path related buildIterationVal
+		public static String BUILD_FOLDER_PATH="buildFolderPath";
+		public static String PATH_SIGN="/";
+		public static String BASELINE_FOLDER_NAME="Build_number_";
+		public static String EXCEL_FILE_EXTENSION=".xlsx";
+		
+		public static String EXCEL_FILE_NOT_CREATED="File not created";
+		public static String BASELINE_FOLDER_NOT_CREATED="Folder not created";
+		public static String FAILED_FOLDER_NAME="Failed";
+		
+		public static String BUILD_ITERATION_VALUE="buildIterationVal";
+		
+		public static String FAILED_EXCEL_FILE_NAME="_Failed";
+		public static String ITERATION="Iteration_";
+		public static String SCHOOL_TEXAS_FTMBA="Texas_FTMBA";
+		public static String SCHOOL_TEXAS_PTMBA="Texas_PTMBA";
+		public static String SCHOOL_HARDVARD_FTMBA="Harvard_FTMBA";
+		
+		//Business Week Report
+		public static String BWR_FORGONE_SALARY="Forgone Salary";
+		public static String BWR_OVERALL_EMPLOYEMENT="Overall Employment";
+		public static String BWR_TOP_15_EMPLOYESS="Top 15 Employers";
+		
 		
 		
 }

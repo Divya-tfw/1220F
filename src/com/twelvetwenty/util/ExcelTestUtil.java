@@ -30,6 +30,7 @@ import org.testng.SkipException;
 import com.google.common.io.Files;
 import com.twelvetwenty.base.Base;
 import com.twelvetwenty.base.CustomVerification;
+import com.twelvetwenty.base.Keywords;
 import com.twelvetwenty.constants.GlobalVariables;
 import com.twelvetwenty.constants.TestBaseConstants;
 
@@ -570,25 +571,62 @@ public class ExcelTestUtil
 		 
 		 public static void excelFileCopy(String  sourceFile,String destinationFile)
 		 {		
+			
 		 		try 
 		 		{
-		 			String sFolderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-		 					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-		 					 "/"+"Pre_Build/";
-		 			String dFolderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-		 					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-		 					 "/"+"Post_Build"+"/Failed/";
+		 			String sFolderPath=cleanPath(
+							GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+							+TestBaseConstants.PATH_SIGN
+							+TestBaseConstants.BASELINE_FOLDER_NAME+
+							GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+							+TestBaseConstants.PATH_SIGN+
+							TestBaseConstants.ITERATION+
+							GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+							TestBaseConstants.PATH_SIGN+
+							TestBaseConstants.BASELINE_BUILD_TYPE
+							+TestBaseConstants.PATH_SIGN;
+		 					 
+		 			String dFolderPath=
+		 			cleanPath(GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE)
+					+TestBaseConstants.PATH_SIGN+
+		 					 TestBaseConstants.FAILED_FOLDER_NAME+TestBaseConstants.PATH_SIGN;
+		 					 
+		 					 
+		 			/*System.out.println("Source file path "+sFolderPath);
+		 			System.out.println("Destination file "+dFolderPath);*/
+		 			
 		 			Path source = Paths.get(sFolderPath+sourceFile);
+		 			//System.out.println(source);
 				//destination file name with path
 				Path destination = Paths.get(dFolderPath+destinationFile);
+				//System.out.println(destination);
+				
+				GlobalVariables.APPICATION_LOGS.info("Copying source file -->"+
+				source+ " to "+" destination file---> "+ destination);
+				
+				File d = destination.toFile();
+				if(!d.exists())
+				{					
 				Files.copy(source.toFile(), destination.toFile());
-		 			System.out.println("Files copied");
+				GlobalVariables.APPICATION_LOGS.info("Files copied");
+				GlobalVariables.filecopied=true;
+				}
+				else 	GlobalVariables.APPICATION_LOGS.info("Files already exists so not created again");
 		 		} 
 		 		catch (IOException e) 
 		 		{
-		 			System.out.println("Couldnot report data  "+e.getMessage());
-		 			CustomVerification.  verifyContent(false,e.getMessage());	
+		 			Keywords.keywordsErrormsg(GlobalVariables.errormsg,e.getMessage(),
+		 					"Error while executing excelFileCopy");
 		 		}
+		 		
 		 }
 		 
 		 public static boolean createFolder(String buildType)
@@ -601,9 +639,18 @@ public class ExcelTestUtil
 		 				GlobalVariables.CONFIG.getProperty("buildFolderPath"));
 				String buildNumber=GlobalVariables.CONFIG.getProperty("buildNumber");
 		 	 String filePath=buildFolderpath+
-					 "/"+"Build_number_"+buildNumber+
-					 "/"+buildType+"/Failed/";
-		 	 System.out.println("Directory path is -->"+filePath);
+					 TestBaseConstants.PATH_SIGN
+					 +TestBaseConstants.BASELINE_FOLDER_NAME
+					 +buildNumber+
+					 TestBaseConstants.PATH_SIGN+
+					 TestBaseConstants.ITERATION+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)
+						+TestBaseConstants.PATH_SIGN
+					 +TestBaseConstants.ACTUAL_BUILD_TYPE+				
+					TestBaseConstants.PATH_SIGN+ TestBaseConstants.FAILED_FOLDER_NAME+
+					 TestBaseConstants.PATH_SIGN;
+					
+		 	 System.out.println(" Created Directory path here -->"+filePath);
 		 	 
 		 	 
 		 	folderCreated=new File(filePath).mkdirs();

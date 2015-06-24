@@ -169,11 +169,22 @@ public class App_Specific_Keywords extends Keywords
 			  ||subReportName.equalsIgnoreCase("Timing of Job Acceptances"))
 	  {
 		try
-		{//Pre_Build_Number
+		{//
 			// fetch the folder path to create work book
-			String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
+			/*String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
 					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-					 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";
+					 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";*/
+			
+			String folderPath=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
 			//System.out.println("Build folder path is "+folderPath);
 			
 			 File  preBuildFolderPath=new File( folderPath);
@@ -207,12 +218,12 @@ public class App_Specific_Keywords extends Keywords
 						//To locate table.
 						  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 						  //To locate rows of table.
-						  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+						  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 						  //To calculate no of rows In table.
 						  int rows_count = rows_table.size();
 						  
 						  //headers
-						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 						  Row r1=s.createRow(0);
 						 
 							
@@ -257,7 +268,7 @@ public class App_Specific_Keywords extends Keywords
 						  //Loop will execute till the last row of table.
 						  for (int row=1; row<rows_count; row++){
 						   //To locate columns(cells) of that specific row.
-						   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+						   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 						   
 						   //To calculate no of columns(cells) In that specific row.
 						   int columns_count = Columns_row.size();
@@ -316,17 +327,7 @@ public class App_Specific_Keywords extends Keywords
 		}
 	  }
 	
-	/*else if(subReportName.contains("Employment Status by Gender"))
-	{
-
-		
-		System.out.println("sub report is "+subReportName);
-	
-		reportNALP_Table2_WriteXLSX
-		(GlobalVariables.testCaseIdentifier,
-				GlobalVariables.testCaseIdentifier,msg,tableXpath,subReportName);
-	}*/
-}
+	}//mt1-th2-tcnwrite
 
 
 
@@ -348,10 +349,17 @@ public class App_Specific_Keywords extends Keywords
 		GlobalVariables.testCaseIdentifier=automationId;
 	 try
 	 {
-	 String path=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-			 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-			 "/"+TestBaseConstants.BASELINE_BUILD_TYPE+"/"+
-			 GlobalVariables.testCaseIdentifier+".xlsx";
+		 String path=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.BASELINE_BUILD_TYPE
+					+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
 	 //System.out.println("Path of file is -->"+path);
 	 FileInputStream fis=new FileInputStream(path);
 		Workbook wb=WorkbookFactory.create(fis); 
@@ -362,12 +370,12 @@ public class App_Specific_Keywords extends Keywords
 	//To locate table.
 	  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 	  //To locate rows of table.
-	  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+	  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 	  //To calculate no of rows In table.
 	  int rows_count = rows_table.size();
 	  
 	  ///headers
-	  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+	  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 	  
 	if(subReportName.equalsIgnoreCase("The Graduating Class (A)"))
 		
@@ -481,7 +489,7 @@ public class App_Specific_Keywords extends Keywords
 	  //Loop will execute till the last row of table.
 	  for (int row=1; row<rows_count; row++){
 	   //To locate columns(cells) of that specific row.
-	   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+	   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	   Row r=s.getRow(row);
 	   //To calculate no of columns(cells) In that specific row.
 	   int columns_count = Columns_row.size();
@@ -543,40 +551,92 @@ public class App_Specific_Keywords extends Keywords
 	 {
 		 String msg="Validating  expected ->"+expected+" with actual->"+actual;
 		
-		 String status=CustomVerification.assertEqualsTest(expected, actual);
+		 String status=CustomVerification.assertEqualsTest(actual, expected);
 		 msg=msg+" and status is --->"+status;
 			GlobalVariables.APPICATION_LOGS.info(msg);
 			Logs.infoLog(msg);
-		 if(status.contains("Fail"))
+		 if(status.contains(TestBaseConstants.RESULT_FAILVALUE))
 			{
+			 
 			 GlobalVariables.APPICATION_LOGS.error("Validation status is fail hence creating failed folder ");
-			 String buildFolderpath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"));
-				String buildNumber=GlobalVariables.CONFIG.getProperty("buildNumber");
+			 String buildFolderpath=cleanPath(GlobalVariables.CONFIG.getProperty
+					 (TestBaseConstants.BUILD_FOLDER_PATH));
+				String buildNumber=GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER);
 			 String filePath=buildFolderpath+
-					 "/"+"Build_number_"+buildNumber+
-					 "/"+"Post_Build"+"/Failed/";
+					 TestBaseConstants.PATH_SIGN
+					 +TestBaseConstants.BASELINE_FOLDER_NAME
+					 +buildNumber+
+					 TestBaseConstants.PATH_SIGN
+					 +
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)
+					+TestBaseConstants.PATH_SIGN
+							+TestBaseConstants.ACTUAL_BUILD_TYPE+TestBaseConstants.PATH_SIGN;
+					
+			 
+					
 			 	File f= new File(filePath);
-				boolean folder=ExcelTestUtil.createFolder(GlobalVariables.CONFIG.getProperty("buildType"));
+			 	System.out.println("Filepath exists --->"+filePath);
+				boolean folder=ExcelTestUtil.createFolder
+						(GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE));
 				GlobalVariables.APPICATION_LOGS.info("Folder created --->"+folder);
 				GlobalVariables.APPICATION_LOGS.info("File path exists--->"+f.exists());
 				if(folder|| f.exists() )
 				{
-					GlobalVariables.APPICATION_LOGS.info("Copying excel file "+GlobalVariables.testCaseIdentifier +
-							"to failed file as -->"+GlobalVariables.testCaseIdentifier+"_Failed");
-				ExcelTestUtil.excelFileCopy(GlobalVariables.testCaseIdentifier+".xlsx",
-						GlobalVariables.testCaseIdentifier+"_Failed"+".xlsx");
-				//r.createCell(column).setCellValue(xltext);\String buildFolderpath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"));
+					GlobalVariables.APPICATION_LOGS.info("Copying excel file "+
+				GlobalVariables.testCaseIdentifier+TestBaseConstants.EXCEL_FILE_EXTENSION +
+							"to failed file as -->"+GlobalVariables.testCaseIdentifier+
+							TestBaseConstants.FAILED_EXCEL_FILE_NAME+TestBaseConstants.EXCEL_FILE_EXTENSION);
+					
+					
+					System.out.println("Source file is "+GlobalVariables.testCaseIdentifier+TestBaseConstants.EXCEL_FILE_EXTENSION);
+				
+					System.out.println("Destination file "+
+							GlobalVariables.testCaseIdentifier+
+							TestBaseConstants.FAILED_EXCEL_FILE_NAME+TestBaseConstants.EXCEL_FILE_EXTENSION);
+					
+					
+					ExcelTestUtil.excelFileCopy(GlobalVariables.testCaseIdentifier+TestBaseConstants.EXCEL_FILE_EXTENSION,
+						GlobalVariables.testCaseIdentifier+
+						TestBaseConstants.FAILED_EXCEL_FILE_NAME+TestBaseConstants.EXCEL_FILE_EXTENSION);
+				//r.createCell(column).setCellValue(xltext);
+				//String buildFolderpath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"));
 				 
 		 	 
 				String errorUpdateFolderPath=buildFolderpath+
-					 "/"+"Build_number_"+buildNumber+
-					 "/"+"Post_Build"+"/Failed/";
+						TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.BASELINE_FOLDER_NAME+buildNumber+
+					 TestBaseConstants.PATH_SIGN+
+					 TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+
+					 TestBaseConstants.PATH_SIGN+
+					 TestBaseConstants.ACTUAL_BUILD_TYPE+
+					 TestBaseConstants.PATH_SIGN+
+					  TestBaseConstants.FAILED_FOLDER_NAME+
+					 TestBaseConstants.PATH_SIGN;		 
+				GlobalVariables.APPICATION_LOGS.info("Error folder path is -->"+errorUpdateFolderPath);
+				GlobalVariables.APPICATION_LOGS.info(
+						"Setting data path with data to be appended-->"+
+						errorUpdateFolderPath+
+						GlobalVariables.testCaseIdentifier+
+						TestBaseConstants.FAILED_EXCEL_FILE_NAME+
+						TestBaseConstants.EXCEL_FILE_EXTENSION+
+						GlobalVariables.testCaseIdentifier+row+column+expected+"**"+actual);
 				ExcelTestUtil.setExcelData(errorUpdateFolderPath+
-						GlobalVariables.testCaseIdentifier+"_Failed"+".xlsx",
+						GlobalVariables.testCaseIdentifier+
+						TestBaseConstants.FAILED_EXCEL_FILE_NAME+
+						TestBaseConstants.EXCEL_FILE_EXTENSION,
 						GlobalVariables.testCaseIdentifier,row,column,expected+"**"+actual);
 				
 				GlobalVariables.APPICATION_LOGS.info("Setting data to excel."+
 						expected+"**"+actual);
+				
+				/*ExcelTestUtil.createXLS(errorUpdateFolderPath+
+						GlobalVariables.testCaseIdentifier+
+						TestBaseConstants.FAILED_EXCEL_FILE_NAME+
+						TestBaseConstants.EXCEL_FILE_EXTENSION, GlobalVariables.testCaseIdentifier);*/
+				
+				
 				//CustomVerification.verifyContent(false,"Validation status of "+expected+" and "+actual+" is " +status);
 				}
 			}			
@@ -607,11 +667,18 @@ public class App_Specific_Keywords extends Keywords
 		 boolean xlFileCreated=false;
 			
 		 try
-		 {//Pre_Build_Number
-				// fetch the folder path to create work book
-			String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-						 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-						 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";
+		 {// fetch the folder path to create work book		
+			 
+				String folderPath=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+						+TestBaseConstants.BASELINE_FOLDER_NAME+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+						+TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.ITERATION+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+						TestBaseConstants.PATH_SIGN+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
 			//System.out.println("Build folder path is "+folderPath);
 				
 			File  preBuildFolderPath=new File( folderPath);
@@ -634,18 +701,17 @@ public class App_Specific_Keywords extends Keywords
 				 xlFileCreated= ExcelTestUtil.createXLS(filePath,
 						 GlobalVariables.testCaseIdentifier);
 				}
-					 /*//System.out.println("Folder created yes or no-->"+success);
-					 boolean xlFileCreated= ExcelTestUtil.createXLS(filePath, sheetName);*/
+					 
 			 if(xlFileCreated)
 			 {
 				 
-			 if(subReportName.equalsIgnoreCase("Employment Status by Gender"))
+			 if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYMENT_STATUS_BY_GENDER))
 			 {
 				 
 	 		 //fetch table xpath
 	 		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 	 		  //To locate rows of table.
-	 		 List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+	 		 List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 	 		  
 	 		  // open stream to open file
 	 		 FileInputStream fis=new FileInputStream(filePath);
@@ -653,13 +719,10 @@ public class App_Specific_Keywords extends Keywords
 	 			//get row size
 	 		 int rows_count = rows_table.size();	 			 
 	 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
-	 			 
-	 			
-	 		
-	 			 
+	 				 
 	 			 /*** Fetch headers and store to excel of 1st col**/
 	 			 // first row of header
-	 			 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+	 			 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 	 			 //create first row  
 	 			 Row r1=s.createRow(0);
 	 			  String j=Columns_header.get(0).getText();
@@ -680,11 +743,11 @@ public class App_Specific_Keywords extends Keywords
 	 			  r1=s.createRow(1);
 	 			  
 	 			  // fetch 2nd row contents 
-	 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+	 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			 int cellVal=2;
 	 			 int colVal=0;
 	 			 // enter values to cols 2 to 6 
-	 			  while(cellVal<6 &&colVal<4)
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 	 			  {
 	 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 	 			  cellVal++;
@@ -693,17 +756,17 @@ public class App_Specific_Keywords extends Keywords
 	 			 // first row span content
 	 			 
 	 			 
-	 			 Columns_header = rows_table.get(2).findElements(By.tagName("th")); 
+	 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			 r1=s.createRow(2);
 	 			
 	 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
 	 			 s.addMergedRegion(new CellRangeAddress(2, 7, 0, 0));
 	 			//System.out.println(Columns_header.get(1).getText());
 	 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-	 			 Columns_header = rows_table.get(2).findElements(By.tagName("td"));
+	 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 			  cellVal=2;
 	 				  colVal=0;
-	 			  while(cellVal<6 &&colVal<4)
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 	 			  {
 	 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 	 			  cellVal++;
@@ -713,7 +776,7 @@ public class App_Specific_Keywords extends Keywords
 	 			
 	 			// second rows pan content
 	 			
-	 			Columns_header = rows_table.get(8).findElements(By.tagName("th")); 
+	 			Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			 r1=s.createRow(8);
 	 			// System.out.println(Columns_header.get(0).getText());
 	 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
@@ -721,10 +784,10 @@ public class App_Specific_Keywords extends Keywords
 	 			 
 	 			//System.out.println(Columns_header.get(1).getText());
 	 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-	 			 Columns_header = rows_table.get(8).findElements(By.tagName("td"));
+	 			 Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 			  cellVal=2;
 	 			  colVal=0;
-	 			  while(cellVal<6 &&colVal<4)
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 	 			  {
 	 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 	 			  cellVal++;
@@ -733,15 +796,15 @@ public class App_Specific_Keywords extends Keywords
 	 			  }	
 	 			
 	 			// third colspan content
-	 			Columns_header = rows_table.get(12).findElements(By.tagName("th")); 
+	 			Columns_header = rows_table.get(12).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			 r1=s.createRow(12);
 	 			
 	 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
 	 			 s.addMergedRegion(new CellRangeAddress(12, 12, 0, 1));
-	 			 Columns_header = rows_table.get(12).findElements(By.tagName("td"));
+	 			 Columns_header = rows_table.get(12).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 			 cellVal=2;
 	 			  colVal=0;
-	 			 while(cellVal<6 &&colVal<4)
+	 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 	 			  {
 	 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 	 			  cellVal++;
@@ -754,7 +817,7 @@ public class App_Specific_Keywords extends Keywords
 	 			 for (int row=3; row<8; row++)
 	 			 {
 	 			 List<WebElement> Columns_row = rows_table.get(row).
-	 					 findElements(By.tagName("th"));
+	 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 	 			
 	 		
 	 			 Row r=s.createRow(row);
@@ -764,14 +827,10 @@ public class App_Specific_Keywords extends Keywords
 	 			 
 	 			
 	 				   //To locate columns(cells) of that specific row.
-	 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-	 				   
-	 				
-	 				 
-	 				   
+	 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));   
 	 				   cellVal=2;
 	 					  colVal=0;
-	 					  while(cellVal<6 &&colVal<4)
+	 					  while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
 	 					  {
 	 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
 	 					  cellVal++;
@@ -782,7 +841,7 @@ public class App_Specific_Keywords extends Keywords
 	 			 // Fetch the contents of table from row 8 to last 12th row
 	 			 for (int row=9; row<rows_count-1; row++)
 	 			 {
-	 			 List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("th")); 
+	 			 List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			
 	 		
 	 			 Row r=s.createRow(row);
@@ -791,18 +850,15 @@ public class App_Specific_Keywords extends Keywords
 	 			 r.createCell(1).setCellValue(celtext);	
 	 			 
 	 		
-	 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+	 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 				  cellVal=2;
 	 				  colVal=0;
-	 				  while(cellVal<6 &&colVal<4)
+	 				  while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
 	 				  {
 	 				  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
 	 				  cellVal++;
-	 				  colVal++;
-	 				   
-	 				  }			
-	 				   			
-	 			
+	 				  colVal++;	 				   
+	 				  }	
 	 			 }
 	 		
 	 			 FileOutputStream fos=new FileOutputStream(filePath);
@@ -810,20 +866,20 @@ public class App_Specific_Keywords extends Keywords
 	 				fos.close();
 			 }	//Employment Status by Gender report
 			 //
-			 else if(subReportName.equalsIgnoreCase("Employment Status by Age at Graduation")
-					 ||subReportName.equalsIgnoreCase("Employment Status by Race/Ethnicity") )
+			 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYMENT_STATUS_BY_AGE_AT_GRADUATION)
+					 ||subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYMENT_STATUS_BY_RACE_OR_ETHNICITY) )
 			 {//Employment Status by Age at Graduation
 				//fetch table xpath
 		 		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 		 		  //To locate rows of table.
-		 		 List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));		 		  
+		 		 List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));		 		  
 		 		  // open stream to open file
 		 		 FileInputStream fis=new FileInputStream(filePath);
 		 	     Workbook wb=WorkbookFactory.create(fis);
 		 			//get row size
 		 		 int rows_count = rows_table.size();	 			 
 		 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
-		 		 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+		 		 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 	 			 //create first row  
 	 			 Row r1=s.createRow(0);
 	 			  String j=Columns_header.get(0).getText();
@@ -855,7 +911,7 @@ public class App_Specific_Keywords extends Keywords
 	 			  r1=s.createRow(1);
 	 			  
 	 			  // fetch 2nd row contents 
-	 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+	 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			 int cellVal=2;
 	 			 int colVal=0;
 	 			 // enter values to cols 2 to 12 
@@ -869,14 +925,14 @@ public class App_Specific_Keywords extends Keywords
 	 			// 3rd row-first col span content i.e fetch Employed value 
 		 			 
 		 			 
-		 			 Columns_header = rows_table.get(2).findElements(By.tagName("th")); 
+		 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 		 			 r1=s.createRow(2);
 		 			
 		 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
 		 			 s.addMergedRegion(new CellRangeAddress(2, 7, 0, 0));
 		 			//System.out.println(Columns_header.get(1).getText());
 		 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-		 			 Columns_header = rows_table.get(2).findElements(By.tagName("td"));
+		 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 		 			  cellVal=2;
 		 				  colVal=0;
 		 			  while(cellVal<12 &&colVal<10)
@@ -886,9 +942,9 @@ public class App_Specific_Keywords extends Keywords
 		 			  colVal++;
 		 			   
 		 			  }	
-		 			// second row pan content
+		 			// second row span content
 			 			
-			 			Columns_header = rows_table.get(8).findElements(By.tagName("th")); 
+			 			Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			 r1=s.createRow(8);
 			 			// System.out.println(Columns_header.get(0).getText());
 			 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
@@ -896,7 +952,7 @@ public class App_Specific_Keywords extends Keywords
 			 			 
 			 			//System.out.println(Columns_header.get(1).getText());
 			 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-			 			 Columns_header = rows_table.get(8).findElements(By.tagName("td"));
+			 			 Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 			 			  cellVal=2;
 			 			  colVal=0;
 			 			  while(cellVal<12 &&colVal<10)
@@ -908,12 +964,12 @@ public class App_Specific_Keywords extends Keywords
 			 			  }	
 			 			
 			 			// third col span content
-			 			Columns_header = rows_table.get(12).findElements(By.tagName("th")); 
+			 			Columns_header = rows_table.get(12).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			 r1=s.createRow(12);
 			 			
 			 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
 			 			 s.addMergedRegion(new CellRangeAddress(12, 12, 0, 1));
-			 			 Columns_header = rows_table.get(12).findElements(By.tagName("td"));
+			 			 Columns_header = rows_table.get(12).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 			 			 cellVal=2;
 			 			  colVal=0;
 			 			 while(cellVal<12 &&colVal<10)
@@ -923,10 +979,10 @@ public class App_Specific_Keywords extends Keywords
 			 			  colVal++;
 			 			  					   
 			 			  }	
-			 			 // Fetch the contents of table from row 8 to last 12th row
-			 			 for (int row=9; row<rows_count-1; row++)
+			 			 
+			 			for (int row=3; row<8; row++)
 			 			 {
-			 			 List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("th")); 
+			 			 List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			
 			 		
 			 			 Row r=s.createRow(row);
@@ -935,7 +991,32 @@ public class App_Specific_Keywords extends Keywords
 			 			 r.createCell(1).setCellValue(celtext);	
 			 			 
 			 		
-			 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+			 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			 				  cellVal=2;
+			 				  colVal=0;
+			 				  while(cellVal<12 &&colVal<10)
+			 				  {
+			 				  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
+			 				  cellVal++;
+			 				  colVal++;
+			 				   
+			 				  }			
+			 				   			
+			 			
+			 			 }
+			 			 // Fetch the contents of table from row 8 to last 12th row
+			 			 for (int row=9; row<rows_count-1; row++)
+			 			 {
+			 			 List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+			 			
+			 		
+			 			 Row r=s.createRow(row);
+			 			 String celtext = Columns_row.get(0).getText();
+			 	
+			 			 r.createCell(1).setCellValue(celtext);	
+			 			 
+			 		
+			 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 			 				  cellVal=2;
 			 				  colVal=0;
 			 				  while(cellVal<12 &&colVal<10)
@@ -955,20 +1036,23 @@ public class App_Specific_Keywords extends Keywords
 		 			  
 			 }//Employment Status by Age at 
 			 
-			 else if(subReportName.equalsIgnoreCase("Employer Detail by Gender")||
-				 subReportName.equalsIgnoreCase("Graduation Employer Detail by Race/Ethnicity") )
+			 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYEE_DETAIL_BY_RACE_OR_ETHINICITY) )
 			 {
 				 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 		 		  //To locate rows of table.
-		 		 List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));		 		  
+		 		 List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		 		 //System.out.println("row count is -->"+rows_table.size());
 		 		  // open stream to open file
 		 		 FileInputStream fis=new FileInputStream(filePath);
 		 	     Workbook wb=WorkbookFactory.create(fis);
 		 			//get row size
 		 		// int rows_count = rows_table.size();	 			 
 		 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
-		 		 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
-	 			 //create first row  
+		 		 
+		 		 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 		 //System.out.println("Header count is -->"+Columns_header.size());
+		 		 
+		 		 //create first row  
 	 			 Row r1=s.createRow(0);
 	 			  String j=Columns_header.get(0).getText(); 
 	 			 r1.createCell(0).setCellValue(j);
@@ -987,15 +1071,26 @@ public class App_Specific_Keywords extends Keywords
 	 			 r1.createCell(6).setCellValue(Columns_header.get(3).getText());
 	 			 s.addMergedRegion(new CellRangeAddress(0, 0, 6, 7));
 	 			 
+	 			 
+	 			// add value to cell 5
+	 			 r1.createCell(8).setCellValue(Columns_header.get(4).getText());
+	 			 s.addMergedRegion(new CellRangeAddress(0, 0, 8, 9));
+	 			 
+	 			// add value to cell 6
+	 			 r1.createCell(10).setCellValue(Columns_header.get(5).getText());
+	 			 s.addMergedRegion(new CellRangeAddress(0, 0,10 ,11));
+	 			 
 	 			// second row of header
 	 			  r1=s.createRow(1);
 	 			  
 	 			  // fetch 2nd row contents 
-	 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+	 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			 
+	 			// System.out.println(Columns_header.size());
 	 			 int cellVal=2;
 	 			 int colVal=0;
 	 			 // enter values to cols 2 to 12 
-	 			  while(cellVal<8 &&colVal<6)
+	 			  while(cellVal<12 &&colVal<10)
 	 			  {
 	 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 	 			  cellVal++;
@@ -1005,72 +1100,75 @@ public class App_Specific_Keywords extends Keywords
 	 			// 3rd row-first row span content i.e fetch Employed value 
 		 			 
 		 			 
-		 			 Columns_header = rows_table.get(2).findElements(By.tagName("th")); 
+		 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 		 			 r1=s.createRow(2);
 		 			
 		 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
 		 			 s.addMergedRegion(new CellRangeAddress(2, 5, 0, 0));
 		 			//System.out.println(Columns_header.get(1).getText());
 		 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-		 			 Columns_header = rows_table.get(2).findElements(By.tagName("td"));
+		 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 		 			  cellVal=2;
 		 				  colVal=0;
-		 			  while(cellVal<8 &&colVal<6)
+		 			  while(cellVal<12 &&colVal<10)
 		 			  {
 		 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 		 			  cellVal++;
 		 			  colVal++;
 		 			   
 		 			  }	
-		 			  
+		 			 
 		 			// second row pan content
 			 			
-			 			Columns_header = rows_table.get(6).findElements(By.tagName("th")); 
+			 			Columns_header = rows_table.get(6).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			 r1=s.createRow(6);
 			 			// System.out.println(Columns_header.get(0).getText());
 			 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(6, 17, 0, 0));
+			 			 s.addMergedRegion(new CellRangeAddress(6, 16, 0, 0));
 			 			 
 			 			//System.out.println(Columns_header.get(1).getText());
 			 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-			 			 Columns_header = rows_table.get(6).findElements(By.tagName("td"));
+			 			 Columns_header = rows_table.get(6).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 			 			  cellVal=2;
 			 			  colVal=0;
-			 			  while(cellVal<8 &&colVal<6)
+			 			  while(cellVal<12 &&colVal<10)
 			 			  {
 			 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 			 			  cellVal++;
 			 			  colVal++;
 			 			  					   
 			 			  }	  
+			 			  
+			 			  
 			 			// 18th row with no row or col span
-				 			Columns_header = rows_table.get(18).findElements(By.tagName("th")); 
-				 			 r1=s.createRow(18);
+				 			Columns_header = rows_table.get(17).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+				 			 r1=s.createRow(17);
 				 			
 				 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
 				 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-				 			 Columns_header = rows_table.get(18).findElements(By.tagName("td"));
+				 			 Columns_header = rows_table.get(17).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 				 			 cellVal=2;
 				 			  colVal=0;
-				 			 while(cellVal<8 &&colVal<6)
+				 			 while(cellVal<12 &&colVal<10)
 				 			  {
 				 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 				 			  cellVal++;
 				 			  colVal++;
 				 			  					   
 				 			  }	 
-				 			 
+				 		 
 				 			// third row span content
-					 			Columns_header = rows_table.get(19).findElements(By.tagName("th")); 
-					 			 r1=s.createRow(19);
+					 			Columns_header = rows_table.get(18).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+					 			 r1=s.createRow(18);
 					 			
+					 			// System.out.println(Columns_header.size());
 					 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
-					 			 s.addMergedRegion(new CellRangeAddress(19, 27, 0, 1));
+					 			 s.addMergedRegion(new CellRangeAddress(18, 26, 0, 0));
 					 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-					 			 Columns_header = rows_table.get(19).findElements(By.tagName("td"));
+					 			 Columns_header = rows_table.get(18).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 					 			 cellVal=2;
 					 			  colVal=0;
-					 			 while(cellVal<8 &&colVal<6)
+					 			 while(cellVal<12 &&colVal<10)
 					 			  {
 					 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 					 			  cellVal++;
@@ -1078,17 +1176,19 @@ public class App_Specific_Keywords extends Keywords
 					 			  					   
 					 			  }	
 					 			 
+					 			 			 
 					 			// fourth row span content
-						 			Columns_header = rows_table.get(28).findElements(By.tagName("th")); 
-						 			 r1=s.createRow(28);
-						 			
+						 			Columns_header = rows_table.get(27).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+						 			 r1=s.createRow(27);
+						 			//System.out.println(Columns_header.size());
 						 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
-						 			 s.addMergedRegion(new CellRangeAddress(28, 32, 0, 1));
+						 			 s.addMergedRegion(new CellRangeAddress(27, 31, 0, 0));
 						 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-						 			 Columns_header = rows_table.get(28).findElements(By.tagName("td"));
+						 			
+						 			 Columns_header = rows_table.get(27).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 						 			 cellVal=2;
 						 			  colVal=0;
-						 			 while(cellVal<8 &&colVal<6)
+						 			 while(cellVal<12 &&colVal<10)
 						 			  {
 						 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 						 			  cellVal++;
@@ -1097,14 +1197,14 @@ public class App_Specific_Keywords extends Keywords
 						 			  }	
 						 			 
 					
-						 			 
+				 			 
 				 			// Fetch the contents of table from row 3 to last 7th row
 						 			 for (int row=3; row<6; row++)
 						 			 {
 						 			 List<WebElement> Columns_row = rows_table.get(row).
-						 					 findElements(By.tagName("th"));
+						 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 						 			
-						 		
+							
 						 			 Row r=s.createRow(row);
 						 			 String celtext = Columns_row.get(0).getText();
 						 			
@@ -1112,14 +1212,11 @@ public class App_Specific_Keywords extends Keywords
 						 			 
 						 			
 						 				   //To locate columns(cells) of that specific row.
-						 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-						 				   
-						 				
-						 				 
-						 				   
+						 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+						 				     
 						 				   cellVal=2;
 						 					  colVal=0;
-						 					  while(cellVal<8 &&colVal<6)
+						 					  while(cellVal<12 &&colVal<10)
 						 					  {
 						 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
 						 					  cellVal++;
@@ -1132,7 +1229,7 @@ public class App_Specific_Keywords extends Keywords
 						 			 for (int row=7; row<17; row++)
 						 			 {
 						 			 List<WebElement> Columns_row = rows_table.get(row).
-						 					 findElements(By.tagName("th"));
+						 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 						 			
 						 		
 						 			 Row r=s.createRow(row);
@@ -1142,14 +1239,11 @@ public class App_Specific_Keywords extends Keywords
 						 			 
 						 			
 						 				   //To locate columns(cells) of that specific row.
-						 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-						 				   
-						 				
-						 				 
-						 				   
+						 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+						 				      
 						 				   cellVal=2;
 						 					  colVal=0;
-						 					  while(cellVal<8 &&colVal<6)
+						 					  while(cellVal<12 &&colVal<10)
 						 					  {
 						 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
 						 					  cellVal++;
@@ -1157,12 +1251,12 @@ public class App_Specific_Keywords extends Keywords
 						 					   
 						 					  }
 						 			 }			 			 
-						 			 
+					 			 
 						 			//fetch contents of 4th block 
 						 			 for (int row=19; row<27; row++)
 						 			 {
 						 			 List<WebElement> Columns_row = rows_table.get(row).
-						 					 findElements(By.tagName("th"));
+						 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 						 			
 						 		
 						 			 Row r=s.createRow(row);
@@ -1172,14 +1266,10 @@ public class App_Specific_Keywords extends Keywords
 						 			 
 						 			
 						 				   //To locate columns(cells) of that specific row.
-						 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-						 				   
-						 				
-						 				 
-						 				   
-						 				   cellVal=2;
+						 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+						 				      cellVal=2;
 						 					  colVal=0;
-						 					  while(cellVal<8 &&colVal<6)
+						 					  while(cellVal<12 &&colVal<10)
 						 					  {
 						 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
 						 					  cellVal++;
@@ -1192,7 +1282,7 @@ public class App_Specific_Keywords extends Keywords
 						 			 for (int row=28; row<32; row++)
 						 			 {
 						 			 List<WebElement> Columns_row = rows_table.get(row).
-						 					 findElements(By.tagName("th"));
+						 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 						 			
 						 		
 						 			 Row r=s.createRow(row);
@@ -1202,24 +1292,290 @@ public class App_Specific_Keywords extends Keywords
 						 			 
 						 			
 						 				   //To locate columns(cells) of that specific row.
-						 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-						 				   
-						 				
-						 				 
-						 				   
-						 				   cellVal=2;
+						 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+						 				      cellVal=2;
 						 					  colVal=0;
-						 					  while(cellVal<8 &&colVal<6)
+						 					  while(cellVal<12 &&colVal<10)
 						 					  {
 						 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
 						 					  cellVal++;
 						 					  colVal++;
 						 					   
 						 					  }
-						 			 }			
-			 }//Employer Detail by Gender or Employer Detail by Race/Ethnicity
+						 			 }
+						 			 
+						 			 
+						 			 FileOutputStream fos=new FileOutputStream(filePath);
+						 				wb.write(fos);
+						 				fos.close();
+			 }//Employer Detail by Race/Ethnicity
 			 
-			 
+			 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYER_DETAIL_BY_GENDER))
+				 {
+					 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
+			 		  //To locate rows of table.
+			 		 List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+			 		 //System.out.println("row count is -->"+rows_table.size());
+			 		  // open stream to open file
+			 		 FileInputStream fis=new FileInputStream(filePath);
+			 	     Workbook wb=WorkbookFactory.create(fis);
+			 			//get row size
+			 		// int rows_count = rows_table.size();	 			 
+			 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
+			 		 
+			 		 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+			 		 //System.out.println("Header count is -->"+Columns_header.size());
+			 		 
+			 		 //create first row  
+		 			 Row r1=s.createRow(0);
+		 			  String j=Columns_header.get(0).getText(); 
+		 			 r1.createCell(0).setCellValue(j);
+		 			  // merge the text based on rowspan or colspan
+		 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 1));
+		 			 
+		 			 // add value to cell 2
+		 			 r1.createCell(2).setCellValue(Columns_header.get(1).getText());
+		 			 s.addMergedRegion(new CellRangeAddress(0, 0, 2, 3));
+		 			 
+		 			// add value to cell 3
+		 			 r1.createCell(4).setCellValue(Columns_header.get(2).getText());
+		 			 s.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
+		 			 
+		 			// add value to cell 4
+		 			 r1.createCell(6).setCellValue(Columns_header.get(3).getText());
+		 			 s.addMergedRegion(new CellRangeAddress(0, 0, 6, 7));
+		 			 
+		 			
+		 			// second row of header
+		 			  r1=s.createRow(1);
+		 			  
+		 			  // fetch 2nd row contents 
+		 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+		 			 
+		 			 //System.out.println(Columns_header.size());
+		 			 int cellVal=2;
+		 			 int colVal=0;
+		 			 // enter values to cols 2 to 7
+		 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+		 			  {
+		 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+		 			  cellVal++;
+		 			  colVal++;	 			   
+		 			  }
+		 			 
+		 			// 3rd row-first row span content i.e fetch Employed value 
+			 			 
+			 			 
+			 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+			 			 r1=s.createRow(2);
+			 			
+			 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(2, 5, 0, 0));
+			 			//System.out.println(Columns_header.get(1).getText());
+			 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+			 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			 			  cellVal=2;
+			 				  colVal=0;
+			 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+			 			  {
+			 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+			 			  cellVal++;
+			 			  colVal++;
+			 			   
+			 			  }	
+			 			 
+			 			// second row pan content
+				 			
+				 			Columns_header = rows_table.get(6).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+				 			 r1=s.createRow(6);
+				 			// System.out.println(Columns_header.get(0).getText());
+				 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+				 			 s.addMergedRegion(new CellRangeAddress(6, 16, 0, 0));
+				 			 
+				 			//System.out.println(Columns_header.get(1).getText());
+				 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+				 			 Columns_header = rows_table.get(6).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				 			  cellVal=2;
+				 			  colVal=0;
+				 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+				 			  {
+				 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+				 			  cellVal++;
+				 			  colVal++;
+				 			  					   
+				 			  }	  
+				 			  
+				 			  
+				 			// 18th row with no row or col span
+					 			Columns_header = rows_table.get(17).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+					 			 r1=s.createRow(17);
+					 			
+					 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+					 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+					 			 Columns_header = rows_table.get(17).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+					 			 cellVal=2;
+					 			  colVal=0;
+					 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+					 			  {
+					 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+					 			  cellVal++;
+					 			  colVal++;
+					 			  					   
+					 			  }	 
+					 		 
+					 			// third row span content
+						 			Columns_header = rows_table.get(18).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+						 			 r1=s.createRow(18);
+						 			
+						 			// System.out.println(Columns_header.size());
+						 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+						 			 s.addMergedRegion(new CellRangeAddress(18, 26, 0, 0));
+						 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+						 			 Columns_header = rows_table.get(18).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+						 			 cellVal=2;
+						 			  colVal=0;
+						 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+						 			  {
+						 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+						 			  cellVal++;
+						 			  colVal++;
+						 			  					   
+						 			  }	
+						 			 
+						 			 			 
+						 			// fourth row span content
+							 			Columns_header = rows_table.get(27).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+							 			 r1=s.createRow(27);
+							 			//System.out.println(Columns_header.size());
+							 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+							 			 s.addMergedRegion(new CellRangeAddress(27, 31, 0, 0));
+							 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+							 			
+							 			 Columns_header = rows_table.get(27).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+							 			 cellVal=2;
+							 			  colVal=0;
+							 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+							 			  {
+							 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+							 			  cellVal++;
+							 			  colVal++;
+							 			  					   
+							 			  }	
+							 			 
+						
+					 			 
+					 			// Fetch the contents of table from row 3 to last 7th row
+							 			 for (int row=3; row<6; row++)
+							 			 {
+							 			 List<WebElement> Columns_row = rows_table.get(row).
+							 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+							 			
+								
+							 			 Row r=s.createRow(row);
+							 			 String celtext = Columns_row.get(0).getText();
+							 			
+							 			 r.createCell(1).setCellValue(celtext);	 
+							 			 
+							 			
+							 				   //To locate columns(cells) of that specific row.
+							 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+							 				     
+							 				   cellVal=2;
+							 					  colVal=0;
+							 					  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+							 					  {
+							 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
+							 					  cellVal++;
+							 					  colVal++;
+							 					   
+							 					  }
+							 			 }
+		 			
+							 			//fetch contents of second block 
+							 			 for (int row=7; row<17; row++)
+							 			 {
+							 			 List<WebElement> Columns_row = rows_table.get(row).
+							 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+							 			
+							 		
+							 			 Row r=s.createRow(row);
+							 			 String celtext = Columns_row.get(0).getText();
+							 			
+							 			 r.createCell(1).setCellValue(celtext);	 
+							 			 
+							 			
+							 				   //To locate columns(cells) of that specific row.
+							 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+							 				      
+							 				   cellVal=2;
+							 					  colVal=0;
+							 					  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+							 					  {
+							 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
+							 					  cellVal++;
+							 					  colVal++;
+							 					   
+							 					  }
+							 			 }			 			 
+						 			 
+							 			//fetch contents of 4th block 
+							 			 for (int row=19; row<27; row++)
+							 			 {
+							 			 List<WebElement> Columns_row = rows_table.get(row).
+							 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+							 			
+							 		
+							 			 Row r=s.createRow(row);
+							 			 String celtext = Columns_row.get(0).getText();
+							 			
+							 			 r.createCell(1).setCellValue(celtext);	 
+							 			 
+							 			
+							 				   //To locate columns(cells) of that specific row.
+							 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+							 				      cellVal=2;
+							 					  colVal=0;
+							 					  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+							 					  {
+							 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
+							 					  cellVal++;
+							 					  colVal++;
+							 					   
+							 					  }
+							 			 }				 			 
+							 			 
+							 			//fetch contents of 5th block 
+							 			 for (int row=28; row<32; row++)
+							 			 {
+							 			 List<WebElement> Columns_row = rows_table.get(row).
+							 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+							 			
+							 		
+							 			 Row r=s.createRow(row);
+							 			 String celtext = Columns_row.get(0).getText();
+							 			
+							 			 r.createCell(1).setCellValue(celtext);	 
+							 			 
+							 			
+							 				   //To locate columns(cells) of that specific row.
+							 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+							 				      cellVal=2;
+							 					  colVal=0;
+							 					  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+							 					  {
+							 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
+							 					  cellVal++;
+							 					  colVal++;
+							 					   
+							 					  }
+							 			 }
+							 			 
+							 			 
+							 			 FileOutputStream fos=new FileOutputStream(filePath);
+							 				wb.write(fos);
+							 				fos.close();
+				 }//Employer Detail by Gender 
+				 
 	 	 }// excel file created
 	 	 
 		 else
@@ -1274,11 +1630,18 @@ public class App_Specific_Keywords extends Keywords
   {
 	GlobalVariables.testCaseIdentifier=automationId;
 	try
-    {
-		 String path=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-				 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-				 "/"+TestBaseConstants.BASELINE_BUILD_TYPE+"/"+
-				 GlobalVariables.testCaseIdentifier+".xlsx";
+    {	
+		 String path=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.BASELINE_BUILD_TYPE
+					+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
 		 //System.out.println("Path of file is -->"+path);
 		 FileInputStream fis=new FileInputStream(path);
 			Workbook wb=WorkbookFactory.create(fis); 
@@ -1286,17 +1649,17 @@ public class App_Specific_Keywords extends Keywords
 		 //wb.createSheet(year);
 		 Sheet s=wb.getSheet(excelSheetName); 
 		 
-		 if(subReportName.equalsIgnoreCase("Employment Status by Gender"))
+		 if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYMENT_STATUS_BY_GENDER))
 				
 		 {
 			  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 			  //To locate rows of table.
-			  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 			  //To calculate no of rows In table.
 			  int rows_count = rows_table.size();
 			  
 			  ///headers
-			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 			  // Validating first row headers and cell contents
 			  
 			  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
@@ -1307,12 +1670,12 @@ public class App_Specific_Keywords extends Keywords
 					  ,Columns_header.get(2).getText());
 			  
 			//2nd row
-				Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+				Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 				int webText =0;
 				int excelTextcel=2;
-				while(webText<4 &&excelTextcel<6 )
-				{
-				/*	System.out.println(Columns_header.get(webText).getText());
+				while(webText<Columns_header.size() &&excelTextcel<Columns_header.size()+2 )
+				{/*
+					System.out.println(Columns_header.get(webText).getText());
 					System.out.println(s.getRow(1).getCell(excelTextcel).getStringCellValue());*/
 					updateError(0,excelTextcel,s.getRow(1).getCell(excelTextcel).getStringCellValue()
 							  ,Columns_header.get(webText).getText());				
@@ -1321,18 +1684,18 @@ public class App_Specific_Keywords extends Keywords
 				}
 				
 				//3rd row
-				Columns_header = rows_table.get(2).findElements(By.tagName("th"));
+				Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				updateError(2,0,
 						s.getRow(2).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText());
 				updateError(2,1,
 						s.getRow(2).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
-				Columns_header = rows_table.get(2).findElements(By.tagName("td"));
+				Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 				
 				webText =0;
 				 excelTextcel=2;
-				while(webText<4 &&excelTextcel<6 )
+				while(webText<Columns_header.size() &&excelTextcel<Columns_header.size()+2)
 				{
 					/*System.out.println(Columns_header.get(webText).getText());
 					System.out.println(s.getRow(2).getCell(excelTextcel).getStringCellValue());*/
@@ -1344,20 +1707,49 @@ public class App_Specific_Keywords extends Keywords
 					excelTextcel++;
 				}
 				
-				// 8th row header 
+				// 2nd row span
 				
-				Columns_header = rows_table.get(12).findElements(By.tagName("th")); 
+				Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+				updateError(8,0,
+						s.getRow(8).getCell(0).getStringCellValue()
+						  ,Columns_header.get(0).getText());
+				updateError(8,1,
+						s.getRow(8).getCell(1).getStringCellValue()
+						  ,Columns_header.get(1).getText());
+				Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				webText =0;
+				 excelTextcel=2;
+				while(webText<Columns_header.size() &&excelTextcel<Columns_header.size()+2)
+				{
+					/*System.out.println(Columns_header.get(webText).getText());
+					System.out.println(s.getRow(8).getCell(excelTextcel).getStringCellValue());*/
+					updateError(8,webText,
+							s.getRow(8).getCell(excelTextcel).getStringCellValue()
+							  ,Columns_header.get(webText).getText());
+					
+					webText++;
+					excelTextcel++;
+				}
+				
+				//third colspan content
+				
+				
+				Columns_header = rows_table.get(12).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 				/*System.out.println(Columns_header.get(0).getText());
 				System.out.println(s.getRow(12).getCell(0).getStringCellValue());*/
 				
 				updateError(12,0,
 						s.getRow(12).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText());
-				 Columns_header = rows_table.get(12).findElements(By.tagName("td"));
+				 Columns_header = rows_table.get(12).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 				 webText =0;
 				 excelTextcel=2;
-				while(webText<4 &&excelTextcel<6 )
-				{									
+				while(webText<Columns_header.size() &&excelTextcel<Columns_header.size()+2 )
+				{		
+					/*System.out.println(Columns_header.get(webText).getText());
+				System.out.println(s.getRow(12).getCell(excelTextcel).getStringCellValue());*/							
+					
+					
 					updateError(12,webText,
 							s.getRow(12).getCell(excelTextcel).getStringCellValue()
 							  ,Columns_header.get(webText).getText());
@@ -1367,22 +1759,24 @@ public class App_Specific_Keywords extends Keywords
 				for (int row=3; row<8; row++)
 				 {
 					 List<WebElement> Columns_row = rows_table.get(row).
-							 findElements(By.tagName("th"));
-					/* System.out.println(Columns_row.get(0).getText());
-					 System.out.println(s.getRow(row).getCell(1).getStringCellValue());*/
+							 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+					/* System.out.println("Web table header row is "+row+" and its content is " +Columns_row.get(0).getText());
+					 System.out.println("Excel table header row is "+row+" and its content is " +s.getRow(row).getCell(1).getStringCellValue());*/
 					 updateError(row,1,
 							 s.getRow(row).getCell(1).getStringCellValue()
 								  ,Columns_row.get(0).getText());
-					 Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+					 Columns_row = rows_table.get(row).findElements
+							 (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+					// System.out.println(Columns_row.size());
 					 webText =0;
-					 excelTextcel=2;
-				while(webText<4 &&excelTextcel<6 )
+					 excelTextcel=2;	
+				while(webText<Columns_row.size() &&excelTextcel<Columns_row.size()+2 )
 				{
-					/*System.out.println(Columns_header.get(webText).getText());
-					System.out.println(s.getRow(row).getCell(excelTextcel).getStringCellValue());*/
+					/*System.out.println("Web table content "+row+" value is "+Columns_header.get(webText).getText());
+					System.out.println("Excel table content "+row+" value is "+s.getRow(row).getCell(excelTextcel).getStringCellValue());*/
 					updateError(row,1,
 					s.getRow(row).getCell(excelTextcel).getStringCellValue(),
-					Columns_header.get(webText).getText());					
+					Columns_row.get(webText).getText());					
 					webText++;
 					excelTextcel++;
 				}
@@ -1390,19 +1784,19 @@ public class App_Specific_Keywords extends Keywords
 				
 				for (int row=9; row<rows_count-1; row++)
 				 {
-				 List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("th"));
+				 List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				 updateError(row,1,
 						 s.getRow(row).getCell(1).getStringCellValue(),
 						 Columns_row.get(0).getText());					 
 				 
-				 Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+				 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 				 webText =0;
 				 excelTextcel=2;
-				while(webText<4 &&excelTextcel<6 )
-				{
+				while(webText<Columns_row.size() &&excelTextcel<Columns_row.size()+2)
+				{	
 					updateError(row,excelTextcel,
 							s.getRow(row).getCell(excelTextcel).getStringCellValue(),
-							Columns_header.get(webText).getText());	
+							Columns_row.get(webText).getText());	
 					webText++;
 					excelTextcel++;
 				}
@@ -1410,17 +1804,18 @@ public class App_Specific_Keywords extends Keywords
 				
 		 }
 		 
-		 else if(subReportName.equalsIgnoreCase("Employment Status by Age at Graduation")||
-				 subReportName.equalsIgnoreCase("Employment Status by Race/Ethnicity"))
+		 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYMENT_STATUS_BY_AGE_AT_GRADUATION)||
+				 subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYMENT_STATUS_BY_RACE_OR_ETHNICITY))
 		 {
+			 
 			 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 			  //To locate rows of table.
-			  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 			  //To calculate no of rows In table.
 			  int rows_count = rows_table.size();
 			  
 			  ///headers
-			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 			  // Validating first row headers and cell contents
 			  //compare 1st cell
 			  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
@@ -1432,16 +1827,16 @@ public class App_Specific_Keywords extends Keywords
 			  updateError(0,4,s.getRow(0).getCell(4).getStringCellValue()
 					  ,Columns_header.get(2).getText());
 			  //compare 4th cell
-			  updateError(0,6,s.getRow(0).getCell(4).getStringCellValue()
+			  updateError(0,6,s.getRow(0).getCell(6).getStringCellValue()
 					  ,Columns_header.get(3).getText());
 			  //compare 5th cell
-			  updateError(0,8,s.getRow(0).getCell(4).getStringCellValue()
+			  updateError(0,8,s.getRow(0).getCell(8).getStringCellValue()
 					  ,Columns_header.get(4).getText());
 			  //compare 6th cell
-			  updateError(0,10,s.getRow(0).getCell(4).getStringCellValue()
+			  updateError(0,10,s.getRow(0).getCell(10).getStringCellValue()
 					  ,Columns_header.get(5).getText());
 			// fetch 2nd row contents 
-			  Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+			  Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			 int cellVal=2;
 	 			 int colVal=0;
 	 			 // Get values from cols 2 to 12 
@@ -1453,13 +1848,13 @@ public class App_Specific_Keywords extends Keywords
 		 			  colVal++;	 			   
 	 			  }	
 	 			// 3rd row-first col span content i.e fetch Employed value 
-	 			 Columns_header = rows_table.get(2).findElements(By.tagName("th")); 
+	 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			updateError(2,0,s.getRow(2).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText());
 	 			updateError(2,1,s.getRow(2).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
 	 			
-	 			Columns_header = rows_table.get(2).findElements(By.tagName("td"));
+	 			Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 			  cellVal=2;
 	 				  colVal=0;
 	 			  while(cellVal<12 &&colVal<10)
@@ -1472,13 +1867,13 @@ public class App_Specific_Keywords extends Keywords
 	 			  
 	 			// second row span content
 		 			
-		 		Columns_header = rows_table.get(8).findElements(By.tagName("th"));
+		 		Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 		 		// fetch from 0th cell
 		 		 updateError(8,0,s.getRow(8).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText());
 		 		updateError(8,1,s.getRow(8).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
-		 		Columns_header = rows_table.get(8).findElements(By.tagName("td"));
+		 		Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 			  cellVal=2;
 	 			  colVal=0;
 	 			  while(cellVal<12 &&colVal<10)
@@ -1492,12 +1887,12 @@ public class App_Specific_Keywords extends Keywords
 	 			  
 	 			  
 	 			// third col span content
-		 			Columns_header = rows_table.get(12).findElements(By.tagName("th")); 
+		 			Columns_header = rows_table.get(12).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 		 			
 		 			updateError(12,0,s.getRow(12).getCell(0).getStringCellValue()
 							  ,Columns_header.get(0).getText());
 		 			
-		 			Columns_header = rows_table.get(12).findElements(By.tagName("td"));
+		 			Columns_header = rows_table.get(12).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 		 			 cellVal=2;
 		 			  colVal=0;
 		 			 while(cellVal<12 &&colVal<10)
@@ -1509,15 +1904,37 @@ public class App_Specific_Keywords extends Keywords
 		 			  					   
 		 			  }	
 		 			 
-		 			 // Fetch the contents of table from row 8 to last 12th row
-		 			 for (int row=9; row<rows_count-1; row++)
+		 			 
+		 			// Fetch the contents of table from row 3 to last 8th row
+		 			 for (int row=3; row<8; row++)
 		 			 {
-		 				List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("th"));
+		 				List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 		 				
 		 				updateError(row,1,s.getRow(row).getCell(1).getStringCellValue()
 								  ,Columns_row.get(0).getText());
 		 				
-		 				Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+		 				Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+		 				  cellVal=2;
+		 				  colVal=0;
+		 				  while(cellVal<12 &&colVal<10)
+		 				  {
+		 				 
+		 				 updateError(8,1,s.getRow(row).getCell(cellVal).getStringCellValue()
+								  ,Columns_row.get(colVal).getText());
+		 				  cellVal++;
+		 				  colVal++;
+		 				   
+		 				  }			
+		 			 }
+		 			 // Fetch the contents of table from row 8 to last 12th row
+		 			 for (int row=9; row<rows_count-1; row++)
+		 			 {
+		 				List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 				
+		 				updateError(row,1,s.getRow(row).getCell(1).getStringCellValue()
+								  ,Columns_row.get(0).getText());
+		 				
+		 				Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 		 				  cellVal=2;
 		 				  colVal=0;
 		 				  while(cellVal<12 &&colVal<10)
@@ -1533,18 +1950,16 @@ public class App_Specific_Keywords extends Keywords
 	 			
 		 }
 		 
-		 else if(subReportName.equalsIgnoreCase("Employer Detail by Gender")||
-				 subReportName.equalsIgnoreCase("Employer Detail by Race/Ethnicity")
-				 )
+		 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYEE_DETAIL_BY_RACE_OR_ETHINICITY) )
 		 {
 			  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 			  //To locate rows of table.
-			  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 			  //To calculate no of rows In table.
 			  
 			  
 			  ///headers
-			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th")); 
+			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			  // 1st row compare cell values
 			  //compare 1st cell
 			  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
@@ -1557,15 +1972,18 @@ public class App_Specific_Keywords extends Keywords
 			  updateError(0,2,s.getRow(0).getCell(4).getStringCellValue()
 					  ,Columns_header.get(2).getText());
 			  // compare 4th cell
-			  updateError(0,3,s.getRow(0).getCell(6).getStringCellValue()
+			  updateError(0,6,s.getRow(0).getCell(6).getStringCellValue()
 					  ,Columns_header.get(3).getText());
-			  
+			  updateError(0,8,s.getRow(0).getCell(8).getStringCellValue()
+					  ,Columns_header.get(4).getText());
+			  updateError(0,10,s.getRow(0).getCell(10).getStringCellValue()
+					  ,Columns_header.get(5).getText());
 			  // second row of header
-			  Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+			  Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			 int cellVal=2;
 	 			 int colVal=0;
 	 			 // enter values to cols 2 to 12 
-	 			  while(cellVal<8 &&colVal<6)
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 	 			  {
 	 				  updateError(1,cellVal,s.getRow(1).getCell(cellVal).getStringCellValue()
 						  ,Columns_header.get(colVal).getText());
@@ -1575,17 +1993,17 @@ public class App_Specific_Keywords extends Keywords
 	 			  
 	 			// 3rd row-first row span content i.e fetch Employed value 		 			 
 		 			 
-		 		 Columns_header = rows_table.get(2).findElements(By.tagName("th")); 
+		 		 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 		 		 //1st cell	compare	 		 
 		 		 updateError(2,0,s.getRow(2).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText());
 		 		 //2nd cell compare
 		 		updateError(2,1,s.getRow(2).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
-		 		Columns_header = rows_table.get(2).findElements(By.tagName("td"));
+		 		Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 			  cellVal=2;
 	 				  colVal=0;
-	 			  while(cellVal<8 &&colVal<6)
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 	 			  {
 		 			 updateError(2,cellVal,s.getRow(2).getCell(cellVal).getStringCellValue()
 						  ,Columns_header.get(colVal).getText());
@@ -1593,7 +2011,7 @@ public class App_Specific_Keywords extends Keywords
 	 			  colVal++;	 			   
 	 			  }	
 	 			  
-	 			 Columns_header = rows_table.get(6).findElements(By.tagName("th")); 
+	 			 Columns_header = rows_table.get(6).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 	 			 //compare 0th cell
 	 			 updateError(6,0,s.getRow(6).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText());
@@ -1601,10 +2019,10 @@ public class App_Specific_Keywords extends Keywords
 	 			updateError(6,1,s.getRow(6).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
 	 			
-	 			Columns_header = rows_table.get(6).findElements(By.tagName("td"));
+	 			Columns_header = rows_table.get(6).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 			  cellVal=2;
 	 			  colVal=0;
-	 			  while(cellVal<8 &&colVal<6)
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 	 			  {
 	 				 updateError(6,cellVal,s.getRow(6).getCell(cellVal).getStringCellValue()
 							  ,Columns_header.get(colVal).getText());	 			  
@@ -1613,55 +2031,75 @@ public class App_Specific_Keywords extends Keywords
 	 			  }	 
 	 			  
 	 			// 18th row with no row or col span
-	 			 Columns_header = rows_table.get(18).findElements(By.tagName("th")); 
-	 			updateError(18,0,s.getRow(18).getCell(0).getStringCellValue()
+	 			 Columns_header = rows_table.get(17).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			// System.out.println(Columns_header.size());
+	 			 
+	 			 /*System.out.println(s.getRow(17).getCell(0).getStringCellValue()
+						  +Columns_header.get(0).getText());
+	 			 System.out.println(s.getRow(17).getCell(0).getStringCellValue()
+						  +Columns_header.get(0).getText());*/
+	 				updateError(17,0,s.getRow(17).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText());
-	 			updateError(18,1,s.getRow(18).getCell(1).getStringCellValue()
+	 			updateError(17,1,s.getRow(17).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
 	 			
-	 			Columns_header = rows_table.get(18).findElements(By.tagName("td"));
+	 			Columns_header = rows_table.get(17).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+	 			//System.out.println(Columns_header.size());
 	 			 cellVal=2;
 	 			  colVal=0;
-	 			 while(cellVal<8 &&colVal<6)
+	 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 	 			  {
-	 				updateError(18,cellVal,s.getRow(18).getCell(cellVal).getStringCellValue()
+	 				 /*System.out.println(s.getRow(17).getCell(cellVal).getStringCellValue()+
+	 						 Columns_header.get(colVal).getText());*/
+	 				updateError(17,cellVal,s.getRow(17).getCell(cellVal).getStringCellValue()
 							  ,Columns_header.get(colVal).getText());
 	 			  cellVal++;
 	 			  colVal++;
 	 			  					   
-	 			  }	 
+	 			  }
+	 			
 	 			// third row span content
-		 			Columns_header = rows_table.get(19).findElements(By.tagName("th"));  
-		 			updateError(19,cellVal,s.getRow(19).getCell(0).getStringCellValue()
+		 			Columns_header = rows_table.get(18).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 			
+		 			updateError(18,cellVal,s.getRow(18).getCell(0).getStringCellValue()
 							  ,Columns_header.get(0).getText());
-		 			updateError(19,cellVal,s.getRow(19).getCell(1).getStringCellValue()
+		 			updateError(18,cellVal,s.getRow(18).getCell(1).getStringCellValue()
 							  ,Columns_header.get(1).getText());
 		 			
-		 			Columns_header = rows_table.get(19).findElements(By.tagName("td"));
+		 			Columns_header = rows_table.get(18).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 		 			 cellVal=2;
 		 			  colVal=0;
-		 			 while(cellVal<8 &&colVal<6)
+		 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 		 			  {
-		 				updateError(19,cellVal,s.getRow(19).getCell(cellVal).getStringCellValue()
+		 				/*System.out.println(s.getRow(18).getCell(cellVal).getStringCellValue()+
+			 					Columns_header.get(colVal).getText());*/
+		 				updateError(18,cellVal,s.getRow(18).getCell(cellVal).getStringCellValue()
 								  ,Columns_header.get(colVal).getText());
 		 			  cellVal++;
 		 			  colVal++;
 		 			  					   
-		 			  }	
+		 			  }	 
 		 			// fourth row span content
-			 			Columns_header = rows_table.get(28).findElements(By.tagName("th")); 
+			 			Columns_header = rows_table.get(27).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			
-			 			updateError(28,cellVal,s.getRow(28).getCell(0).getStringCellValue()
+			 			/*System.out.println(s.getRow(27).getCell(0).getStringCellValue()+
+			 					Columns_header.get(0).getText());
+			 			System.out.println(s.getRow(27).getCell(0).getStringCellValue()+
+			 					Columns_header.get(1).getText());*/
+			 			
+			 			updateError(27,cellVal,s.getRow(27).getCell(0).getStringCellValue()
 								  ,Columns_header.get(0).getText());
-			 			updateError(28,cellVal,s.getRow(28).getCell(1).getStringCellValue()
+			 			updateError(27,cellVal,s.getRow(27).getCell(1).getStringCellValue()
 								  ,Columns_header.get(1).getText());
 			  
-			 			Columns_header = rows_table.get(28).findElements(By.tagName("td"));
+			 			Columns_header = rows_table.get(27).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 			 			 cellVal=2;
 			 			  colVal=0;
-			 			 while(cellVal<8 &&colVal<6)
+			 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
 			 			  {
-			 				updateError(28,cellVal,s.getRow(28).getCell(cellVal).getStringCellValue()
+			 			/*	 System.out.println(s.getRow(27).getCell(cellVal).getStringCellValue()+
+			 						Columns_header.get(colVal).getText());*/
+			 				updateError(27,cellVal,s.getRow(27).getCell(cellVal).getStringCellValue()
 									  ,Columns_header.get(colVal).getText());
 			 			  cellVal++;
 			 			  colVal++;			 			  					   
@@ -1672,19 +2110,22 @@ public class App_Specific_Keywords extends Keywords
 						  for (int row=3; row<6; row++)
 						  {
 							  List<WebElement> Columns_row = rows_table.get(row).
-						 					 findElements(By.tagName("th"));
-							  
+						 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+							 /* 
+							  System.out.println(s.getRow(row).getCell(1).getStringCellValue()
+									  +Columns_row.get(0).getText());*/
 							  updateError(row,cellVal,s.getRow(row).getCell(1).getStringCellValue()
 									  ,Columns_row.get(0).getText()); 
 							//To locate columns(cells) of that specific row.
-			 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));  
+			 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));  
 			 				
 			 				   cellVal=2;
 			 					  colVal=0;
-			 					  while(cellVal<8 &&colVal<6)
+			 					  while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
 			 					  {
+			 						  
 			 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
-											  ,Columns_header.get(colVal).getText());
+											  ,Columns_row.get(colVal).getText());
 			 					  cellVal++;
 			 					  colVal++;
 			 					   
@@ -1692,68 +2133,324 @@ public class App_Specific_Keywords extends Keywords
 			 					//fetch contents of second block 
 						 	 for ( row=7; row<17; row++)
 							 {
-							  Columns_row = rows_table.get(row).findElements(By.tagName("th"));
+							  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 						 	  updateError(row,cellVal,s.getRow(row).getCell(1).getStringCellValue()
 											  ,Columns_row.get(0).getText()); 
-						 	 Columns_row = rows_table.get(row).findElements(By.tagName("td"));  
+						 	 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));  
 				 				
 			 				   cellVal=2;
 			 					  colVal=0;
-			 					  while(cellVal<8 &&colVal<6)
-			 					  {
+			 					 while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
+			 					  {			 						 
 			 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
-											  ,Columns_header.get(colVal).getText());
+											  ,Columns_row.get(colVal).getText());
 			 					  cellVal++;
 			 					  colVal++;
 			 					   
-			 					  }	  
+			 					  } 
 						 			  
 				 			 }//close for
 						 			
 						 	//fetch contents of 4th block 
 				 			 for ( row=19; row<27; row++)
 				 			 {
-				 			  Columns_row = rows_table.get(row).findElements(By.tagName("th"));
+				 			  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				 			 updateError(row,cellVal,s.getRow(row).getCell(1).getStringCellValue()
 									  ,Columns_row.get(0).getText()); 
-				 			 Columns_row = rows_table.get(row).findElements(By.tagName("td"));  
+				 			 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));  
 		 				
 				 			 cellVal=2;
 		 					  colVal=0;
-		 					  while(cellVal<8 &&colVal<6)
+		 					 while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
 		 					  {
-		 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).
-		 								 getStringCellValue()
-										  ,Columns_header.get(colVal).getText());
+		 						  
+		 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
+										  ,Columns_row.get(colVal).getText());
 		 					  cellVal++;
-		 					  colVal++;	 					   
-		 					  }	  
+		 					  colVal++;
+		 					   
+		 					  }
 				 			  
 				 			 }//for
 				 			 
 				 			//fetch contents of 5th block 
 				 			 for ( row=28; row<32; row++)
 				 			 {
-				 				 Columns_row = rows_table.get(row).findElements(By.tagName("th"));
+				 				 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 					 			 updateError(row,cellVal,s.getRow(row).getCell(1).getStringCellValue()
 										  ,Columns_row.get(0).getText()); 
-					 			 Columns_row = rows_table.get(row).findElements(By.tagName("td"));  
+					 			 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));  
 			 				
 					 			 cellVal=2;
 			 					  colVal=0;
-			 					  while(cellVal<8 &&colVal<6)
+			 					 while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
 			 					  {
-			 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).
-			 								 getStringCellValue()
-											  ,Columns_header.get(colVal).getText());
+			 						  
+			 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
+											  ,Columns_row.get(colVal).getText());
 			 					  cellVal++;
-			 					  colVal++;	 					   
-			 					  }	  
+			 					  colVal++;
+			 					   
+			 					  }
 					 			   
 				 			 }//for
+						
+						  
+						  }
+						  
+						  
+		 }//close if subreport is emp detail by race or ethnicity
+		 
+		 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYER_DETAIL_BY_GENDER) )
+		 {
+			  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
+			  //To locate rows of table.
+			  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+			  //To calculate no of rows In table.
+			  
+			  
+			  ///headers
+			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+			  // 1st row compare cell values
+			  //compare 1st cell
+			  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+					  ,Columns_header.get(0).getText());
+			  //compare 2nd cell
+			  updateError(0,1,s.getRow(0).getCell(2).getStringCellValue()
+					  ,Columns_header.get(1).getText());
+			  
+			  // compare 3rd cell
+			  updateError(0,2,s.getRow(0).getCell(4).getStringCellValue()
+					  ,Columns_header.get(2).getText());
+			  // compare 4th cell
+			  updateError(0,6,s.getRow(0).getCell(6).getStringCellValue()
+					  ,Columns_header.get(3).getText());
+			 
+			  // second row of header
+			  Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			 int cellVal=2;
+	 			 int colVal=0;
+	 			 // enter values to cols 2 to 12 
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+	 			  {
+	 				  updateError(1,cellVal,s.getRow(1).getCell(cellVal).getStringCellValue()
+						  ,Columns_header.get(colVal).getText());
+	 			  cellVal++;
+	 			  colVal++;	 			   
+	 			  }
+	 			  
+	 			// 3rd row-first row span content i.e fetch Employed value 		 			 
+		 			 
+		 		 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+		 		 //1st cell	compare	 		 
+		 		 updateError(2,0,s.getRow(2).getCell(0).getStringCellValue()
+						  ,Columns_header.get(0).getText());
+		 		 //2nd cell compare
+		 		updateError(2,1,s.getRow(2).getCell(1).getStringCellValue()
+						  ,Columns_header.get(1).getText());
+		 		Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+	 			  cellVal=2;
+	 				  colVal=0;
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+	 			  {
+		 			 updateError(2,cellVal,s.getRow(2).getCell(cellVal).getStringCellValue()
+						  ,Columns_header.get(colVal).getText());
+	 			  cellVal++;
+	 			  colVal++;	 			   
+	 			  }	
+	 			  
+	 			 Columns_header = rows_table.get(6).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			 //compare 0th cell
+	 			 updateError(6,0,s.getRow(6).getCell(0).getStringCellValue()
+						  ,Columns_header.get(0).getText());
+	 			 // compare 1st cell
+	 			updateError(6,1,s.getRow(6).getCell(1).getStringCellValue()
+						  ,Columns_header.get(1).getText());
+	 			
+	 			Columns_header = rows_table.get(6).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+	 			  cellVal=2;
+	 			  colVal=0;
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+	 			  {
+	 				 updateError(6,cellVal,s.getRow(6).getCell(cellVal).getStringCellValue()
+							  ,Columns_header.get(colVal).getText());	 			  
+	 			  cellVal++;
+	 			  colVal++;	 			  					   
+	 			  }	 
+	 			  
+	 			// 18th row with no row or col span
+	 			 Columns_header = rows_table.get(17).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			// System.out.println(Columns_header.size());
+	 			 
+	 			 /*System.out.println(s.getRow(17).getCell(0).getStringCellValue()
+						  +Columns_header.get(0).getText());
+	 			 System.out.println(s.getRow(17).getCell(0).getStringCellValue()
+						  +Columns_header.get(0).getText());*/
+	 				updateError(17,0,s.getRow(17).getCell(0).getStringCellValue()
+						  ,Columns_header.get(0).getText());
+	 			updateError(17,1,s.getRow(17).getCell(1).getStringCellValue()
+						  ,Columns_header.get(1).getText());
+	 			
+	 			Columns_header = rows_table.get(17).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+	 			//System.out.println(Columns_header.size());
+	 			 cellVal=2;
+	 			  colVal=0;
+	 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+	 			  {
+	 				 /*System.out.println(s.getRow(17).getCell(cellVal).getStringCellValue()+
+	 						 Columns_header.get(colVal).getText());*/
+	 				updateError(17,cellVal,s.getRow(17).getCell(cellVal).getStringCellValue()
+							  ,Columns_header.get(colVal).getText());
+	 			  cellVal++;
+	 			  colVal++;
+	 			  					   
+	 			  }
+	 			
+	 			// third row span content
+		 			Columns_header = rows_table.get(18).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 			
+		 			updateError(18,cellVal,s.getRow(18).getCell(0).getStringCellValue()
+							  ,Columns_header.get(0).getText());
+		 			updateError(18,cellVal,s.getRow(18).getCell(1).getStringCellValue()
+							  ,Columns_header.get(1).getText());
+		 			
+		 			Columns_header = rows_table.get(18).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+		 			 cellVal=2;
+		 			  colVal=0;
+		 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+		 			  {
+		 				/*System.out.println(s.getRow(18).getCell(cellVal).getStringCellValue()+
+			 					Columns_header.get(colVal).getText());*/
+		 				updateError(18,cellVal,s.getRow(18).getCell(cellVal).getStringCellValue()
+								  ,Columns_header.get(colVal).getText());
+		 			  cellVal++;
+		 			  colVal++;
+		 			  					   
+		 			  }	 
+		 			// fourth row span content
+			 			Columns_header = rows_table.get(27).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+			 			
+			 			/*System.out.println(s.getRow(27).getCell(0).getStringCellValue()+
+			 					Columns_header.get(0).getText());
+			 			System.out.println(s.getRow(27).getCell(0).getStringCellValue()+
+			 					Columns_header.get(1).getText());*/
+			 			
+			 			updateError(27,cellVal,s.getRow(27).getCell(0).getStringCellValue()
+								  ,Columns_header.get(0).getText());
+			 			updateError(27,cellVal,s.getRow(27).getCell(1).getStringCellValue()
+								  ,Columns_header.get(1).getText());
+			  
+			 			Columns_header = rows_table.get(27).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			 			 cellVal=2;
+			 			  colVal=0;
+			 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+			 			  {
+			 			/*	 System.out.println(s.getRow(27).getCell(cellVal).getStringCellValue()+
+			 						Columns_header.get(colVal).getText());*/
+			 				updateError(27,cellVal,s.getRow(27).getCell(cellVal).getStringCellValue()
+									  ,Columns_header.get(colVal).getText());
+			 			  cellVal++;
+			 			  colVal++;			 			  					   
+			 			  }	
+			 			// fetch table row contents
+			 			 
+				 			// Fetch the contents of table from row 3 to last 7th row
+						  for (int row=3; row<6; row++)
+						  {
+							  List<WebElement> Columns_row = rows_table.get(row).
+						 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+							 /* 
+							  System.out.println(s.getRow(row).getCell(1).getStringCellValue()
+									  +Columns_row.get(0).getText());*/
+							  updateError(row,cellVal,s.getRow(row).getCell(1).getStringCellValue()
+									  ,Columns_row.get(0).getText()); 
+							//To locate columns(cells) of that specific row.
+			 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));  
+			 				
+			 				   cellVal=2;
+			 					  colVal=0;
+			 					  while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
+			 					  {
+			 						  
+			 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
+											  ,Columns_row.get(colVal).getText());
+			 					  cellVal++;
+			 					  colVal++;
+			 					   
+			 					  }
+			 					//fetch contents of second block 
+						 	 for ( row=7; row<17; row++)
+							 {
+							  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+						 	  updateError(row,cellVal,s.getRow(row).getCell(1).getStringCellValue()
+											  ,Columns_row.get(0).getText()); 
+						 	 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));  
+				 				
+			 				   cellVal=2;
+			 					  colVal=0;
+			 					 while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
+			 					  {			 						 
+			 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
+											  ,Columns_row.get(colVal).getText());
+			 					  cellVal++;
+			 					  colVal++;
+			 					   
+			 					  } 
+						 			  
+				 			 }//close for
+						 			
+						 	//fetch contents of 4th block 
+				 			 for ( row=19; row<27; row++)
+				 			 {
+				 			  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+				 			 updateError(row,cellVal,s.getRow(row).getCell(1).getStringCellValue()
+									  ,Columns_row.get(0).getText()); 
+				 			 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));  
+		 				
+				 			 cellVal=2;
+		 					  colVal=0;
+		 					 while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
+		 					  {
+		 						  
+		 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
+										  ,Columns_row.get(colVal).getText());
+		 					  cellVal++;
+		 					  colVal++;
+		 					   
+		 					  }
+				 			  
+				 			 }//for
 				 			 
-						 }
+				 			//fetch contents of 5th block 
+				 			 for ( row=28; row<32; row++)
+				 			 {
+				 				 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+					 			 updateError(row,cellVal,s.getRow(row).getCell(1).getStringCellValue()
+										  ,Columns_row.get(0).getText()); 
+					 			 Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));  
+			 				
+					 			 cellVal=2;
+			 					  colVal=0;
+			 					 while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
+			 					  {
+			 						  
+			 						 updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
+											  ,Columns_row.get(colVal).getText());
+			 					  cellVal++;
+			 					  colVal++;
+			 					   
+			 					  }
+					 			   
+				 			 }//for
+						
+						  
+						  }//close if
+						  
+			
+		 
+			 
 		 }
+		 
 		 FileOutputStream fos=new FileOutputStream(path);
 			wb.write(fos);
 			fos.close();
@@ -1797,28 +2494,41 @@ public class App_Specific_Keywords extends Keywords
 		 boolean xlFileCreated=false;
 		 try
 		 {//Pre_Build_Number
-				// fetch the folder path to create work book
-			String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-						 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-						 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";
+				
+			 // fetch the folder path to create work book
+			String folderPath=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
+					
 			
 				
 			File  preBuildFolderPath=new File( folderPath);
 				 
 				 //Create directory
 		    boolean folderCreated=preBuildFolderPath.mkdirs();
-			String filePath=preBuildFolderPath+"/"+GlobalVariables.testCaseIdentifier+".xlsx";
+			String filePath=preBuildFolderPath
+					+TestBaseConstants.PATH_SIGN
+					+GlobalVariables.testCaseIdentifier
+					+TestBaseConstants.EXCEL_FILE_EXTENSION;
 			File filePath1 =new File(filePath);
 				 //System.out.println("File Path is -->"+filePath);
 	        if(folderCreated||preBuildFolderPath.exists())
 			 {
+	        	//if excel exists
 			  if(filePath1.exists())
 				{
 	    			filePath1.delete();
 					xlFileCreated= ExcelTestUtil.createXLS(filePath,
 							GlobalVariables.testCaseIdentifier);		 
 				}
-			 else 
+			 else //create new
 				{
 				 xlFileCreated= ExcelTestUtil.createXLS(filePath,
 						 GlobalVariables.testCaseIdentifier);
@@ -1827,12 +2537,14 @@ public class App_Specific_Keywords extends Keywords
 			  if(xlFileCreated)
 				 {
 					 
-				 if(subReportName.equalsIgnoreCase("Source of Job by Employer Type"))
+				 if(subReportName.equalsIgnoreCase(
+						 TestBaseConstants.NALP_SOURCE_OF_JOB_BY_EMPLOYER_TYPE))
 				 {
 					 //fetch table xpath
 			 		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 			 		  //To locate rows of table.
-			 		 List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			 		 List<WebElement> rows_table = mytable.findElements(
+			 				 By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 			 		  
 			 		  // open stream to open file
 			 		 FileInputStream fis=new FileInputStream(filePath);
@@ -1840,55 +2552,54 @@ public class App_Specific_Keywords extends Keywords
 			 			//get row size
 			 		 int rows_count = rows_table.size();	 			 
 			 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
-			 			 
 			 			
-			 		
-			 			 
 			 			 /*** Fetch headers and store to excel of 1st col**/
 			 			 // first row of header
-			 			 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			 			 List<WebElement> Columns_header = rows_table.get(0).findElements(
+			 					 By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 			 			 //create first row  
 			 			 Row r1=s.createRow(0);
 			 			  String j=Columns_header.get(0).getText();
 			 			 // add 1st cell value
 			 			  r1.createCell(0).setCellValue(j);
 			 			  // merge the text based on rowspan or colspan
-			 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 1));
+			 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
 			 			 
 			 			 // add value to cell 2
-			 			 r1.createCell(2).setCellValue(Columns_header.get(1).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 2, 3));
+			 			 r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
 			 			 
 			 			// add value to cell 3
-			 			 r1.createCell(4).setCellValue(Columns_header.get(2).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
+			 			 r1.createCell(3).setCellValue(Columns_header.get(2).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
 			 			 
 			 			 //add value to cell 4
-			 			r1.createCell(6).setCellValue(Columns_header.get(3).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 6, 7));
+			 			r1.createCell(5).setCellValue(Columns_header.get(3).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 5, 6));
 			 			//add value to cell 5
-			 			r1.createCell(8).setCellValue(Columns_header.get(4).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 8, 9));
+			 			r1.createCell(7).setCellValue(Columns_header.get(4).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 7, 8));
 			 			//add value to cell 6
-			 			r1.createCell(10).setCellValue(Columns_header.get(5).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 10, 11));
+			 			r1.createCell(9).setCellValue(Columns_header.get(5).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 9, 10));
 			 			//add value to cell 7
-			 			r1.createCell(12).setCellValue(Columns_header.get(6).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 12, 13));
+			 			r1.createCell(11).setCellValue(Columns_header.get(6).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 11, 12));
 			 			//add value to cell 8
-			 			r1.createCell(14).setCellValue(Columns_header.get(7).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 14, 15));
+			 			r1.createCell(13).setCellValue(Columns_header.get(7).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 13, 14));
 			 			//add value to cell 9
-				 			r1.createCell(14).setCellValue(Columns_header.get(8).getText());
-				 			 s.addMergedRegion(new CellRangeAddress(0, 0, 16, 17));
+				 			r1.createCell(15).setCellValue(Columns_header.get(8).getText());
+				 			 s.addMergedRegion(new CellRangeAddress(0, 0, 15, 16));
 			 			 
 			 			 // fetch 2nd row contents
 				 			  r1=s.createRow(1);
-			 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+			 			 Columns_header = rows_table.get(1).findElements(
+			 					 By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			 int cellVal=1;
 			 			 int colVal=0;
 			 			 // enter values to cols 2 to 18 
-			 			  while(cellVal<17 &&colVal<16)
+			 			  while(cellVal<Columns_header.size()+1&&colVal<Columns_header.size())
 			 			  {
 			 			  r1.createCell(cellVal).
 			 			  setCellValue(Columns_header.get(colVal).getText());
@@ -1901,24 +2612,19 @@ public class App_Specific_Keywords extends Keywords
 				 			 for (int row=2; row<rows_count; row++)
 				 			 {
 				 			 List<WebElement> Columns_row = rows_table.get(row).
-				 					 findElements(By.tagName("th"));
+				 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				 			
-				 		
 				 			 Row r=s.createRow(row);
 				 			 String celtext = Columns_row.get(0).getText();
 				 			
 				 			 r.createCell(0).setCellValue(celtext);	 
-				 			 
-				 			
 				 				   //To locate columns(cells) of that specific row.
-				 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-				 				   
-				 				
-				 				 
-				 				   
-				 				   cellVal=0;
+				 				  Columns_row = rows_table.get(row).findElements(
+				 						  By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				 				   cellVal=1;
 				 					  colVal=0;
-				 					  while(cellVal<16 &&colVal<16)
+				 					  while(cellVal<Columns_row.size()+1 &&
+				 							  colVal<Columns_row.size() )
 				 					  {
 				 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
 				 					  cellVal++;
@@ -1933,14 +2639,15 @@ public class App_Specific_Keywords extends Keywords
 			 			 
 				 }//Source of Job by Employer Type
 				 
-				 else if(subReportName.equalsIgnoreCase("Employer Types by Age at Graduation") ||
-						 subReportName.equalsIgnoreCase("Employer Types by Race/Ethnicity")||
-						 subReportName.equalsIgnoreCase("Private Practice Detail by Race/Ethnicity"))
+				 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYER_TYPE_BY_AGE_AT_GRADUATION) ||
+						 subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYER_TYPES_BY_RACE_OR_ETHNICITY)||
+						 subReportName.equalsIgnoreCase(TestBaseConstants.NALP_PRIVATE_PRACTICE_DETAIL_BY_RACE_OR_ETHNICITY))
 				 {
 					 //fetch table xpath
 			 		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 			 		  //To locate rows of table.
-			 		 List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			 		 List<WebElement> rows_table = mytable.findElements(
+			 				 By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 			 		  
 			 		  // open stream to open file
 			 		 FileInputStream fis=new FileInputStream(filePath);
@@ -1950,48 +2657,46 @@ public class App_Specific_Keywords extends Keywords
 			 		 
 			 		 //System.out.println("Row count of table is --->"+rows_count);
 			 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
-			 			 
-			 			
 			 		
-			 			 
 			 			 /*** Fetch headers and store to excel of 1st col**/
 			 			 // first row of header
-			 			 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			 			 List<WebElement> Columns_header = rows_table.get(0).findElements(
+			 					 By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 			 			 //create first row  
 			 			 Row r1=s.createRow(0);
 			 			  String j=Columns_header.get(0).getText();
 			 			 // add 1st cell value
 			 			  r1.createCell(0).setCellValue(j);
 			 			  // merge the text based on rowspan or colspan
-			 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 1));
+			 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
 			 			 
 			 			 // add value to cell 2
-			 			 r1.createCell(2).setCellValue(Columns_header.get(1).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 2, 3));
+			 			 r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
 			 			 
 			 			// add value to cell 3
-			 			 r1.createCell(4).setCellValue(Columns_header.get(2).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
+			 			 r1.createCell(3).setCellValue(Columns_header.get(2).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
 			 			 
 			 			 //add value to cell 4
-			 			r1.createCell(6).setCellValue(Columns_header.get(3).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 6, 7));
+			 			r1.createCell(5).setCellValue(Columns_header.get(3).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 5, 6));
 			 			//add value to cell 5
-			 			r1.createCell(8).setCellValue(Columns_header.get(4).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 8, 9));
+			 			r1.createCell(7).setCellValue(Columns_header.get(4).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 7, 8));
 			 			
 			 			//add value to cell 6
-				 			r1.createCell(10).setCellValue(Columns_header.get(5).getText());
-				 			 s.addMergedRegion(new CellRangeAddress(0, 0, 10, 11));
+				 			r1.createCell(9).setCellValue(Columns_header.get(5).getText());
+				 			 s.addMergedRegion(new CellRangeAddress(0, 0, 9, 10));
 				 			
 			 			 // fetch 2nd row contents 
 				 			  r1=s.createRow(1);
-			 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+			 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			 //System.out.println(Columns_header.size());
 			 			 int cellVal=1;
 			 			 int colVal=0;
 			 			 // enter values to cols 1 to 18 
-			 			  while(cellVal<11 &&colVal<10)
+			 			  while(cellVal<Columns_header.size()+1 &&colVal<Columns_header.size())
 			 			  {
 			 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
 			 			  cellVal++;
@@ -2003,7 +2708,7 @@ public class App_Specific_Keywords extends Keywords
 				 			 for (int row=2; row<rows_count; row++)
 				 			 {
 				 			 List<WebElement> Columns_row = rows_table.get(row).
-				 					 findElements(By.tagName("th"));
+				 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				 			
 				 		
 				 			 Row r=s.createRow(row);
@@ -2013,11 +2718,13 @@ public class App_Specific_Keywords extends Keywords
 				 			 
 				 			
 				 				   //To locate columns(cells) of that specific row.
-				 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-				 				     
-				 				   cellVal=0;
+				 				  Columns_row = rows_table.get(row).findElements
+				 						  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				 				   
+				 				 
+				 				   cellVal=1;
 				 					  colVal=0;
-				 					  while(cellVal<10 &&colVal<10)
+				 					  while(cellVal<Columns_row.size()+1 &&colVal<Columns_row.size())
 				 					  {
 				 					  r.createCell(cellVal).
 				 					  setCellValue(Columns_row.get(colVal).getText());
@@ -2032,12 +2739,13 @@ public class App_Specific_Keywords extends Keywords
 		 
 				 }//
 				 else if(subReportName.equalsIgnoreCase
-						 (TestBaseConstants.FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE) )
+						 (TestBaseConstants.NALP_FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE) )
 				 {
 					//fetch table xpath
 			 		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 			 		  //To locate rows of table.
-			 		 List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			 		 List<WebElement> rows_table = mytable.findElements
+			 				 (By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 			 		  
 			 		  // open stream to open file
 			 		 FileInputStream fis=new FileInputStream(filePath);
@@ -2049,41 +2757,41 @@ public class App_Specific_Keywords extends Keywords
 			 			 
 			 			 /*** Fetch headers and store to excel of 1st col**/
 			 			 // first row of header
-			 			 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			 			 List<WebElement> Columns_header = rows_table.get(0).findElements
+			 					 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 			 			 //create first row  
 			 			 Row r1=s.createRow(0);
 			 			  String j=Columns_header.get(0).getText();
 			 			 // add 1st cell value
 			 			  r1.createCell(0).setCellValue(j);
 			 			  // merge the text based on rowspan or colspan
-			 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 1));
+			 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
 			 			 
 			 			 // add value to cell 2
-			 			 r1.createCell(2).setCellValue(Columns_header.get(1).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 2, 3));
+			 			 r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
 			 			 
 			 			// add value to cell 3
-			 			 r1.createCell(4).setCellValue(Columns_header.get(2).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
+			 			 r1.createCell(3).setCellValue(Columns_header.get(2).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
 			 			 
 			 			 // add value to cell 4
-			 			 r1.createCell(6).setCellValue(Columns_header.get(3).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 6, 7));
-			 			 
-			 			
-			 					 			
+			 			 r1.createCell(5).setCellValue(Columns_header.get(3).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 5, 6));
+			 				 			
 			 			 // fetch 2nd row contents 
 			 			  r1=s.createRow(1);
-			 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+			 			 Columns_header = rows_table.get(1).findElements
+			 					 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			 int cellVal=1;
 			 			 int colVal=0;
 			 			 // enter values to cols 1 to 18 
-			 			  while(cellVal<7 &&colVal<6)
+			 			  while(cellVal<Columns_header.size()+1 &&colVal<Columns_header.size())
 			 			  {
-			 			  r1.createCell(cellVal).setCellValue
-			 			  (Columns_header.get(colVal).getText());
-			 			  cellVal++;
-			 			  colVal++;	 			   
+				 			  r1.createCell(cellVal).setCellValue
+				 			  (Columns_header.get(colVal).getText());
+				 			  cellVal++;
+				 			  colVal++;	 			   
 			 			  }		
 			 			  
 			 			  
@@ -2092,16 +2800,17 @@ public class App_Specific_Keywords extends Keywords
 				 			 {
 				 				 //To locate columns(cells) of that specific row.
 				 				 Row r=s.createRow(row);
-				 				 List<WebElement>	  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+				 				 List<WebElement> Columns_row = rows_table.get(row).findElements
+				 						 (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 				 				    /* System.out.println(Columns_row.size());*/
 				 				   cellVal=0;
 				 					  colVal=0;
-				 					  while(cellVal<7 &&colVal<7)
+				 					  while(cellVal<Columns_row.size() &&colVal<Columns_row.size())
 				 					  {
-				 					  r.createCell(cellVal).
-				 					  setCellValue(Columns_row.get(colVal).getText());
-				 					  cellVal++;
-				 					  colVal++;
+					 					  r.createCell(cellVal).
+					 					  setCellValue(Columns_row.get(colVal).getText());
+					 					  cellVal++;
+					 					  colVal++;
 				 					   
 				 					  }
 				 			 }
@@ -2110,13 +2819,14 @@ public class App_Specific_Keywords extends Keywords
 					 			fos.close();	
 		  
 				 }
-				 else if(subReportName.equalsIgnoreCase("Employer Types by Gender") ||
-						 subReportName.equalsIgnoreCase("Private Practice Detail by Gender"))
+				 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYER_TYPES_BY_GENDER) ||
+						 subReportName.equalsIgnoreCase(TestBaseConstants.NALP_PRIVATE_PRACTICE_DETAIL_BY_GENDER))
 				 {
 					//fetch table xpath
 			 		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 			 		  //To locate rows of table.
-			 		 List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			 		 List<WebElement> rows_table = mytable.findElements
+			 				 (By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 			 		  
 			 		  // open stream to open file
 			 		 FileInputStream fis=new FileInputStream(filePath);
@@ -2124,11 +2834,12 @@ public class App_Specific_Keywords extends Keywords
 			 			//get row size
 			 		 int rows_count = rows_table.size();
 			 		 
-			 		 System.out.println("row count is "+rows_count);
+			 		// System.out.println("row count is "+rows_count);
 			 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);	 
 			 			 /*** Fetch headers and store to excel of 1st col**/
 			 			 // first row of header
-			 			 List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			 			 List<WebElement> Columns_header = rows_table.get(0).findElements
+			 					 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 			 			//System.out.println(Columns_header.size());
 			 			 //create first row  
 			 			 Row r1=s.createRow(0);
@@ -2136,23 +2847,24 @@ public class App_Specific_Keywords extends Keywords
 			 			 // add 1st cell value
 			 			  r1.createCell(0).setCellValue(j);
 			 			  // merge the text based on rowspan or colspan
-			 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 1));
+			 				 s.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
 			 			 
 			 			 // add value to cell 2
-			 			 r1.createCell(2).setCellValue(Columns_header.get(1).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 2, 3));
+			 			 r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
 			 			 
 			 			// add value to cell 3
-			 			 r1.createCell(4).setCellValue(Columns_header.get(2).getText());
-			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 4, 5));
+			 			 r1.createCell(3).setCellValue(Columns_header.get(2).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
 			 					 			
 			 			 // fetch 2nd row contents
 			 			  r1=s.createRow(1);
-			 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+			 			 Columns_header = rows_table.get(1).findElements
+			 					 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 			 			 int cellVal=1;
 			 			 int colVal=0;
 			 			 // enter values to cols 1 to 18 
-			 			  while(cellVal<5 &&colVal<4)
+			 			  while(cellVal<Columns_header.size()+1 &&colVal<Columns_header.size())
 			 			  {
 			 			  r1.createCell(cellVal).setCellValue
 			 			  (Columns_header.get(colVal).getText());
@@ -2165,21 +2877,20 @@ public class App_Specific_Keywords extends Keywords
 				 			 for (int row=2; row<rows_count; row++)
 				 			 {
 				 			 List<WebElement> Columns_row = rows_table.get(row).
-				 					 findElements(By.tagName("th"));
+				 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				 			//System.out.println(Columns_row.size());
 				 		
 				 			 Row r=s.createRow(row);
 				 			 String celtext = Columns_row.get(0).getText();
-				 			
-				 			 r.createCell(0).setCellValue(celtext);	 
-				 			 
-				 			
+				 			// System.out.println(celtext);
+				 			 r.createCell(0).setCellValue(celtext);
 				 				   //To locate columns(cells) of that specific row.
-				 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+				 				  Columns_row = rows_table.get(row).findElements
+				 						  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 				 				    // System.out.println(Columns_row.size());
-				 				   cellVal=0;
+				 				   cellVal=1;
 				 					  colVal=0;
-				 					  while(cellVal<4 &&colVal<4)
+				 					  while(cellVal<Columns_row.size()+1 &&colVal<Columns_row.size())
 				 					  {
 				 					  r.createCell(cellVal).
 				 					  setCellValue(Columns_row.get(colVal).getText());
@@ -2199,14 +2910,14 @@ public class App_Specific_Keywords extends Keywords
 			  else
 				 {
 						// System.out.println("File not created");
-						 GlobalVariables.APPICATION_LOGS.error("File not created");
-						 Logs.errorLog("File not created");
+						 GlobalVariables.APPICATION_LOGS.error(TestBaseConstants.EXCEL_FILE_NOT_CREATED);
+						 Logs.errorLog(TestBaseConstants.EXCEL_FILE_NOT_CREATED);
 				 }
 			 }
 	        else
 			 {
 				 //System.out.println("Folder not created"); 
-				 GlobalVariables.APPICATION_LOGS.error("Folder not created");
+				 GlobalVariables.APPICATION_LOGS.error(TestBaseConstants.BASELINE_FOLDER_NOT_CREATED);
 				 Logs.errorLog("Folder not created");
 
 			 }
@@ -2230,7 +2941,7 @@ catch(Exception e)
 	rATUStatus(GlobalVariables.result,msg);
 } 
 	        
-}
+}// mT1_TH2_TBH1_TCN_WriteXLSX
   
   /********************************************************************************************
    *		Author 						:	DivyaRaju.R
@@ -2248,66 +2959,74 @@ catch(Exception e)
  {
 	  GlobalVariables.testCaseIdentifier=automationId;
 		try
-	    {
-			 String path=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-					 "/"+TestBaseConstants.BASELINE_BUILD_TYPE+"/"+
-					 GlobalVariables.testCaseIdentifier+".xlsx";
-			 //System.out.println("Path of file is -->"+path);
+		
+	    {			
+			 String path=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+						+TestBaseConstants.BASELINE_FOLDER_NAME+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+						+TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.ITERATION+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+						TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.BASELINE_BUILD_TYPE
+						+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
+			// System.out.println("Path of file is -->"+path);
 			 FileInputStream fis=new FileInputStream(path);
 				Workbook wb=WorkbookFactory.create(fis); 
-				 
+				//System.out.println("Hi"); 
 			 //wb.createSheet(year);
 			 Sheet s=wb.getSheet(excelSheetName); 
-			 if(subReportName.equalsIgnoreCase("Source of Job by Employer Type"))
+			 if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_SOURCE_OF_JOB_BY_EMPLOYER_TYPE))
 					
 			 {
 				 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 				  //To locate rows of table.
-				  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+				  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 				  //To calculate no of rows In table.
 				  int rows_count = rows_table.size();
 				  
 				  ///headers
 				  List<WebElement> Columns_header = rows_table.get(0).
-						  findElements(By.tagName("th"));
+						  findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				  // Validating first row headers and cell contents
 				  
 				  //compare 0th cell of header
 				  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText()); 
 				  //compare 1st cell of header
-				  updateError(0,1,s.getRow(0).getCell(2).getStringCellValue()
+				  updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
 				  
 				  //compare 2nd cell of header
-				  updateError(0,2,s.getRow(0).getCell(4).getStringCellValue()
+				  updateError(0,2,s.getRow(0).getCell(3).getStringCellValue()
 						  ,Columns_header.get(2).getText());
 				  //compare 3rd cell of header
-				  updateError(0,3,s.getRow(0).getCell(6).getStringCellValue()
+				  updateError(0,3,s.getRow(0).getCell(5).getStringCellValue()
 						  ,Columns_header.get(3).getText());
 				  //compare 4th cell of header
-				  updateError(0,4,s.getRow(0).getCell(8).getStringCellValue()
+				  updateError(0,4,s.getRow(0).getCell(7).getStringCellValue()
 						  ,Columns_header.get(4).getText());
 				  //compare 5th cell of header
-				  updateError(0,5,s.getRow(0).getCell(10).getStringCellValue()
+				  updateError(0,5,s.getRow(0).getCell(9).getStringCellValue()
 						  ,Columns_header.get(5).getText());
 				  //compare 6th cell of header
-				  updateError(0,6,s.getRow(0).getCell(12).getStringCellValue()
+				  updateError(0,6,s.getRow(0).getCell(11).getStringCellValue()
 						  ,Columns_header.get(6).getText());
 				  //compare 7th cell of header
-				  updateError(0,7,s.getRow(0).getCell(14).getStringCellValue()
+				  updateError(0,7,s.getRow(0).getCell(13).getStringCellValue()
 						  ,Columns_header.get(7).getText());
 				  //compare 8th cell of header
-				  updateError(0,8,s.getRow(0).getCell(16).getStringCellValue()
+				  updateError(0,8,s.getRow(0).getCell(15).getStringCellValue()
 						  ,Columns_header.get(8).getText());
 				  
 				// fetch 2nd row contents 
-		 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+		 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 		 			 int cellVal=1;
 		 			 int colVal=0;
 		 			 // enter values to cols 2 to 18 
-		 			  while(cellVal<17 &&colVal<16)
+		 			  while(cellVal<Columns_header.size()+1 &&colVal<Columns_header.size())
 		 			  {		 		
 		 				  updateError(1,cellVal,s.getRow(1).getCell(cellVal).getStringCellValue()
 							  ,Columns_header.get(colVal).getText());
@@ -2319,74 +3038,68 @@ catch(Exception e)
 		 			// Fetch the contents of table from 2nd row till last row
 		 			  
 		 			 for (int row=2; row<rows_count; row++)
-		 			 {
-		 			/* List<WebElement> Columns_row = rows_table.get(row).
-		 					 findElements(By.tagName("th"));
-		 			updateError(row,0,s.getRow(row).getCell(0).getStringCellValue()
-							  , Columns_row.get(0).getText());	*/	 			
-		 			
-		 			 //To locate columns(cells) of that specific row.
-		 			 List<WebElement>  Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-		 			 System.out.println(Columns_row.size());
-	 				   cellVal=0;
-	 					  colVal=0;
-	 					  while(cellVal<16 &&colVal<17)
-	 					  {
-	 					
-	 						  updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
+		 			 {	
+			 			 //To locate columns(cells) of that specific row.
+			 			 List<WebElement>  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			 			// System.out.println(Columns_row.size());
+		 				   cellVal=1;
+		 					  colVal=0;
+	 					  while(cellVal<Columns_row.size()+1&&colVal<Columns_row.size())
+	 					  {	 					
+	 						updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
 								  ,Columns_row.get(colVal).getText());	
 	 					  
-	 					  cellVal++;
-	 					  colVal++;	 					   
+	 						cellVal++;
+	 						colVal++;	 					   
 	 					  }
 		 			 
 		 			}//end if				  
 				  
 			 }//Source of Job by Employer Type 
 			 
-			 else if(subReportName.equalsIgnoreCase("Employer Types by Age at Graduation") ||
-					 subReportName.equalsIgnoreCase("Employer Types by Race/Ethnicity")||
-					 subReportName.equalsIgnoreCase("Private Practice Detail by Race/Ethnicity"))
+			 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYER_TYPE_BY_AGE_AT_GRADUATION) ||
+					 subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYER_TYPES_BY_RACE_OR_ETHNICITY)||
+					 subReportName.equalsIgnoreCase(TestBaseConstants.NALP_PRIVATE_PRACTICE_DETAIL_BY_RACE_OR_ETHNICITY))
 			 {
 				 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 				  //To locate rows of table.
-				  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+				  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 				  //To calculate no of rows In table.
 				  int rows_count = rows_table.size();
 				 // System.out.println("Row count is -->"+rows_count);
 				  ///headers
 				  List<WebElement> Columns_header = rows_table.get(0).
-						  findElements(By.tagName("th"));
+						  findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				  // Validating first row headers and cell contents
 				  
 				  //compare 0th cell of header
 				  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText()); 
 				  //compare 1st cell of header
-				  updateError(0,1,s.getRow(0).getCell(2).getStringCellValue()
+				  updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
 				  
 				  //compare 2nd cell of header
-				  updateError(0,2,s.getRow(0).getCell(4).getStringCellValue()
+				  updateError(0,2,s.getRow(0).getCell(3).getStringCellValue()
 						  ,Columns_header.get(2).getText());
 				  //compare 3rd cell of header
-				  updateError(0,3,s.getRow(0).getCell(6).getStringCellValue()
+				  updateError(0,3,s.getRow(0).getCell(5).getStringCellValue()
 						  ,Columns_header.get(3).getText());
 				  //compare 4th cell of header
-				  updateError(0,4,s.getRow(0).getCell(8).getStringCellValue()
+				  updateError(0,4,s.getRow(0).getCell(7).getStringCellValue()
 						  ,Columns_header.get(4).getText());
 				  //compare 5th cell of header
-				  updateError(0,5,s.getRow(0).getCell(10).getStringCellValue()
+				  updateError(0,5,s.getRow(0).getCell(9).getStringCellValue()
 						  ,Columns_header.get(5).getText());
 				  				  
 				  // fetch 2nd row contents 
-		 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+		 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 		 			//System.out.println(Columns_header.size() );
 		 			  
 			 		 int cellVal=1;
 		 			 int colVal=0;
 		 			 // enter values to cols 2 to 18 
-		 			  while(cellVal<11 &colVal<10)
+		 			  while(cellVal<Columns_header.size()+1 && colVal<Columns_header.size())
 		 			  {		
 		 				  
 		 				  updateError(1,0,s.getRow(1).getCell(cellVal).getStringCellValue()
@@ -2402,10 +3115,10 @@ catch(Exception e)
 		 			 
 		 			 //To locate columns(cells) of that specific row.
 		 			 List<WebElement>  Columns_row = rows_table.get(row).
-		 					 findElements(By.tagName("td"));   
-	 				   cellVal=0;
+		 					 findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));   
+	 				   cellVal=1;
 	 					  colVal=0;
-	 					  while(cellVal<10 &&colVal<10)
+	 					  while(cellVal<Columns_row.size()+1 &&colVal<Columns_row.size())
 	 					  {
 	 					
 	 						  updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
@@ -2419,40 +3132,40 @@ catch(Exception e)
 			 }//end if 
 			 
 			 else if(subReportName.equalsIgnoreCase
-					 (TestBaseConstants.FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE) )
+					 (TestBaseConstants.NALP_FULL_AND_PART_TIME_JOBS_BY_EMPLOYEE_TYPE) )
 			 {
 				 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 				  //To locate rows of table.
-				  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+				  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 				  //To calculate no of rows In table.
 				  int rows_count = rows_table.size();
 				  
 				  ///headers
 				  List<WebElement> Columns_header = rows_table.get(0).
-						  findElements(By.tagName("th"));
+						  findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				  // Validating first row headers and cell contents
 				  
 				  //compare 0th cell of header
 				  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText()); 
 				  //compare 1st cell of header
-				  updateError(0,1,s.getRow(0).getCell(2).getStringCellValue()
+				  updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
 				  
 				  //compare 2nd cell of header
-				  updateError(0,2,s.getRow(0).getCell(4).getStringCellValue()
+				  updateError(0,2,s.getRow(0).getCell(3).getStringCellValue()
 						  ,Columns_header.get(2).getText());
 				  //compare 3rd cell of header
-				  updateError(0,3,s.getRow(0).getCell(6).getStringCellValue()
+				  updateError(0,3,s.getRow(0).getCell(5).getStringCellValue()
 						  ,Columns_header.get(3).getText());
 				 
 				  				  
 				  // fetch 2nd row contents 
-		 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+		 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 		 			 int cellVal=1;
 		 			 int colVal=0;
 		 			 // enter values to cols 2 to 18 
-		 			  while(cellVal<7 &&colVal<6)
+		 			  while(cellVal<Columns_header.size()+1 &&colVal<Columns_header.size())
 		 			  {	
 		 				  updateError(1,cellVal,s.getRow(1).getCell(cellVal).getStringCellValue()
 							  ,Columns_header.get(colVal).getText());
@@ -2468,12 +3181,12 @@ catch(Exception e)
 		 				 			
 		 			
 		 			 //To locate columns(cells) of that specific row.
-		 				List<WebElement>Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+		 				List<WebElement>Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 	 				    
 	 				   cellVal=0;
 	 					  colVal=0;
 	 					 
-	 					  while(cellVal<7 &&colVal<7)
+	 					  while(cellVal<Columns_row.size() &&colVal<Columns_row.size())
 	 					  {	 					
 	 						  updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
 								  ,Columns_row.get(colVal).getText());	
@@ -2486,39 +3199,40 @@ catch(Exception e)
 		 			
 			 }// end if
 			 
-			 else if(subReportName.equalsIgnoreCase("Employer Types by Gender") ||
-					 subReportName.equalsIgnoreCase("Private Practice Detail by Gender"))
+			 else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_EMPLOYER_TYPES_BY_GENDER) ||
+					 subReportName.equalsIgnoreCase(TestBaseConstants.NALP_PRIVATE_PRACTICE_DETAIL_BY_GENDER))
 			 {
+				
 				 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 				  //To locate rows of table.
-				  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+				  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 				  //To calculate no of rows In table.
 				  int rows_count = rows_table.size();
-				  
+				 // System.out.println("Row count is "+rows_count);
 				  ///headers
 				  List<WebElement> Columns_header = rows_table.get(0).
-						  findElements(By.tagName("th"));
+						  findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 				  // Validating first row headers and cell contents
 				  
 				  //compare 0th cell of header
 				  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
 						  ,Columns_header.get(0).getText()); 
 				  //compare 1st cell of header
-				  updateError(0,1,s.getRow(0).getCell(2).getStringCellValue()
+				  updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
 						  ,Columns_header.get(1).getText());
 				  
 				  //compare 2nd cell of header
-				  updateError(0,2,s.getRow(0).getCell(4).getStringCellValue()
+				  updateError(0,2,s.getRow(0).getCell(3).getStringCellValue()
 						  ,Columns_header.get(2).getText());
 				
 				 
 				  				  
 				  // fetch 2nd row contents 
-		 			 Columns_header = rows_table.get(1).findElements(By.tagName("th")); 
+		 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
 		 			 int cellVal=1;
 		 			 int colVal=0;
 		 			 // enter values to cols 2 to 18 
-		 			  while(cellVal<5 &&colVal<4)
+		 			  while(cellVal< Columns_header.size()+1 &&colVal<Columns_header.size())
 		 			  {		 		
 		 				  updateError(1,cellVal,s.getRow(1).getCell(cellVal).getStringCellValue()
 							  ,Columns_header.get(colVal).getText());
@@ -2532,15 +3246,16 @@ catch(Exception e)
 		 			 for (int row=2; row<rows_count; row++)
 		 			 {
 		 			 List<WebElement> Columns_row = rows_table.get(row).
-		 					 findElements(By.tagName("th"));
+		 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 		 			updateError(row,0,s.getRow(row).getCell(0).getStringCellValue()
 							  , Columns_row.get(0).getText());		 			
 		 			
 		 			 //To locate columns(cells) of that specific row.
-	 				  Columns_row = rows_table.get(row).findElements(By.tagName("td"));   
-	 				   cellVal=0;
+	 				  Columns_row = rows_table.get(row).findElements
+	 						  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));   
+	 				   cellVal=1;
 	 					  colVal=0;
-	 					  while(cellVal<4 &&colVal<4)
+	 					  while(cellVal<Columns_row.size()+1 &&colVal<Columns_row.size())
 	 					  {
 	 					
 	 						  updateError(row,cellVal,s.getRow(row).getCell(cellVal).getStringCellValue()
@@ -2580,23 +3295,29 @@ catch(Exception e)
   
   /********************************************************************************************
 	 *		Author 						:	DivyaRaju.R
-	 *		LastModifiedDate			:	1st may 2015
-	 *		Method name					:	mT1_TH1_TCN_WriteXLSX
+	 *		LastModifiedDate			:	4th June 2015
+	 *		Method name					:	mT2_TH2_TCN_WriteXLSX
 	 *		Description					:	This method is used for fetching data from 1220 application
 	 *										 and writing that excel
 	 *
 	*********************************************************************************************/
-	public static void mT1_TH1_TCN_WriteXLSX(String sheetName,String excelFileName,String msg,
-		String tableXpath,String subReportName) 
+	public static void mT2_TH2_TCN_WriteXLSX(String sheetName,String excelFileName,String msg,
+		String tableXpath,String tableXpath2,String subReportName) 
 	{
 	boolean xlFileCreated=false;
 
 		try
-		{//Pre_Build_Number
-			// fetch the folder path to create work book
-			String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-					 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";
+		{
+			String folderPath=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
 			//System.out.println("Build folder path is "+folderPath);
 			
 			 File  preBuildFolderPath=new File( folderPath);
@@ -2627,89 +3348,80 @@ catch(Exception e)
 						//To locate table.
 						  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 						  //To locate rows of table.
-						  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+						  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 						  //To calculate no of rows In table.
 						  int rows_count = rows_table.size();
+						  System.out.println("Number of rows in table 1 is --->"+rows_count);
 						  
 						  //headers
-						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
-						  Row r1=s.createRow(0);
-						  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
-							 subReportName.equalsIgnoreCase("Compensation by Industries") ||
-							 subReportName.equalsIgnoreCase("World Regions Breakdown") ||
-						     subReportName.equalsIgnoreCase("Compensation by North American Geographic Regions") ||
-						     subReportName.equalsIgnoreCase("Compensation by Undergraduate Major") ||
-						     subReportName.equalsIgnoreCase("Compensation by Professional Experience") )
+						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+						  
+						 
+						     Row r1=s.createRow(0);
+						  
+						  
+						  
+						
+				 		  if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_CLASS_SUMMARY) )
 							  {
-							  Logs.infoLog( "Sub report is "+subReportName);
-							  //1st cell of 1st header
-							  	r1.createCell(0).setCellValue(Columns_header.get(0).getText());
-							  // 2nd cell of header
-								 r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-								 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
-								  //3rd cell
-								 r1.createCell(3).setCellValue(Columns_header.get(2).getText());								 
-								 //4th cell
-								 r1.createCell(4).setCellValue(Columns_header.get(3).getText());
-								 //5th cell
-								 r1.createCell(5).setCellValue(Columns_header.get(4).getText());
-								 //6th cell
-								 r1.createCell(6).setCellValue(Columns_header.get(5).getText());
+							  System.out.println("inside");
+							  Logs.infoLog("Sub report is "+subReportName);							  
+								 r1.createCell(3).setCellValue(Columns_header.get(0).getText());
+								 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 7));
+								 
+							  }
+						  System.out.println("outside");
+						 
+					
+							 for (int row=1; row<rows_count; row++)
+							  {
+								   //To locate columns(cells) of that specific row.
+								   List<WebElement> Columns_row = rows_table.get(row).findElements
+										   (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+								   
+								   //To calculate no of columns(cells) In that specific row.
+								   int columns_count = Columns_row.size();
+								   
+								   System.out.println("No of columns are--->"+columns_count);
+								   
+								   Row r=s.createRow(row);
+								   
+							    		//Loop will execute till the last cell of that specific row.
+							   			for (int column=0; column<columns_count; column++)
+							   			{
+							   			//To retrieve text from that specific cell.
+							   				String celtext = Columns_row.get(column).getText();			   			
+							   				r.createCell(column).setCellValue(celtext);	
+							   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+							   				System.out.println("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+							   			}							   			
+							  } //for loop 
+						  
+						  /**Fetch second table content******/
+						//To locate table.
+						  WebElement mytable2 = GlobalVariables.driver.findElement(By.xpath(tableXpath2));
+						  //To locate rows of table.
+						  List<WebElement> rows_table2 = mytable2.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+						  //To calculate no of rows In table.
+						  int rows_count2 = rows_table2.size();
+						  System.out.println(rows_count2);
+						  
+						  //headers
+						  List<WebElement> Columns_header2 = rows_table2.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+						  Row r2=s.createRow(0);
+						  if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_CLASS_SUMMARY) )
+							  {
+							  Logs.infoLog( "Sub report is "+subReportName);							  
+								 r2.createCell(3).setCellValue(Columns_header2.get(1).getText());
+								 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 7));
 								 
 							  }
 						  
-						  else if(subReportName.equalsIgnoreCase("Primary Source of Full-Time Job Acceptances") )
-						  {
-							  Logs.infoLog( "Sub report is "+subReportName);
-							  //1st cell of 1st header
-							  	/*r1.createCell(0).setCellValue(Columns_header.get(0).getText()); */
-							 // 2nd cell of header
-							  	r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-								 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
-								 //3rd cell 
-								 r1.createCell(3).setCellValue(Columns_header.get(2).getText());
-								 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
-							  	
-						  }
-						  
-						  else if(subReportName.equalsIgnoreCase("Location of Instate Jobs"))
-						  {
-							  Logs.infoLog( "Sub report is "+subReportName);
-							//1st cell of 1st header
-							  	r1.createCell(0).setCellValue(Columns_header.get(0).getText());
-							// 2nd cell of header
-							    r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-							 // 3rd cell   
-							    r1.createCell(2).setCellValue(Columns_header.get(2).getText());
-						  }
-						  
-						  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
-								  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
-								  subReportName.equalsIgnoreCase("Summary")||
-								  subReportName.equalsIgnoreCase("Full-Time Employment")||
-								  subReportName.equalsIgnoreCase("Part-Time Employment")||
-								  subReportName.equalsIgnoreCase("Service Organization")||
-								  subReportName.equalsIgnoreCase("Military Service")||
-								  subReportName.equalsIgnoreCase("Continuing Education")||
-								  subReportName.equalsIgnoreCase("Seeking or Unreported")||
-								  subReportName.equalsIgnoreCase("Employment Status")||
-								  subReportName.equalsIgnoreCase("Law School/University Funded Positions")||
-								  subReportName.equalsIgnoreCase("Employment Type")||
-								  subReportName.equalsIgnoreCase("Employment Location")
-								  )
-						  {
-							  Logs.infoLog( "Sub report is "+subReportName);
-							  for(int col=0;col<Columns_header.size();col++)
-							  {
-								  Logs.infoLog("Cell Value Of row number "+r1+" and column number "+col+" is "+Columns_header.get(col).getText());
-								  
-								  r1.createCell(col).setCellValue(Columns_header.get(col).getText());
-							  }
-						  }
-						  for (int row=1; row<rows_count; row++)
+						
+						  for (int row=1; row<rows_count2; row++)
 						  {
 							   //To locate columns(cells) of that specific row.
-							   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+							   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 							   
 							   //To calculate no of columns(cells) In that specific row.
 							   int columns_count = Columns_row.size();
@@ -2723,16 +3435,17 @@ catch(Exception e)
 							   				String celtext = Columns_row.get(column).getText();			   			
 							   				r.createCell(column).setCellValue(celtext);	
 							   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
-							   				if(!celtext.isEmpty())
-					 		   				{
-					 		   					System.out.println("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
-					 		   				}
-
 							   			}							   			
 							  } //for loop 
-							 FileOutputStream fos=new FileOutputStream(filePath);
+						   
+						  
+						  
+						  
+						  
+						     FileOutputStream fos=new FileOutputStream(filePath);
 					 			wb.write(fos);
-					 			fos.close();	   			
+					 			fos.close();
+								   			
 				 }	 
 				 else
 				 {
@@ -2741,7 +3454,7 @@ catch(Exception e)
 					 Logs.errorLog("File not created");
 				 }
 			
-			 }
+			 }//folder created
 			 else
 			 {
 				// System.out.println("Folder not created"); 
@@ -2794,11 +3507,18 @@ catch(Exception e)
 		GlobalVariables.testCaseIdentifier=automationId;
 		try
 	    {
-			 String path=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-					 "/"+TestBaseConstants.BASELINE_BUILD_TYPE+"/"+
-					 GlobalVariables.testCaseIdentifier+".xlsx";
-			 //System.out.println("Path of file is -->"+path);
+			
+			 String path=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+						+TestBaseConstants.BASELINE_FOLDER_NAME+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+						+TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.ITERATION+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+						TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.BASELINE_BUILD_TYPE
+						+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
 			 FileInputStream fis=new FileInputStream(path);
 				Workbook wb=WorkbookFactory.create(fis); 
 				 
@@ -2808,12 +3528,12 @@ catch(Exception e)
 			//To locate table.
 			  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
 			  //To locate rows of table.
-			  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+			  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 			  //To calculate no of rows In table.
 			  int rows_count = rows_table.size();
 			  
 			  ///headers
-			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 			 
 			  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
 						 subReportName.equalsIgnoreCase("Compensation by Industries") ||
@@ -2889,7 +3609,7 @@ catch(Exception e)
 			  for (int row=1; row<rows_count; row++)
 			  {
 			   //To locate columns(cells) of that specific row.
-			   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+			   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 			   Row r=s.getRow(row);
 			   //To calculate no of columns(cells) In that specific row.
 			   int columns_count = Columns_row.size();		   
@@ -2927,173 +3647,35 @@ catch(Exception e)
 	}
   
 
-	/********************************************************************************************
-	 *		Author 						:	DivyaRaju.R
-	 *		LastModifiedDate			:	1st may 2015
-	 *		Method name					:	mT1_TCN_LST_ReadXLSX
-	 *		Description					:	This method is used for fetching data from 1220
-	 *										 application
-	 *										 and writing that excel
-	 *
-	*********************************************************************************************/
- 
-	public static void mT1_TCN_LST_ReadXLSX(String excelSheetName,String automationId,
-				String xpath,String subReportName,String msg) 
-	{
-		GlobalVariables.testCaseIdentifier=automationId;
-		try
-	    {
-			 String path=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-					 "/"+TestBaseConstants.BASELINE_BUILD_TYPE+"/"+
-					 GlobalVariables.testCaseIdentifier+".xlsx";
-			 //System.out.println("Path of file is -->"+path);
-			 FileInputStream fis=new FileInputStream(path);
-				Workbook wb=WorkbookFactory.create(fis); 
-				 
-			 //wb.createSheet(year);
-			 Sheet s=wb.getSheet(excelSheetName); 
-			 
-			//To locate table.
-			  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
-			  //To locate rows of table.
-			  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
-			  //To calculate no of rows In table.
-			  int rows_count = rows_table.size();
-			  
-			  ///headers
-			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
-			 
-			  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
-						 subReportName.equalsIgnoreCase("Compensation by Industries") ||
-						 subReportName.equalsIgnoreCase("World Regions Breakdown") ||
-					     subReportName.equalsIgnoreCase("Compensation by North American Geographic Regions") ||
-					     subReportName.equalsIgnoreCase("Compensation by Undergraduate Major") ||
-					     subReportName.equalsIgnoreCase("Compensation by Professional Experience"))
-					
-				{	// compare 1st cell				
-					updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
-							,Columns_header.get(0).getText());
-					//compare 2nd cell
-					updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
-							,Columns_header.get(1).getText());					
-					//compare 3rd cell
-					updateError(0,3,s.getRow(0).getCell(3).getStringCellValue()
-							,Columns_header.get(2).getText());
-					//compare 4th cell
-					updateError(0,4,s.getRow(0).getCell(4).getStringCellValue()
-							,Columns_header.get(3).getText());
-					//compare 5th cell
-					updateError(0,5,s.getRow(0).getCell(5).getStringCellValue()
-							,Columns_header.get(4).getText());
-					//compare 6th cell
-					updateError(0,6,s.getRow(0).getCell(6).getStringCellValue()
-							,Columns_header.get(5).getText());	
-				}	
-			  else if(subReportName.equalsIgnoreCase("Primary Source of Full-Time Job Acceptances") )
-			  {
-				// compare 1st cell				
-					updateError(0,0,s.getRow(0).getCell(1).getStringCellValue()
-							,Columns_header.get(1).getText());
-					//compare 2nd cell
-					updateError(0,1,s.getRow(0).getCell(3).getStringCellValue()
-							,Columns_header.get(2).getText());	 
-			  }
-			  else if(subReportName.equalsIgnoreCase("Location of Instate Jobs"))
-			  {
-				// compare 1st cell				
-					updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
-							,Columns_header.get(0).getText());
-					//compare 2nd cell
-					updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
-							,Columns_header.get(1).getText());					
-					//compare 3rd cell
-					updateError(0,2,s.getRow(0).getCell(2).getStringCellValue()
-							,Columns_header.get(2).getText());
-			  }
-			  
-			  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
-					  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
-					  subReportName.equalsIgnoreCase("Summary")||
-					  subReportName.equalsIgnoreCase("Full-Time Employment")||
-					  subReportName.equalsIgnoreCase("Part-Time Employment")||
-					  subReportName.equalsIgnoreCase("Service Organization")||
-					  subReportName.equalsIgnoreCase("Military Service")||
-					  subReportName.equalsIgnoreCase("Continuing Education")||
-					  subReportName.equalsIgnoreCase("Seeking or Unreported")||
-					  subReportName.equalsIgnoreCase("Employment Status")||
-					  subReportName.equalsIgnoreCase("Law School/University Funded Positions")||
-					  subReportName.equalsIgnoreCase("Employment Type")||
-					  subReportName.equalsIgnoreCase("Employment Location")
-					  )
-			  {
-				  for(int col=0;col<Columns_header.size();col++)
-				  {
-					  updateError(0,col,s.getRow(0).getCell(col).getStringCellValue()
-								,Columns_header.get(col).getText());
-				  }
-			  }
-			 
-			//Loop will execute till the last row of table.
-			  for (int row=1; row<rows_count; row++)
-			  {
-			   //To locate columns(cells) of that specific row.
-			   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-			   Row r=s.getRow(row);
-			   //To calculate no of columns(cells) In that specific row.
-			   int columns_count = Columns_row.size();		   
-			   
-			    		//Loop will execute till the last cell of that specific row.
-			   			for (int column=0; column<columns_count; column++)
-			   			{
-			   			//To retrieve text from that specific cell.
-			   				String webtext = Columns_row.get(column).getText();
-			   				String xltext = r.getCell(column).getStringCellValue();
-			   				updateError(row,column,xltext,webtext);
-			   			}   				
-			   		
-			  }  			 
-			 
-			 FileOutputStream fos=new FileOutputStream(path);
-				wb.write(fos);
-				fos.close();
-				GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
-		  		 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
-		  		 rATUStatus(GlobalVariables.result,msg);		
-			 }
-			catch(Exception e)
-			{
-				GlobalVariables.exceptionMsgVal=e.getMessage();
-				String ermsg="Error while executing mT1_TCN_LST_ReadXLSX keyword";
-				keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
-				GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
-				GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
-				GlobalVariables.APPICATION_LOGS.error(ermsg);
-				Logs.errorLog(ermsg);
-				rATUStatus(GlobalVariables.result,ermsg);
-			}
-		
-	}	
+
 	
 	/********************************************************************************************
 	 *		Author 						:	DivyaRaju.R
 	 *		LastModifiedDate			:	1st may 2015
-	 *		Method name					:	mT1_TCN_LST_WriteXLSX
+	 *		Method name					:	mT1_TH1_TCN_WriteXLSX
 	 *		Description					:	This method is used for fetching data from 1220 application
 	 *										 and writing that excel
 	 *
 	*********************************************************************************************/
-	public static void mT1_TCN_LST_WriteXLSX(String sheetName,String excelFileName,String msg,
+	public static void mT1_TH1_TCN_WriteXLSX(String sheetName,String excelFileName,String msg,
 		String tableXpath,String subReportName) 
 	{
 	boolean xlFileCreated=false;
 
 		try
-		{//Pre_Build_Number
+		{
 			// fetch the folder path to create work book
-			String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-					 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";
+			
+			String folderPath=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
 			//System.out.println("Build folder path is "+folderPath);
 			
 			 File  preBuildFolderPath=new File( folderPath);
@@ -3124,12 +3706,12 @@ catch(Exception e)
 						//To locate table.
 						  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
 						  //To locate rows of table.
-						  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
+						  List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
 						  //To calculate no of rows In table.
 						  int rows_count = rows_table.size();
 						  
 						  //headers
-						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
+						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
 						  Row r1=s.createRow(0);
 						  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
 							 subReportName.equalsIgnoreCase("Compensation by Industries") ||
@@ -3180,7 +3762,7 @@ catch(Exception e)
 							    r1.createCell(2).setCellValue(Columns_header.get(2).getText());
 						  }
 						  
-						  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
+						  else if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_NUMBER_OF_JOBS_REPORTED_TAKEN_BY_STATE) ||
 								  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
 								  subReportName.equalsIgnoreCase("Summary")||
 								  subReportName.equalsIgnoreCase("Full-Time Employment")||
@@ -3198,7 +3780,8 @@ catch(Exception e)
 							  Logs.infoLog( "Sub report is "+subReportName);
 							  for(int col=0;col<Columns_header.size();col++)
 							  {
-								  Logs.infoLog("Cell Value Of row number "+r1+" and column number "+col+" is "+Columns_header.get(col).getText());
+								  Logs.infoLog("Cell Value Of row number "+r1+" and column number "+
+							  col+" is "+Columns_header.get(col).getText());
 								  
 								  r1.createCell(col).setCellValue(Columns_header.get(col).getText());
 							  }
@@ -3206,7 +3789,7 @@ catch(Exception e)
 						  for (int row=1; row<rows_count; row++)
 						  {
 							   //To locate columns(cells) of that specific row.
-							   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
+							   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
 							   
 							   //To calculate no of columns(cells) In that specific row.
 							   int columns_count = Columns_row.size();
@@ -3220,11 +3803,6 @@ catch(Exception e)
 							   				String celtext = Columns_row.get(column).getText();			   			
 							   				r.createCell(column).setCellValue(celtext);	
 							   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
-							   				if(!celtext.isEmpty())
-					 		   				{
-					 		   					System.out.println("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
-					 		   				}
-
 							   			}							   			
 							  } //for loop 
 							 FileOutputStream fos=new FileOutputStream(filePath);
@@ -3253,6 +3831,1434 @@ catch(Exception e)
 
 
 	}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT2_TH2_TCN_WriteXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,msg);
+	}
+		
+	
+  }	//method mT1_TH1_TCN_WriteXLSX
+
+	
+	
+	public static void mT1_TCN_WriteXLSX(String sheetName,String excelFileName,String msg,
+			String subReportName) 
+	{
+		boolean xlFileCreated=false;
+		
+		 try
+		 {// fetch the folder path to create work book		
+			 
+				String folderPath=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+						+TestBaseConstants.BASELINE_FOLDER_NAME+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+						+TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.ITERATION+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+						TestBaseConstants.PATH_SIGN+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
+			//System.out.println("Build folder path is "+folderPath);
+				
+			File  preBuildFolderPath=new File( folderPath);
+				 
+				 //Create directory
+		    boolean folderCreated=preBuildFolderPath.mkdirs();
+			String filePath=preBuildFolderPath+"/"+GlobalVariables.testCaseIdentifier+".xlsx";
+			File filePath1 =new File(filePath);
+				 //System.out.println("File Path is -->"+filePath);
+	        if(folderCreated||preBuildFolderPath.exists())
+			 {
+			  if(filePath1.exists())
+				{
+	    			filePath1.delete();
+					xlFileCreated= ExcelTestUtil.createXLS(filePath,
+							GlobalVariables.testCaseIdentifier);		 
+				}
+			 else 
+				{
+				 xlFileCreated= ExcelTestUtil.createXLS(filePath,
+						 GlobalVariables.testCaseIdentifier);
+				}
+					 
+			 if(xlFileCreated)
+			 {	 
+				 if(subReportName.equalsIgnoreCase(TestBaseConstants.BWR_FORGONE_SALARY) )
+			 {
+				
+		 		 
+		 		  // open stream to open file
+		 		 FileInputStream fis=new FileInputStream(filePath);
+		 	     Workbook wb=WorkbookFactory.create(fis);
+		 	    Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
+		 	    
+		 		  //To locate rows of table.	
+		 		 //create first row  
+	 			 Row r=s.createRow(0);
+	 			  String j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[1]/p")).getText();
+	 			  r.createCell(0).setCellValue(j);
+	 			  
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div")).getText();
+				r.createCell(1).setCellValue(j);
+			 
+			 
+				 //Create second row
+				 r=s.createRow(1);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[1]/p")).getText();
+				 r.createCell(0).setCellValue(j);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div")).getText();
+				r.createCell(1).setCellValue(j);
+ 			 
+ 			 FileOutputStream fos=new FileOutputStream(filePath);
+						 				wb.write(fos);
+						 				fos.close();
+			 }//forgone salary
+	 	 }// excel file created
+	 	 
+		 else
+		 {
+				// System.out.println("File not created");
+				 GlobalVariables.APPICATION_LOGS.error("File not created");
+				 Logs.errorLog("File not created");
+		 }
+			 
+		 }
+		 else
+		 {
+			// System.out.println("Folder not created"); 
+			 GlobalVariables.APPICATION_LOGS.error("Folder not created");
+			 Logs.errorLog("Folder not created");
+		 }
+	
+				 GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+				 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+				 rATUStatus(GlobalVariables.result,msg);
+	
+	
+
+}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT1_TCN_WriteXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,msg);
+	}
+			
+		
+    }	//method mT1_TCN_WriteXLSX
+	
+	
+	public static void mT1_TH3_TCN_ReadXLSX(String excelSheetName,String automationId,
+			String xpath,String subReportName,String msg) 
+	{
+	GlobalVariables.testCaseIdentifier=automationId;
+	try
+	{	
+		 String path=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+				+TestBaseConstants.BASELINE_FOLDER_NAME+
+				GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+				+TestBaseConstants.PATH_SIGN+
+				TestBaseConstants.ITERATION+
+				GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+				TestBaseConstants.PATH_SIGN+
+				TestBaseConstants.BASELINE_BUILD_TYPE
+				+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
+	 //System.out.println("Path of file is -->"+path);
+	 FileInputStream fis=new FileInputStream(path);
+		Workbook wb=WorkbookFactory.create(fis); 
+		 
+	 //wb.createSheet(year);
+	 Sheet s=wb.getSheet(excelSheetName); 
+	 
+	 if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_GRADUATE_DEMOGRAPHICS))
+	 {
+		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
+		  //To locate rows of table.
+		  List<WebElement> rows_table = mytable.findElements
+				  (By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		  //To calculate no of rows In table.
+		  int rows_count = rows_table.size();
+		  GlobalVariables.APPICATION_LOGS.info("No of rows in table are-->"+rows_count);
+		  
+		  List<WebElement> Columns_header = rows_table.get(0).findElements
+	 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		  
+		  // comparing first row contents
+		  //compare 0th cell of header
+		  updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+				  ,Columns_header.get(0).getText()); 
+		  //compare 2nd cell
+		  updateError(0,2,s.getRow(0).getCell(2).getStringCellValue()
+				  ,Columns_header.get(1).getText());
+		  
+		  updateError(0,6,s.getRow(0).getCell(6).getStringCellValue()
+				  ,Columns_header.get(2).getText()); 
+		  
+		  //comparing 2nd row contents
+		  Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+		  
+		  updateError(1,2,s.getRow(1).getCell(2).getStringCellValue()
+				  ,Columns_header.get(0).getText()); 
+		  
+		  updateError(1,4,s.getRow(1).getCell(4).getStringCellValue()
+				  ,Columns_header.get(1).getText());
+		  
+		  
+		  //comparing row 3 contents
+		  Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+		  
+		  int cellVal=2;
+			 int colVal=0;
+			 // enter values to cols 2 to 12 
+			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+			  {
+				  updateError(3,cellVal,s.getRow(3).getCell(cellVal).getStringCellValue()
+						  ,Columns_header.get(colVal).getText());
+			  cellVal++;
+			  colVal++;	 			   
+			  }
+		 // compare first row span contents
+			  Columns_header = rows_table.get(3).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+			  updateError(4,cellVal,s.getRow(4).getCell(0).getStringCellValue()
+					  ,Columns_header.get(0).getText());
+			  
+			  updateError(4,cellVal,s.getRow(4).getCell(1).getStringCellValue()
+					  ,Columns_header.get(1).getText());
+			  
+			  Columns_header = rows_table.get(3).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			   cellVal=2;
+				  colVal=0;
+				 // enter values to cols 2 to 12 
+				  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+				  {
+					  updateError(4,cellVal,s.getRow(4).getCell(cellVal).getStringCellValue()
+							  ,Columns_header.get(colVal).getText());
+				  cellVal++;
+				  colVal++;	 			   
+				  }
+				  //compare 2nd row span content
+				  
+				  Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+				  updateError(9,cellVal,s.getRow(9).getCell(0).getStringCellValue()
+						  ,Columns_header.get(0).getText());
+				  
+				  updateError(9,cellVal,s.getRow(9).getCell(1).getStringCellValue()
+						  ,Columns_header.get(1).getText());
+				  
+				  Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				   cellVal=2;
+					  colVal=0;
+					 // enter values to cols 2 to 12 
+					  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+					  {
+						  updateError(9,cellVal,s.getRow(9).getCell(cellVal).getStringCellValue()
+								  ,Columns_header.get(colVal).getText());
+					  cellVal++;
+					  colVal++;	 			   
+					  }
+				  
+				  //compare 3rd row span content
+					  Columns_header = rows_table.get(11).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+					  updateError(12,cellVal,s.getRow(12).getCell(0).getStringCellValue()
+							  ,Columns_header.get(0).getText());
+					  Columns_header = rows_table.get(11).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			 			 cellVal=2;
+			 			  colVal=0;
+			 			  
+			 			// enter values to cols 2 to 12 
+						  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+						  {
+							  updateError(12,cellVal,s.getRow(12).getCell(cellVal).getStringCellValue()
+									  ,Columns_header.get(colVal).getText());
+						  cellVal++;
+						  colVal++;	 			   
+						  }	
+						  
+					//compare contents from row 3 to 7 
+						  
+						  for (int row=4; row<8; row++)
+				 			 {
+				 			 List<WebElement> Columns_row = rows_table.get(row).
+				 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+				 			 updateError(row+1,cellVal,s.getRow(row+1).getCell(1).getStringCellValue()
+									  ,Columns_row.get(0).getText());
+				 			Columns_row = rows_table.get(row).findElements
+			 						  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				 			
+				 			cellVal=2;
+		 					  colVal=0;
+		 					  
+		 					 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+							  {
+								  updateError(row+1,cellVal,s.getRow(row+1).getCell(cellVal).getStringCellValue()
+										  ,Columns_row.get(colVal).getText());
+							  cellVal++;
+							  colVal++;	 			   
+							  }	 					 
+		 					 				 			 
+				 			 }
+					  // compare contents from row 10 & 11
+						  int row=9;
+						  while(row<11)
+				 			{
+				 			 List<WebElement> Columns_row = rows_table.get(row).
+				 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+				 			 updateError(row+1,cellVal,s.getRow(row+1).getCell(1).getStringCellValue()
+									  ,Columns_row.get(0).getText());
+				 			Columns_row = rows_table.get(row).findElements
+			 						  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				 			
+				 			cellVal=2;
+		 					  colVal=0;
+		 					  
+		 					 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+							  {
+								  updateError(row+1,cellVal,s.getRow(row+1).getCell(cellVal).getStringCellValue()
+										  ,Columns_row.get(colVal).getText());
+							  cellVal++;
+							  colVal++;	 			   
+							  }	 					 
+		 					row++; 			
+				 			
+				 			}
+				 
+	 }
+	 
+	 
+	 FileOutputStream fos=new FileOutputStream(path);
+		wb.write(fos);
+		fos.close();
+		
+	GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+    GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+   	rATUStatus(GlobalVariables.result,msg);	
+	}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT1_TH3_TCN_ReadXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,ermsg);
+	}
+	
+	}//mT1_TH3_TCN_ReadXLSX
+	
+	
+
+	public static void mT1_TH3_TCN_WriteXLSX(String sheetName,String excelFileName,String msg,
+			String tableXpath,String subReportName) 
+	{
+		boolean xlFileCreated=false;
+		
+		 try
+		 {// fetch the folder path to create work book		
+			 
+				String folderPath=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+						+TestBaseConstants.BASELINE_FOLDER_NAME+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+						+TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.ITERATION+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+						TestBaseConstants.PATH_SIGN+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
+			//System.out.println("Build folder path is "+folderPath);
+				
+			File  preBuildFolderPath=new File( folderPath);
+				 
+				 //Create directory
+		    boolean folderCreated=preBuildFolderPath.mkdirs();
+			String filePath=preBuildFolderPath+"/"+GlobalVariables.testCaseIdentifier+".xlsx";
+			File filePath1 =new File(filePath);
+				 //System.out.println("File Path is -->"+filePath);
+	        if(folderCreated||preBuildFolderPath.exists())
+			 {
+			  if(filePath1.exists())
+				{
+	    			filePath1.delete();
+					xlFileCreated= ExcelTestUtil.createXLS(filePath,
+							GlobalVariables.testCaseIdentifier);		 
+				}
+			 else 
+				{
+				 xlFileCreated= ExcelTestUtil.createXLS(filePath,
+						 GlobalVariables.testCaseIdentifier);
+				}
+					 
+			 if(xlFileCreated)
+			 {	 
+				 if(subReportName.equalsIgnoreCase(TestBaseConstants.NALP_GRADUATE_DEMOGRAPHICS) )
+			 {
+				 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
+		 		  //To locate rows of table.
+		 		 List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		 		 //System.out.println("row count is -->"+rows_table.size());
+		 		  // open stream to open file
+		 		 FileInputStream fis=new FileInputStream(filePath);
+		 	     Workbook wb=WorkbookFactory.create(fis);
+		 			//get row size
+		 		// int rows_count = rows_table.size();	 			 
+		 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
+		 		 
+		 		 List<WebElement> Columns_header = rows_table.get(0).findElements
+		 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 		 //System.out.println("Header count is -->"+Columns_header.size());
+		 		 
+		 		 //create first row  
+	 			 Row r1=s.createRow(0);
+	 			  String j=Columns_header.get(0).getText(); 
+	 			 r1.createCell(0).setCellValue(j);
+	 			  // merge the text based on rowspan or colspan
+	 				 s.addMergedRegion(new CellRangeAddress(0, 3, 0, 1));
+	 			 
+	 			 // add value to cell 2
+	 			 r1.createCell(2).setCellValue(Columns_header.get(1).getText());
+	 			 s.addMergedRegion(new CellRangeAddress(0, 0, 2, 5));
+	 			 
+	 			// add value to cell 3
+	 			 r1.createCell(6).setCellValue(Columns_header.get(2).getText());
+	 			 s.addMergedRegion(new CellRangeAddress(0, 1, 6, 7));
+	 			 
+	 			r1=s.createRow(1);
+	 			
+	 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			 
+	 			// second row of header
+	 			  
+	 			 r1.createCell(2).setCellValue(Columns_header.get(0).getText());
+	 			s.addMergedRegion(new CellRangeAddress(1, 2, 2, 3));
+	 			r1.createCell(4).setCellValue(Columns_header.get(1).getText());	 			
+	 			s.addMergedRegion(new CellRangeAddress(1, 2, 4, 5));
+	 			
+	 			  // fetch 3nd row contents 
+	 			r1=s.createRow(3);
+	 			 Columns_header = rows_table.get(2).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			//System.out.println(Columns_header.size());
+	 			 int cellVal=2;
+	 			 int colVal=0;
+	 			 // enter values to cols 2 to 12 
+	 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+	 			  {
+	 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+	 			  cellVal++;
+	 			  colVal++;	 			   
+	 			  }
+	 			  
+	 			// 3rd row-first row span content i.e fetch Employed value 
+		 			 
+		 			 
+		 			 Columns_header = rows_table.get(3).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+		 			 r1=s.createRow(4);
+		 			
+		 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+		 			 s.addMergedRegion(new CellRangeAddress(4, 8, 0, 0));
+		 			//System.out.println(Columns_header.get(1).getText());
+		 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+		 					 			
+		 			 Columns_header = rows_table.get(3).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+		 			  cellVal=2;
+		 				  colVal=0;
+		 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+		 			  {
+		 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+		 			  cellVal++;
+		 			  colVal++;
+		 			   
+		 			  }	
+		 			 
+		 			// second row pan content
+			 			
+			 			Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+			 			 r1=s.createRow(9);
+			 			// System.out.println(Columns_header.get(0).getText());
+			 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+			 			 s.addMergedRegion(new CellRangeAddress(9, 11, 0, 0));
+			 			 
+			 			//System.out.println(Columns_header.get(1).getText());
+			 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());
+			 			 Columns_header = rows_table.get(8).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			 			  cellVal=2;
+			 			  colVal=0;
+			 			  while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+			 			  {
+			 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+			 			  cellVal++;
+			 			  colVal++;
+			 			  					   
+			 			  }	 
+			 			// third row span
+				 			Columns_header = rows_table.get(11).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+				 			 r1=s.createRow(12);
+				 			
+				 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());				 			
+				 			
+				 			 Columns_header = rows_table.get(11).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				 			 cellVal=2;
+				 			  colVal=0;
+				 			 while(cellVal<Columns_header.size()+2 &&colVal<Columns_header.size())
+				 			  {
+				 			  r1.createCell(cellVal).setCellValue(Columns_header.get(colVal).getText());
+				 			  cellVal++;
+				 			  colVal++;
+				 			  					   
+				 			  }	
+				 			 // Fetch the contents of table from row 3 to last 7th row
+						 			 for (int row=4; row<8; row++)
+						 			 {
+						 			 List<WebElement> Columns_row = rows_table.get(row).
+						 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+						 			
+							
+						 			 Row r=s.createRow(row+1);
+						 			 String celtext = Columns_row.get(0).getText();
+						 			
+						 			 r.createCell(1).setCellValue(celtext);
+						 				   //To locate columns(cells) of that specific row.
+						 			 Columns_row = rows_table.get(row).findElements
+						 						  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+						 				     
+						 				   cellVal=2;
+						 					  colVal=0;
+						 					  while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
+						 					  {
+						 					  r.createCell(cellVal).setCellValue
+						 					  (Columns_row.get(colVal).getText());
+						 					  cellVal++;
+						 					  colVal++;						 					   
+						 					  }
+						 			 }
+
+						 			//fetch contents of second block 
+						 			/*for(int row=9;row<12;row++)*/
+						 			 int row=9;
+						 			 while(row<11)
+						 			{
+						 			 List<WebElement> Columns_row = rows_table.get(row).
+						 					 findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+						 			
+						 		
+						 			 Row r=s.createRow(row+1);
+						 			 String celtext = Columns_row.get(0).getText();
+						 			
+						 			 r.createCell(1).setCellValue(celtext);	 
+						 				   //To locate columns(cells) of that specific row.
+						 				  Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+						 				      
+						 				   cellVal=2;
+						 					  colVal=0;
+						 					  while(cellVal<Columns_row.size()+2 &&colVal<Columns_row.size())
+						 					  {
+						 					  r.createCell(cellVal).setCellValue(Columns_row.get(colVal).getText());
+						 					  cellVal++;
+						 					  colVal++;						 					   
+						 					  }
+						 					  row++;
+						 			 }	
+						 					 			 
+						 			 FileOutputStream fos=new FileOutputStream(filePath);
+						 				wb.write(fos);
+						 				fos.close();
+			 }//Graduate Demographics				 
+	 	 }// excel file created
+	 	 
+		 else
+		 {
+				// System.out.println("File not created");
+				 GlobalVariables.APPICATION_LOGS.error("File not created");
+				 Logs.errorLog("File not created");
+		 }
+			 
+		 }
+		 else
+		 {
+			// System.out.println("Folder not created"); 
+			 GlobalVariables.APPICATION_LOGS.error("Folder not created");
+			 Logs.errorLog("Folder not created");
+		 }
+	
+				 GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+				 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+				 rATUStatus(GlobalVariables.result,msg);
+	
+	
+
+}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT3_TH2_TCN_WriteXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,msg);
+	}
+			
+		
+    }	//method mT3_TH2_TCN_WriteXLSX
+	
+	
+	public static void mT3_TH2_TCN_ReadXLSX(String excelSheetName,String automationId,
+			String tableXpath,String tableXpath2,String tableXpath3,String subReportName,String msg) 
+	{
+	GlobalVariables.testCaseIdentifier=automationId;
+	try
+	{	
+		 String path=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+				+TestBaseConstants.BASELINE_FOLDER_NAME+
+				GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+				+TestBaseConstants.PATH_SIGN+
+				TestBaseConstants.ITERATION+
+				GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+				TestBaseConstants.PATH_SIGN+
+				TestBaseConstants.BASELINE_BUILD_TYPE
+				+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
+	 //System.out.println("Path of file is -->"+path);
+	 FileInputStream fis=new FileInputStream(path);
+		Workbook wb=WorkbookFactory.create(fis); 
+		 
+	 //wb.createSheet(year);
+	 Sheet s=wb.getSheet(excelSheetName); 
+	 
+	 if(subReportName.equalsIgnoreCase(TestBaseConstants.MBA_COMPENSATION_REPORT))
+	 {
+		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
+		  //To locate rows of table.
+		 List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		// First row of header
+		 List<WebElement> Columns_header = rows_table.get(0).findElements
+ 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+					,Columns_header.get(0).getText());
+		// second row of header
+		 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+		 updateError(1,1,s.getRow(1).getCell(1).getStringCellValue()
+					,Columns_header.get(1).getText());
+		 
+		 updateError(1,2,s.getRow(1).getCell(2).getStringCellValue()
+					,Columns_header.get(2).getText());
+		 updateError(1,3,s.getRow(1).getCell(3).getStringCellValue()
+					,Columns_header.get(3).getText());
+		 updateError(1,4,s.getRow(1).getCell(4).getStringCellValue()
+					,Columns_header.get(4).getText());
+		 updateError(1,5,s.getRow(1).getCell(5).getStringCellValue()
+					,Columns_header.get(5).getText());
+		 updateError(1,6,s.getRow(1).getCell(6).getStringCellValue()
+					,Columns_header.get(6).getText());
+		// Fetch the contents of table from row 3 to last 7th row
+	     for (int row=2; row<rows_table.size(); row++)
+		 {
+	    	 //To locate columns(cells) of that specific row.
+			   List<WebElement> Columns_row = rows_table.get(row).
+					   findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			   
+			   //To calculate no of columns(cells) In that specific row.
+			   int columns_count = Columns_row.size();
+			   
+			   for (int column=0; column<columns_count; column++)
+	   			{
+	   			//To retrieve text from that specific cell.
+				   updateError(row,column,s.getRow(row).getCell(column).getStringCellValue()
+							,Columns_row.get(column).getText());
+	   			}		
+		 }	   
+		 
+	     //Table 2 
+	     
+	     mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath2));
+		  //To locate rows of table.
+		  rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		 // System.out.println(rows_table.size());
+	      Columns_header = rows_table.get(0).findElements
+				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+	     
+	     
+	      updateError(6,0,s.getRow(6).getCell(0).getStringCellValue()
+					,Columns_header.get(0).getText());
+	      
+	      Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	      updateError(7,1,s.getRow(7).getCell(1).getStringCellValue()
+					,Columns_header.get(1).getText());
+		 
+		 updateError(7,2,s.getRow(7).getCell(2).getStringCellValue()
+					,Columns_header.get(2).getText());
+		 updateError(7,3,s.getRow(7).getCell(3).getStringCellValue()
+					,Columns_header.get(3).getText());
+		 updateError(7,4,s.getRow(7).getCell(4).getStringCellValue()
+					,Columns_header.get(4).getText());
+		 updateError(7,5,s.getRow(7).getCell(5).getStringCellValue()
+					,Columns_header.get(5).getText());
+		 updateError(7,6,s.getRow(7).getCell(6).getStringCellValue()
+					,Columns_header.get(6).getText());
+		
+		 int rw=8;
+			int row=2;
+			while(rw<11&& row<rows_table.size())
+			{					    			    	
+		    	 //To locate columns(cells) of that specific row.
+				  List<WebElement> Columns_row = rows_table.get(row).findElements
+						  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				   
+				   //To calculate no of columns(cells) In that specific row.
+				   int columns_count = Columns_row.size();				  
+				   
+				    		//Loop will execute till the last cell of that specific row.
+				   			for (int column=0; column<columns_count; column++)
+				   			{
+				   			 updateError(row,column,s.getRow(rw).getCell(column).getStringCellValue()
+										,Columns_row.get(column).getText());
+				   			}
+				 row++;
+		     rw++;
+			}
+			
+			//Table3
+			 mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath3));
+	 		  //To locate rows of table.
+	 		  rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		      Columns_header = rows_table.get(0).findElements
+	 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		      updateError(12,0,s.getRow(12).getCell(0).getStringCellValue()
+						,Columns_header.get(0).getText()); 
+		      Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		      
+		      updateError(13,1,s.getRow(13).getCell(1).getStringCellValue()
+						,Columns_header.get(1).getText());
+			 
+			 updateError(13,2,s.getRow(13).getCell(2).getStringCellValue()
+						,Columns_header.get(2).getText());
+			 updateError(13,3,s.getRow(13).getCell(3).getStringCellValue()
+						,Columns_header.get(3).getText());
+			 updateError(13,4,s.getRow(13).getCell(4).getStringCellValue()
+						,Columns_header.get(4).getText());
+			 updateError(13,5,s.getRow(13).getCell(5).getStringCellValue()
+						,Columns_header.get(5).getText());
+			 updateError(13,6,s.getRow(13).getCell(6).getStringCellValue()
+						,Columns_header.get(6).getText());
+			 
+			  rw=14;
+			 row=2;
+				while(rw<17&& row<rows_table.size())
+				{					    			    	
+			    	 //To locate columns(cells) of that specific row.
+					  List<WebElement> Columns_row = rows_table.get(row).findElements
+							  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+					   
+					   //To calculate no of columns(cells) In that specific row.
+					   int columns_count = Columns_row.size();				  
+					   
+					    		//Loop will execute till the last cell of that specific row.
+					   			for (int column=0; column<columns_count; column++)
+					   			{
+					   			 updateError(row,column,s.getRow(rw).getCell(column).getStringCellValue()
+											,Columns_row.get(column).getText());
+					   			}
+					 row++;
+			     rw++;
+				}
+						
+						
+		      
+	 }
+	 
+
+	 FileOutputStream fos=new FileOutputStream(path);
+		wb.write(fos);
+		fos.close();
+		
+	GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+    GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+   	rATUStatus(GlobalVariables.result,msg);	
+	}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT1_TH3_TCN_ReadXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,ermsg);
+	}
+	
+	}//mT3_TH2_TCN_ReadXLSX
+	
+	
+	
+	public static void mT3_TH2_TCN_WriteXLSX(String sheetName,String excelFileName,String msg,
+			String tableXpath,String tableXpath2,String tableXpath3,String subReportName) 
+	{
+		boolean xlFileCreated=false;
+		
+		 try
+		 {// fetch the folder path to create work book		
+			 
+				String folderPath=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+						+TestBaseConstants.BASELINE_FOLDER_NAME+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+						+TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.ITERATION+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+						TestBaseConstants.PATH_SIGN+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
+			//System.out.println("Build folder path is "+folderPath);
+				
+			File  preBuildFolderPath=new File( folderPath);
+				 
+				 //Create directory
+		    boolean folderCreated=preBuildFolderPath.mkdirs();
+			String filePath=preBuildFolderPath+"/"+GlobalVariables.testCaseIdentifier+".xlsx";
+			File filePath1 =new File(filePath);
+				 //System.out.println("File Path is -->"+filePath);
+	        if(folderCreated||preBuildFolderPath.exists())
+			 {
+			  if(filePath1.exists())
+				{
+	    			filePath1.delete();
+					xlFileCreated= ExcelTestUtil.createXLS(filePath,
+							GlobalVariables.testCaseIdentifier);		 
+				}
+			 else 
+				{
+				 xlFileCreated= ExcelTestUtil.createXLS(filePath,
+						 GlobalVariables.testCaseIdentifier);
+				}
+					 
+			 if(xlFileCreated)
+			 {	 
+				 if(subReportName.equalsIgnoreCase(TestBaseConstants.MBA_COMPENSATION_REPORT) )
+			 {
+				
+		 		 //System.out.println("row count is -->"+rows_table.size());
+		 		  // open stream to open file
+		 		 FileInputStream fis=new FileInputStream(filePath);
+		 	     Workbook wb=WorkbookFactory.create(fis);
+		 	     
+		 	    WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
+		 		  //To locate rows of table.
+		 		 List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		 			//get row size
+		 		// int rows_count = rows_table.size();	 			 
+		 		 Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
+		 		 
+		 		//System.out.println(rows_table.size());
+		 		 
+		 		 List<WebElement> Columns_header = rows_table.get(0).findElements
+		 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 		 //System.out.println("Header count is -->"+Columns_header.size());
+		 		 
+		 		 //create first row  
+	 			 Row r1=s.createRow(0);
+	 			  String j=Columns_header.get(0).getText(); 
+	 			 r1.createCell(0).setCellValue(j);
+	 			  // merge the text based on rowspan or colspan
+	 				 s.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
+	 			 
+	 			 
+	 			r1=s.createRow(1);
+	 			
+	 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			 
+	 			// second row of header
+	 			  
+	 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+	 			
+	 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());	 			
+	 			
+	 			
+	 			r1.createCell(2).setCellValue(Columns_header.get(2).getText());	 			
+	 			
+	 			r1.createCell(3).setCellValue(Columns_header.get(3).getText());	
+	 			
+	 			r1.createCell(4).setCellValue(Columns_header.get(4).getText());	 
+	 			
+	 			r1.createCell(5).setCellValue(Columns_header.get(5).getText());
+	 			
+	 			r1.createCell(6).setCellValue(Columns_header.get(6).getText());
+	 			 			 // Fetch the contents of table from row 3 to last 7th row
+			     for (int row=2; row<rows_table.size(); row++)
+				 {
+			    	 //To locate columns(cells) of that specific row.
+					   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+					   
+					   //To calculate no of columns(cells) In that specific row.
+					   int columns_count = Columns_row.size();
+					   
+					   Row r=s.createRow(row);
+					   
+					    		//Loop will execute till the last cell of that specific row.
+					   			for (int column=0; column<columns_count; column++)
+					   			{
+					   			//To retrieve text from that specific cell.
+					   				String celtext = Columns_row.get(column).getText();			   			
+					   				r.createCell(column).setCellValue(celtext);	
+					   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+				//	   				System.out.println("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+					   			}							   			
+					  } //for loop 
+		  
+			      mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath2));
+		 		  //To locate rows of table.
+		 		  rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		 		 // System.out.println(rows_table.size());
+			      Columns_header = rows_table.get(0).findElements
+		 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 		 //System.out.println("Header count is -->"+Columns_header.size());
+		 		 
+		 		 //create first row  
+	 			  r1=s.createRow(6);
+	 			   j=Columns_header.get(0).getText(); 
+	 			 r1.createCell(0).setCellValue(j);
+	 			  // merge the text based on rowspan or colspan
+	 				 s.addMergedRegion(new CellRangeAddress(6, 6, 0, 6));
+	 			 
+	 			 
+	 			r1=s.createRow(7);
+	 			
+	 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			//System.out.println(Columns_header.size()); 
+	 			// second row of header
+	 			  
+	 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+	 			
+	 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());	 			
+	 			
+	 			
+	 			r1.createCell(2).setCellValue(Columns_header.get(2).getText());	 			
+	 			
+	 			r1.createCell(3).setCellValue(Columns_header.get(3).getText());	
+	 			
+	 			r1.createCell(4).setCellValue(Columns_header.get(4).getText());	 
+	 			
+	 			r1.createCell(5).setCellValue(Columns_header.get(5).getText());
+	 			
+	 			r1.createCell(6).setCellValue(Columns_header.get(6).getText());
+	 			
+	 			int rw=8;
+	 			int row=2;
+	 			while(rw<11&& row<rows_table.size())
+	 			{
+	 			// Fetch the contents of table from row 3 to last 7th row			    			    	
+			    	 //To locate columns(cells) of that specific row.
+					  List<WebElement> Columns_row = rows_table.get(row).findElements
+							  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+					   
+					   //To calculate no of columns(cells) In that specific row.
+					   int columns_count = Columns_row.size();
+					   //System.out.println(columns_count);
+					   Row r=s.createRow(rw);
+					   
+					    		//Loop will execute till the last cell of that specific row.
+					   			for (int column=0; column<columns_count; column++)
+					   			{
+					   			//To retrieve text from that specific cell.
+					   				String celtext = Columns_row.get(column).getText();			   			
+					   				r.createCell(column).setCellValue(celtext);	
+					   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+					   			}
+					 row++;
+			     rw++;
+	 			}
+			    
+			     mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath3));
+		 		  //To locate rows of table.
+		 		  rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+			      Columns_header = rows_table.get(0).findElements
+		 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 		 //System.out.println("Header count is -->"+Columns_header.size());
+		 		 
+		 		 //create first row  
+	 			  r1=s.createRow(12);
+	 			   j=Columns_header.get(0).getText(); 
+	 			 r1.createCell(0).setCellValue(j);
+	 			  // merge the text based on rowspan or colspan
+	 				 s.addMergedRegion(new CellRangeAddress(12, 12, 0, 6));
+	 			 
+	 			 
+	 			r1=s.createRow(13);
+	 			
+	 			 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	 			 
+	 			// second row of header
+	 			  
+	 			 r1.createCell(0).setCellValue(Columns_header.get(0).getText());
+	 			
+	 			r1.createCell(1).setCellValue(Columns_header.get(1).getText());	 			
+	 			
+	 			
+	 			r1.createCell(2).setCellValue(Columns_header.get(2).getText());	 			
+	 			
+	 			r1.createCell(3).setCellValue(Columns_header.get(3).getText());	
+	 			
+	 			r1.createCell(4).setCellValue(Columns_header.get(4).getText());	 
+	 			
+	 			r1.createCell(5).setCellValue(Columns_header.get(5).getText());
+	 			
+	 			r1.createCell(6).setCellValue(Columns_header.get(6).getText());
+	 			 			 // Fetch the contents of table from row 3 to last 7th row
+			   row=2;
+			   rw=14;
+					   
+					   while(rw<17 && row<rows_table.size() )
+					   {
+				 			// Fetch the contents of table from row 3 to last 7th row			    			    	
+						    	 //To locate columns(cells) of that specific row.
+								  List<WebElement> Columns_row = rows_table.get(row).findElements
+										  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+								   
+								   //To calculate no of columns(cells) In that specific row.
+								   int columns_count = Columns_row.size();
+								   //System.out.println(columns_count);
+								   Row r=s.createRow(rw);
+								   
+								    		//Loop will execute till the last cell of that specific row.
+								   			for (int column=0; column<columns_count; column++)
+								   			{
+								   			//To retrieve text from that specific cell.
+								   				String celtext = Columns_row.get(column).getText();			   			
+								   				r.createCell(column).setCellValue(celtext);	
+								   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
+								   			}
+								 row++;
+						     rw++;
+				 			}
+
+						 			 FileOutputStream fos=new FileOutputStream(filePath);
+						 				wb.write(fos);
+						 				fos.close();
+			 }//compensate report			 
+	 	 }// excel file created
+	 	 
+		 else
+		 {
+				// System.out.println("File not created");
+				 GlobalVariables.APPICATION_LOGS.error("File not created");
+				 Logs.errorLog("File not created");
+		 }
+			 
+		 }
+		 else
+		 {
+			// System.out.println("Folder not created"); 
+			 GlobalVariables.APPICATION_LOGS.error("Folder not created");
+			 Logs.errorLog("Folder not created");
+		 }
+	
+				 GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+				 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+				 rATUStatus(GlobalVariables.result,msg);
+	
+	
+
+}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT1_TCN_WriteXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,msg);
+	}
+			
+		
+    }	//method mT1_TCN_WriteXLSX
+	
+	
+	public static void mT1_TCN_ReadXLSX(String sheetName,String excelFileName,String msg,
+			String subReportName) 
+	{
+		 try
+		 {// fetch the folder path to create work book		
+			 String path=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.BASELINE_BUILD_TYPE
+					+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
+		 //System.out.println("Path of file is -->"+path);
+		 FileInputStream fis=new FileInputStream(path);
+			Workbook wb=WorkbookFactory.create(fis); 
+			 
+		 //wb.createSheet(year);
+		 Sheet s=wb.getSheet(sheetName); 
+		
+			 if(subReportName.contains(TestBaseConstants.BWR_FORGONE_SALARY) )
+			 { 
+				 //Compare first row  
+				
+				 //1st cell
+	 			  String j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[1]/p")).getText();	 			 
+	 			 updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+							,j);
+	 			  //2nd cell
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div")).getText();
+				 updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
+							,j);
+			 
+			 
+				 //Compare second row
+				//1st cell
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[1]/p")).getText();
+				 updateError(1,0,s.getRow(1).getCell(0).getStringCellValue()
+							,j);
+				 //2nd cell
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div")).getText();
+				 updateError(1,0,s.getRow(1).getCell(1).getStringCellValue()
+							,j);
+ 		
+			 }
+			 
+			 FileOutputStream fos=new FileOutputStream(path);
+				wb.write(fos);
+				fos.close();
+				
+			GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+		    GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		   	rATUStatus(GlobalVariables.result,msg);	
+
+	}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT1_TCN_ReadXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,msg);
+	}	
+   }	//method mT1_TCN_ReadXLSX
+	
+	
+	
+	public static void mT1_TCN_LST_WriteXLSX(String sheetName,String excelFileName,String msg,
+			String subReportName) 
+	{
+		boolean xlFileCreated=false;
+		
+		 try
+		 {// fetch the folder path to create work book		
+			 
+				String folderPath=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+						+TestBaseConstants.BASELINE_FOLDER_NAME+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+						+TestBaseConstants.PATH_SIGN+
+						TestBaseConstants.ITERATION+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+						TestBaseConstants.PATH_SIGN+
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE);
+			//System.out.println("Build folder path is "+folderPath);
+				
+			File  preBuildFolderPath=new File( folderPath);
+				 
+				 //Create directory
+		    boolean folderCreated=preBuildFolderPath.mkdirs();
+			String filePath=preBuildFolderPath+"/"+GlobalVariables.testCaseIdentifier+".xlsx";
+			File filePath1 =new File(filePath);
+				 //System.out.println("File Path is -->"+filePath);
+	        if(folderCreated||preBuildFolderPath.exists())
+			 {
+			  if(filePath1.exists())
+				{
+	    			filePath1.delete();
+					xlFileCreated= ExcelTestUtil.createXLS(filePath,
+							GlobalVariables.testCaseIdentifier);		 
+				}
+			 else 
+				{
+				 xlFileCreated= ExcelTestUtil.createXLS(filePath,
+						 GlobalVariables.testCaseIdentifier);
+				}
+					 
+			 if(xlFileCreated)
+			 {	 
+				 if(subReportName.contains(TestBaseConstants.BWR_OVERALL_EMPLOYEMENT) )
+			 {
+				
+					 GlobalVariables.APPICATION_LOGS.info("fetching info from table");
+		 		  // open stream to open file
+		 		 FileInputStream fis=new FileInputStream(filePath);
+		 	     Workbook wb=WorkbookFactory.create(fis);
+		 	    Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
+		 	    
+		 		  //To locate rows of table.	
+		 		 //create first row  
+	 			 Row r=s.createRow(0);
+	 			  String j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[1]/p")).getText();
+
+					 GlobalVariables.APPICATION_LOGS.info(j);
+	 			  r.createCell(0).setCellValue(j);
+	 			  
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label")).getText();
+				r.createCell(1).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[2]")).getText();
+				r.createCell(2).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);				
+			
+				 r=s.createRow(1);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[3]")).getText();
+				r.createCell(1).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);				
+				
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[4]")).getText();
+				r.createCell(2).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				
+				r=s.createRow(2);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[5]")).getText();
+				r.createCell(1).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);				
+				
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[6]")).getText();
+				r.createCell(2).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				 
+				
+				
+				r=s.createRow(3);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[1]/p")).getText();
+				 r.createCell(0).setCellValue(j);
+				 GlobalVariables.APPICATION_LOGS.info(j);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label")).getText();
+				r.createCell(1).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[2]")).getText();
+				r.createCell(2).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				
+				r=s.createRow(4);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[3]")).getText();
+				r.createCell(1).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[4]")).getText();
+				r.createCell(2).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				
+				r=s.createRow(5);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[5]")).getText();
+				r.createCell(1).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[6]")).getText();
+				r.createCell(2).setCellValue(j);
+				GlobalVariables.APPICATION_LOGS.info(j);
+				
+				 //Create 6th row
+				 r=s.createRow(6);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@class='report_list']/tbody/tr[3]/td[1]/p")).getText();
+				 GlobalVariables.APPICATION_LOGS.info(j);
+				 r.createCell(0).setCellValue(j);
+				 s.addMergedRegion(new CellRangeAddress(6, 6, 0, 1));
+				 GlobalVariables.APPICATION_LOGS.info(j);
+				 //Create 7th row
+				 r=s.createRow(7);				 
+				
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[1]")).getText();
+					 r.createCell(0).setCellValue(j);
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 /*j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[1]/span")).getText();
+					 r.createCell(1).setCellValue(j); 
+					 GlobalVariables.APPICATION_LOGS.info(j);*/
+
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[2]")).getText();
+					 r.createCell(2).setCellValue(j);
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 /*j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[2]/span")).getText();
+					 r.createCell(3).setCellValue(j); 
+					 GlobalVariables.APPICATION_LOGS.info(j);
+*/					
+					 //Create 8th row
+					 r=s.createRow(8); 
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[3]/span[1]")).getText();
+					 r.createCell(0).setCellValue(j);
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[3]/span[2]")).getText();
+					 r.createCell(1).setCellValue(j); 
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[4]/span[1]")).getText();
+					 r.createCell(2).setCellValue(j);
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[4]/span[2]")).getText();
+					 r.createCell(3).setCellValue(j); 
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 
+					//Create 9th row					 
+					 r=s.createRow(9);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[5]/span[1]")).getText();
+					 r.createCell(0).setCellValue(j);
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[5]/span[2]")).getText();
+					 r.createCell(1).setCellValue(j); 
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[6]/span[1]")).getText();
+					 r.createCell(2).setCellValue(j);
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[6]/span[2]")).getText();
+					 r.createCell(3).setCellValue(j); 
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 
+					 
+					//Create 10th row
+					 r=s.createRow(10);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[7]/span[1]")).getText();
+					 r.createCell(0).setCellValue(j);
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[7]/span[2]")).getText();
+					 r.createCell(1).setCellValue(j); 
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[8]/span[1]")).getText();
+					 r.createCell(2).setCellValue(j);
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					 j=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/ul/li[8]/span[2]")).getText();
+					 r.createCell(3).setCellValue(j); 
+					 GlobalVariables.APPICATION_LOGS.info(j);
+					
+ 			 FileOutputStream fos=new FileOutputStream(filePath);
+						 				wb.write(fos);
+						 				fos.close();
+			 }//Overall employment
+				 else if(subReportName.contains(TestBaseConstants.BWR_TOP_15_EMPLOYESS) )
+				 {
+					 GlobalVariables.APPICATION_LOGS.info("Subreport name is "+subReportName);
+					 FileInputStream fis=new FileInputStream(filePath);
+			 	     Workbook wb=WorkbookFactory.create(fis);
+			 	    Sheet s=wb.getSheet(GlobalVariables.testCaseIdentifier);
+			 	    			 	    
+			 	   Row r=s.createRow(0);
+			 	   
+			 	 String m=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/table/tbody/tr/td/p")).getText();			 	   
+			 	 r.createCell(0).setCellValue(m);
+			 	 s.addMergedRegion(new CellRangeAddress(0, 0, 0, 2));
+			 int k=1;	
+			 
+			 	while(k<16)
+			 	 for (int i=1;i<=15;i++)
+			 	 {
+			 		 r=s.createRow(k);
+			 			 m=GlobalVariables.driver.findElement
+							  (By.xpath("//*[@id='main']/table/tbody/tr/td/ul/li["+i+"]"+"/span[1]")).getText();
+			 			
+			 			r.createCell(0).setCellValue(m);
+			 			 m=GlobalVariables.driver.findElement
+								  (By.xpath("//*[@id='main']/table/tbody/tr/td/ul/li["+i+"]"+"/span[2]")).getText();
+			 			r.createCell(1).setCellValue(m);
+			 			m=GlobalVariables.driver.findElement
+								  (By.xpath("//*[@id='main']/table/tbody/tr/td/ul/li["+i+"]"+"/span[3]")).getText();
+			 			r.createCell(2).setCellValue(m);
+			 			k++;
+			 	 }
+			 	 
+			 	 
+			 	   FileOutputStream fos=new FileOutputStream(filePath);
+	 				wb.write(fos);
+	 				fos.close(); 
+				 }
+				 
+				 
+	 	 }// excel file created
+	 	 
+		 else
+		 {
+				// System.out.println("File not created");
+				 GlobalVariables.APPICATION_LOGS.error("File not created");
+				 Logs.errorLog("File not created");
+		 }
+			 
+		 }
+		 else
+		 {
+			// System.out.println("Folder not created"); 
+			 GlobalVariables.APPICATION_LOGS.error("Folder not created");
+			 Logs.errorLog("Folder not created");
+		 }
+	
+				 GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+				 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+				 rATUStatus(GlobalVariables.result,msg);
+	
+	
+
+}
 	catch(Exception e)
 	{
 		GlobalVariables.exceptionMsgVal=e.getMessage();
@@ -3264,347 +5270,400 @@ catch(Exception e)
 		Logs.errorLog(ermsg);
 		rATUStatus(GlobalVariables.result,msg);
 	}
+			
 		
+    }	//method mT1_TCN_LST_WriteXLSX
 	
-  }	
-	/********************************************************************************************
-	 *		Author 						:	DivyaRaju.R
-	 *		LastModifiedDate			:	1st may 2015
-	 *		Method name					:	mT2_DIV_TH1_TCN_ReadXLSX
-	 *		Description					:	This method is used for fetching data from 1220
-	 *										 application
-	 *										 and writing that excel
-	 *
-	*********************************************************************************************/
- 
-	public static void mT2_DIV_TH1_TCN_ReadXLSX(String excelSheetName,String automationId,
-				String xpath,String subReportName,String msg) 
+	
+
+	public static void mT1_TCN_LST_READXLSX(String sheetName,String excelFileName,String msg,
+			String subReportName) 
 	{
-		GlobalVariables.testCaseIdentifier=automationId;
-		try
-	    {
-			 String path=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-					 "/"+TestBaseConstants.BASELINE_BUILD_TYPE+"/"+
-					 GlobalVariables.testCaseIdentifier+".xlsx";
-			 //System.out.println("Path of file is -->"+path);
-			 FileInputStream fis=new FileInputStream(path);
-				Workbook wb=WorkbookFactory.create(fis); 
+		 try
+		 {// fetch the folder path to create work book		
+			 String path=cleanPath(
+						GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+						+TestBaseConstants.PATH_SIGN
+					+TestBaseConstants.BASELINE_FOLDER_NAME+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+					+TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.ITERATION+
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+					TestBaseConstants.PATH_SIGN+
+					TestBaseConstants.BASELINE_BUILD_TYPE
+					+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
+		 //System.out.println("Path of file is -->"+path);
+		 FileInputStream fis=new FileInputStream(path);
+			Workbook wb=WorkbookFactory.create(fis); 
+			 
+		 //wb.createSheet(year);
+		 Sheet s=wb.getSheet(sheetName); 
+		
+			 if(subReportName.contains(TestBaseConstants.BWR_OVERALL_EMPLOYEMENT) )
+			 { 
+				 //Compare first row  
+				
+				 //1st cell
+	 			  String j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[1]/p")).getText();	 			 
+	 			 updateError(0,0,s.getRow(0).getCell(0).getStringCellValue(),j);
+	 			  //2nd cell
+				j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label")).getText();
+				 updateError(0,1,s.getRow(0).getCell(1).getStringCellValue(),j);				 
+				 //3rd cell
+				 j=GlobalVariables.driver.findElement
+	 			  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[2]")).getText();
+				 updateError(0,2,s.getRow(0).getCell(2).getStringCellValue(),j);
 				 
-			 //wb.createSheet(year);
-			 Sheet s=wb.getSheet(excelSheetName); 
+				 //2nd row
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[3]")).getText();
+				 updateError(1,1,s.getRow(1).getCell(1).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[4]")).getText();
+				 updateError(1,2,s.getRow(1).getCell(2).getStringCellValue(),j);
+				 
+				 //3rd row
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[5]")).getText();
+				 updateError(2,1,s.getRow(2).getCell(1).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[1]/td[2]/div/label[6]")).getText();
+				 updateError(2,2,s.getRow(2).getCell(2).getStringCellValue(),j);
+				 
+			
+				 //4th row
+			 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[1]/p")).getText();
+						  GlobalVariables.APPICATION_LOGS.info(j);
+				 updateError(3,0,s.getRow(3).getCell(0).getStringCellValue(),j);
+				
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[1]")).getText();
+				 updateError(3,1,s.getRow(3).getCell(1).getStringCellValue(),j);
+				 				 
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[2]")).getText();
+				 updateError(3,2,s.getRow(3).getCell(2).getStringCellValue(),j);
+				
+				 //5th row				 
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[3]")).getText();
+				 updateError(4,1,s.getRow(4).getCell(1).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[4]")).getText();
+				 updateError(4,2,s.getRow(4).getCell(2).getStringCellValue(),j);
+				 
+				 
+				 //6th row
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[5]")).getText();
+				 updateError(5,1,s.getRow(5).getCell(1).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+	 					  (By.xpath("//*[@class='report_list']/tbody/tr[2]/td[2]/div/label[6]")).getText();
+				 updateError(5,2,s.getRow(5).getCell(2).getStringCellValue(),j);
+				 
+				 
+				 //7th row
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@class='report_list']/tbody/tr[3]/td[1]/p")).getText();
+				 updateError(6,1,s.getRow(6).getCell(0).getStringCellValue(),j);
+				 
+				 //8th row
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[1]")).getText();
+				 updateError(7,0,s.getRow(7).getCell(0).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[2]")).getText();
+				 updateError(7,2,s.getRow(7).getCell(2).getStringCellValue(),j);
+				 
+				 //9th row
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[3]/span[1]")).getText();
+				 updateError(8,0,s.getRow(8).getCell(0).getStringCellValue(),j);
+				 
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[3]/span[2]")).getText();
+				 updateError(8,1,s.getRow(8).getCell(1).getStringCellValue(),j);
+				 
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[4]/span[1]")).getText();
+				 updateError(8,2,s.getRow(8).getCell(2).getStringCellValue(),j);
+				 
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[4]/span[2]")).getText();
+				 updateError(8,3,s.getRow(8).getCell(3).getStringCellValue(),j);
+				 
+				 
+				 //10th row
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[5]/span[1]")).getText();
+				 updateError(9,0,s.getRow(9).getCell(0).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[5]/span[2]")).getText();
+				 updateError(9,1,s.getRow(9).getCell(1).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[6]/span[1]")).getText();
+				 updateError(9,2,s.getRow(9).getCell(2).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[6]/span[2]")).getText();
+				 updateError(9,3,s.getRow(9).getCell(3).getStringCellValue(),j);
+	
+				 
+				 //11th row
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[7]/span[1]")).getText();
+				 updateError(10,0,s.getRow(10).getCell(0).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[7]/span[2]")).getText();
+				 updateError(10,1,s.getRow(10).getCell(1).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[8]/span[1]")).getText();
+				 updateError(10,2,s.getRow(10).getCell(2).getStringCellValue(),j);
+				 j=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/ul/li[8]/span[2]")).getText();
+				 updateError(10,3,s.getRow(10).getCell(3).getStringCellValue(),j);
+				 
+				 
+			 }
 			 
-			//To locate table.
-			  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(xpath));
-			  //To locate rows of table.
-			  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
-			  //To calculate no of rows In table.
-			  int rows_count = rows_table.size();
-			  
-			  ///headers
-			  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
 			 
-			  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
-						 subReportName.equalsIgnoreCase("Compensation by Industries") ||
-						 subReportName.equalsIgnoreCase("World Regions Breakdown") ||
-					     subReportName.equalsIgnoreCase("Compensation by North American Geographic Regions") ||
-					     subReportName.equalsIgnoreCase("Compensation by Undergraduate Major") ||
-					     subReportName.equalsIgnoreCase("Compensation by Professional Experience"))
-					
-				{	// compare 1st cell				
-					updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
-							,Columns_header.get(0).getText());
-					//compare 2nd cell
-					updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
-							,Columns_header.get(1).getText());					
-					//compare 3rd cell
-					updateError(0,3,s.getRow(0).getCell(3).getStringCellValue()
-							,Columns_header.get(2).getText());
-					//compare 4th cell
-					updateError(0,4,s.getRow(0).getCell(4).getStringCellValue()
-							,Columns_header.get(3).getText());
-					//compare 5th cell
-					updateError(0,5,s.getRow(0).getCell(5).getStringCellValue()
-							,Columns_header.get(4).getText());
-					//compare 6th cell
-					updateError(0,6,s.getRow(0).getCell(6).getStringCellValue()
-							,Columns_header.get(5).getText());	
-				}	
-			  else if(subReportName.equalsIgnoreCase("Primary Source of Full-Time Job Acceptances") )
-			  {
-				// compare 1st cell				
-					updateError(0,0,s.getRow(0).getCell(1).getStringCellValue()
-							,Columns_header.get(1).getText());
-					//compare 2nd cell
-					updateError(0,1,s.getRow(0).getCell(3).getStringCellValue()
-							,Columns_header.get(2).getText());	 
-			  }
-			  else if(subReportName.equalsIgnoreCase("Location of Instate Jobs"))
-			  {
-				// compare 1st cell				
-					updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
-							,Columns_header.get(0).getText());
-					//compare 2nd cell
-					updateError(0,1,s.getRow(0).getCell(1).getStringCellValue()
-							,Columns_header.get(1).getText());					
-					//compare 3rd cell
-					updateError(0,2,s.getRow(0).getCell(2).getStringCellValue()
-							,Columns_header.get(2).getText());
-			  }
-			  
-			  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
-					  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
-					  subReportName.equalsIgnoreCase("Summary")||
-					  subReportName.equalsIgnoreCase("Full-Time Employment")||
-					  subReportName.equalsIgnoreCase("Part-Time Employment")||
-					  subReportName.equalsIgnoreCase("Service Organization")||
-					  subReportName.equalsIgnoreCase("Military Service")||
-					  subReportName.equalsIgnoreCase("Continuing Education")||
-					  subReportName.equalsIgnoreCase("Seeking or Unreported")||
-					  subReportName.equalsIgnoreCase("Employment Status")||
-					  subReportName.equalsIgnoreCase("Law School/University Funded Positions")||
-					  subReportName.equalsIgnoreCase("Employment Type")||
-					  subReportName.equalsIgnoreCase("Employment Location")
-					  )
-			  {
-				  for(int col=0;col<Columns_header.size();col++)
-				  {
-					  updateError(0,col,s.getRow(0).getCell(col).getStringCellValue()
-								,Columns_header.get(col).getText());
-				  }
-			  }
-			 
-			//Loop will execute till the last row of table.
-			  for (int row=1; row<rows_count; row++)
-			  {
-			   //To locate columns(cells) of that specific row.
-			   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-			   Row r=s.getRow(row);
-			   //To calculate no of columns(cells) In that specific row.
-			   int columns_count = Columns_row.size();		   
-			   
-			    		//Loop will execute till the last cell of that specific row.
-			   			for (int column=0; column<columns_count; column++)
-			   			{
-			   			//To retrieve text from that specific cell.
-			   				String webtext = Columns_row.get(column).getText();
-			   				String xltext = r.getCell(column).getStringCellValue();
-			   				updateError(row,column,xltext,webtext);
-			   			}   				
-			   		
-			  }  			 
-			 
+			 else if(subReportName.contains(TestBaseConstants.BWR_TOP_15_EMPLOYESS))
+			 {
+				//1st row
+				 String m=GlobalVariables.driver.findElement
+						  (By.xpath("//*[@id='main']/table/tbody/tr/td/p")).getText();
+				 updateError(0,0,s.getRow(0).getCell(0).getStringCellValue(),m);
+				 
+				 //2nd row
+				 int k=1;	
+				 
+				 	while(k<16)
+				 	 for (int i=1;i<=15;i++)
+				 	 {
+				 		 m=GlobalVariables.driver.findElement
+								  (By.xpath("//*[@id='main']/table/tbody/tr/td/ul/li["+i+"]"+"/span[1]")).getText();
+				 		updateError(k,0,s.getRow(k).getCell(0).getStringCellValue(),m);
+				 		 m=GlobalVariables.driver.findElement
+								  (By.xpath("//*[@id='main']/table/tbody/tr/td/ul/li["+i+"]"+"/span[2]")).getText();
+				 		updateError(k,0,s.getRow(k).getCell(1).getStringCellValue(),m);
+				 		 m=GlobalVariables.driver.findElement
+								  (By.xpath("//*[@id='main']/table/tbody/tr/td/ul/li["+i+"]"+"/span[3]")).getText();
+				 		updateError(k,0,s.getRow(k).getCell(2).getStringCellValue(),m);
+				 		 k++;
+				 	 }
+				 
+			 }
 			 FileOutputStream fos=new FileOutputStream(path);
 				wb.write(fos);
 				fos.close();
-				GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
-		  		 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
-		  		 rATUStatus(GlobalVariables.result,msg);		
-			 }
-			catch(Exception e)
-			{
-				GlobalVariables.exceptionMsgVal=e.getMessage();
-				String ermsg="Error while executing mT2_DIV_TH1_TCN_ReadXLSX keyword";
-				keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
-				GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
-				GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
-				GlobalVariables.APPICATION_LOGS.error(ermsg);
-				Logs.errorLog(ermsg);
-				rATUStatus(GlobalVariables.result,ermsg);
-			}
-		
-	}	
-	
-	/********************************************************************************************
-	 *		Author 						:	DivyaRaju.R
-	 *		LastModifiedDate			:	1st may 2015
-	 *		Method name					:	mT2_DIV_TH1_TCN_WriteXLSX
-	 *		Description					:	This method is used for fetching data from 1220 application
-	 *										 and writing that excel
-	 *
-	*********************************************************************************************/
-	public static void mT2_DIV_TH1_TCN_WriteXLSX(String sheetName,String excelFileName,String msg,
-		String tableXpath,String subReportName) 
-	{
-	boolean xlFileCreated=false;
-
-		try
-		{//Pre_Build_Number
-			// fetch the folder path to create work book
-			String folderPath=cleanPath(GlobalVariables.CONFIG.getProperty("buildFolderPath"))+
-					 "/"+"Build_number_"+GlobalVariables.CONFIG.getProperty("buildNumber")+
-					 "/"+GlobalVariables.CONFIG.getProperty("buildType")+"/";
-			//System.out.println("Build folder path is "+folderPath);
-			
-			 File  preBuildFolderPath=new File( folderPath);
-			 
-			 //Create directory
-			 boolean folderCreated=preBuildFolderPath.mkdirs();
-			 String filePath=preBuildFolderPath+"/"+GlobalVariables.testCaseIdentifier+".xlsx";
-			 File filePath1 =new File(filePath);
-			 //System.out.println("File Path is -->"+filePath);
-			 if(folderCreated||preBuildFolderPath.exists())
-			 {
-				 if(filePath1.exists())
-					{
-						filePath1.delete();
-						xlFileCreated= ExcelTestUtil.createXLS(filePath,GlobalVariables.testCaseIdentifier);		 
-					}
-					else 
-					{
-						xlFileCreated= ExcelTestUtil.createXLS(filePath,GlobalVariables.testCaseIdentifier);
-					}
-				 if(xlFileCreated)
-				 {
-					 FileInputStream fis=new FileInputStream(filePath);
-						Workbook wb=WorkbookFactory.create(fis);
-						 //wb.createSheet(year);
-						 Sheet s=wb.getSheet(sheetName);
-				 
-						//To locate table.
-						  WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
-						  //To locate rows of table.
-						  List<WebElement> rows_table = mytable.findElements(By.tagName("tr"));
-						  //To calculate no of rows In table.
-						  int rows_count = rows_table.size();
-						  
-						  //headers
-						  List<WebElement> Columns_header = rows_table.get(0).findElements(By.tagName("th"));
-						  Row r1=s.createRow(0);
-						  if(subReportName.equalsIgnoreCase("Compensation by Professional Functions") ||
-							 subReportName.equalsIgnoreCase("Compensation by Industries") ||
-							 subReportName.equalsIgnoreCase("World Regions Breakdown") ||
-						     subReportName.equalsIgnoreCase("Compensation by North American Geographic Regions") ||
-						     subReportName.equalsIgnoreCase("Compensation by Undergraduate Major") ||
-						     subReportName.equalsIgnoreCase("Compensation by Professional Experience") )
-							  {
-							  Logs.infoLog( "Sub report is "+subReportName);
-							  //1st cell of 1st header
-							  	r1.createCell(0).setCellValue(Columns_header.get(0).getText());
-							  // 2nd cell of header
-								 r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-								 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
-								  //3rd cell
-								 r1.createCell(3).setCellValue(Columns_header.get(2).getText());								 
-								 //4th cell
-								 r1.createCell(4).setCellValue(Columns_header.get(3).getText());
-								 //5th cell
-								 r1.createCell(5).setCellValue(Columns_header.get(4).getText());
-								 //6th cell
-								 r1.createCell(6).setCellValue(Columns_header.get(5).getText());
-								 
-							  }
-						  
-						  else if(subReportName.equalsIgnoreCase("Primary Source of Full-Time Job Acceptances") )
-						  {
-							  Logs.infoLog( "Sub report is "+subReportName);
-							  //1st cell of 1st header
-							  	/*r1.createCell(0).setCellValue(Columns_header.get(0).getText()); */
-							 // 2nd cell of header
-							  	r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-								 s.addMergedRegion(new CellRangeAddress(0, 0, 1, 2));
-								 //3rd cell 
-								 r1.createCell(3).setCellValue(Columns_header.get(2).getText());
-								 s.addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
-							  	
-						  }
-						  
-						  else if(subReportName.equalsIgnoreCase("Location of Instate Jobs"))
-						  {
-							  Logs.infoLog( "Sub report is "+subReportName);
-							//1st cell of 1st header
-							  	r1.createCell(0).setCellValue(Columns_header.get(0).getText());
-							// 2nd cell of header
-							    r1.createCell(1).setCellValue(Columns_header.get(1).getText());
-							 // 3rd cell   
-							    r1.createCell(2).setCellValue(Columns_header.get(2).getText());
-						  }
-						  
-						  else if(subReportName.equalsIgnoreCase("Number of Jobs Reported Taken by State") ||
-								  subReportName.equalsIgnoreCase("The Graduating Class (B)")||
-								  subReportName.equalsIgnoreCase("Summary")||
-								  subReportName.equalsIgnoreCase("Full-Time Employment")||
-								  subReportName.equalsIgnoreCase("Part-Time Employment")||
-								  subReportName.equalsIgnoreCase("Service Organization")||
-								  subReportName.equalsIgnoreCase("Military Service")||
-								  subReportName.equalsIgnoreCase("Continuing Education")||
-								  subReportName.equalsIgnoreCase("Seeking or Unreported")||
-								  subReportName.equalsIgnoreCase("Employment Status")||
-								  subReportName.equalsIgnoreCase("Law School/University Funded Positions")||
-								  subReportName.equalsIgnoreCase("Employment Type")||
-								  subReportName.equalsIgnoreCase("Employment Location")
-								  )
-						  {
-							  Logs.infoLog( "Sub report is "+subReportName);
-							  for(int col=0;col<Columns_header.size();col++)
-							  {
-								  Logs.infoLog("Cell Value Of row number "+r1+" and column number "+col+" is "+Columns_header.get(col).getText());
-								  
-								  r1.createCell(col).setCellValue(Columns_header.get(col).getText());
-							  }
-						  }
-						  for (int row=1; row<rows_count; row++)
-						  {
-							   //To locate columns(cells) of that specific row.
-							   List<WebElement> Columns_row = rows_table.get(row).findElements(By.tagName("td"));
-							   
-							   //To calculate no of columns(cells) In that specific row.
-							   int columns_count = Columns_row.size();
-							   
-							   Row r=s.createRow(row);
-							   
-							    		//Loop will execute till the last cell of that specific row.
-							   			for (int column=0; column<columns_count; column++)
-							   			{
-							   			//To retrieve text from that specific cell.
-							   				String celtext = Columns_row.get(column).getText();			   			
-							   				r.createCell(column).setCellValue(celtext);	
-							   				Logs.infoLog("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
-							   				if(!celtext.isEmpty())
-					 		   				{
-					 		   					System.out.println("Cell Value Of row number "+row+" and column number "+column+" Is "+celtext);
-					 		   				}
-
-							   			}							   			
-							  } //for loop 
-							 FileOutputStream fos=new FileOutputStream(filePath);
-					 			wb.write(fos);
-					 			fos.close();	   			
-				 }	 
-				 else
-				 {
-					 //System.out.println("File not created");
-					 GlobalVariables.APPICATION_LOGS.error("File not created");
-					 Logs.errorLog("File not created");
-				 }
-			
-			 }
-			 else
-			 {
-				// System.out.println("Folder not created"); 
-				 GlobalVariables.APPICATION_LOGS.error("Folder not created");
-				 Logs.errorLog("Folder not created");
-			 }
-
-	 GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
-	 GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
-	 rATUStatus(GlobalVariables.result,msg);
-
-
+				
+			GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+		    GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		   	rATUStatus(GlobalVariables.result,msg);	
 
 	}
 	catch(Exception e)
 	{
 		GlobalVariables.exceptionMsgVal=e.getMessage();
-		String ermsg="Error while executing mT2_DIV_TH1_TCN_WriteXLSX keyword";
+		String ermsg="Error while executing mT1_TCN_ReadXLSX keyword";
 		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
 		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
 		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
 		GlobalVariables.APPICATION_LOGS.error(ermsg);
 		Logs.errorLog(ermsg);
 		rATUStatus(GlobalVariables.result,msg);
-	}
-		
+	}	
+   }	//method mT1_TCN_ReadXLSX
 	
-  }	
+	
+	public static void mT2_TH2_TCN_ReadXLSX(String excelSheetName,String automationId,
+			String tableXpath,String tableXpath2,String tableXpath3,String subReportName,String msg) 
+	{
+	GlobalVariables.testCaseIdentifier=automationId;
+	try
+	{	
+		 String path=cleanPath(
+					GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_FOLDER_PATH))
+					+TestBaseConstants.PATH_SIGN
+				+TestBaseConstants.BASELINE_FOLDER_NAME+
+				GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_NUMBER)
+				+TestBaseConstants.PATH_SIGN+
+				TestBaseConstants.ITERATION+
+				GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_ITERATION_VALUE)+				
+				TestBaseConstants.PATH_SIGN+
+				TestBaseConstants.BASELINE_BUILD_TYPE
+				+TestBaseConstants.PATH_SIGN+GlobalVariables.testCaseIdentifier+".xlsx";
+	 //System.out.println("Path of file is -->"+path);
+	 FileInputStream fis=new FileInputStream(path);
+		Workbook wb=WorkbookFactory.create(fis); 
+		 
+	 //wb.createSheet(year);
+	 Sheet s=wb.getSheet(excelSheetName); 
+	 
+	 if(subReportName.equalsIgnoreCase(TestBaseConstants.MBA_COMPENSATION_REPORT))
+	 {
+		 WebElement mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath));
+		  //To locate rows of table.
+		 List<WebElement> rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		// First row of header
+		 List<WebElement> Columns_header = rows_table.get(0).findElements
+ 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		 updateError(0,0,s.getRow(0).getCell(0).getStringCellValue()
+					,Columns_header.get(0).getText());
+		// second row of header
+		 Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+		 updateError(1,1,s.getRow(1).getCell(1).getStringCellValue()
+					,Columns_header.get(1).getText());
+		 
+		 updateError(1,2,s.getRow(1).getCell(2).getStringCellValue()
+					,Columns_header.get(2).getText());
+		 updateError(1,3,s.getRow(1).getCell(3).getStringCellValue()
+					,Columns_header.get(3).getText());
+		 updateError(1,4,s.getRow(1).getCell(4).getStringCellValue()
+					,Columns_header.get(4).getText());
+		 updateError(1,5,s.getRow(1).getCell(5).getStringCellValue()
+					,Columns_header.get(5).getText());
+		 updateError(1,6,s.getRow(1).getCell(6).getStringCellValue()
+					,Columns_header.get(6).getText());
+		// Fetch the contents of table from row 3 to last 7th row
+	     for (int row=2; row<rows_table.size(); row++)
+		 {
+	    	 //To locate columns(cells) of that specific row.
+			   List<WebElement> Columns_row = rows_table.get(row).
+					   findElements(By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+			   
+			   //To calculate no of columns(cells) In that specific row.
+			   int columns_count = Columns_row.size();
+			   
+			   for (int column=0; column<columns_count; column++)
+	   			{
+	   			//To retrieve text from that specific cell.
+				   updateError(row,column,s.getRow(row).getCell(column).getStringCellValue()
+							,Columns_row.get(column).getText());
+	   			}		
+		 }	   
+		 
+	     //Table 2 
+	     
+	     mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath2));
+		  //To locate rows of table.
+		  rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		 // System.out.println(rows_table.size());
+	      Columns_header = rows_table.get(0).findElements
+				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+	     
+	     
+	      updateError(6,0,s.getRow(6).getCell(0).getStringCellValue()
+					,Columns_header.get(0).getText());
+	      
+	      Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG)); 
+	      updateError(7,1,s.getRow(7).getCell(1).getStringCellValue()
+					,Columns_header.get(1).getText());
+		 
+		 updateError(7,2,s.getRow(7).getCell(2).getStringCellValue()
+					,Columns_header.get(2).getText());
+		 updateError(7,3,s.getRow(7).getCell(3).getStringCellValue()
+					,Columns_header.get(3).getText());
+		 updateError(7,4,s.getRow(7).getCell(4).getStringCellValue()
+					,Columns_header.get(4).getText());
+		 updateError(7,5,s.getRow(7).getCell(5).getStringCellValue()
+					,Columns_header.get(5).getText());
+		 updateError(7,6,s.getRow(7).getCell(6).getStringCellValue()
+					,Columns_header.get(6).getText());
+		
+		 int rw=8;
+			int row=2;
+			while(rw<11&& row<rows_table.size())
+			{					    			    	
+		    	 //To locate columns(cells) of that specific row.
+				  List<WebElement> Columns_row = rows_table.get(row).findElements
+						  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+				   
+				   //To calculate no of columns(cells) In that specific row.
+				   int columns_count = Columns_row.size();				  
+				   
+				    		//Loop will execute till the last cell of that specific row.
+				   			for (int column=0; column<columns_count; column++)
+				   			{
+				   			 updateError(row,column,s.getRow(rw).getCell(column).getStringCellValue()
+										,Columns_row.get(column).getText());
+				   			}
+				 row++;
+		     rw++;
+			}
+			
+			//Table3
+			 mytable = GlobalVariables.driver.findElement(By.xpath(tableXpath3));
+	 		  //To locate rows of table.
+	 		  rows_table = mytable.findElements(By.tagName(TestBaseConstants.TABLE_ROW_TAG));
+		      Columns_header = rows_table.get(0).findElements
+	 				 (By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		      updateError(12,0,s.getRow(12).getCell(0).getStringCellValue()
+						,Columns_header.get(0).getText()); 
+		      Columns_header = rows_table.get(1).findElements(By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+		      
+		      updateError(13,1,s.getRow(13).getCell(1).getStringCellValue()
+						,Columns_header.get(1).getText());
+			 
+			 updateError(13,2,s.getRow(13).getCell(2).getStringCellValue()
+						,Columns_header.get(2).getText());
+			 updateError(13,3,s.getRow(13).getCell(3).getStringCellValue()
+						,Columns_header.get(3).getText());
+			 updateError(13,4,s.getRow(13).getCell(4).getStringCellValue()
+						,Columns_header.get(4).getText());
+			 updateError(13,5,s.getRow(13).getCell(5).getStringCellValue()
+						,Columns_header.get(5).getText());
+			 updateError(13,6,s.getRow(13).getCell(6).getStringCellValue()
+						,Columns_header.get(6).getText());
+			 
+			  rw=14;
+			 row=2;
+				while(rw<17&& row<rows_table.size())
+				{					    			    	
+			    	 //To locate columns(cells) of that specific row.
+					  List<WebElement> Columns_row = rows_table.get(row).findElements
+							  (By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
+					   
+					   //To calculate no of columns(cells) In that specific row.
+					   int columns_count = Columns_row.size();				  
+					   
+					    		//Loop will execute till the last cell of that specific row.
+					   			for (int column=0; column<columns_count; column++)
+					   			{
+					   			 updateError(row,column,s.getRow(rw).getCell(column).getStringCellValue()
+											,Columns_row.get(column).getText());
+					   			}
+					 row++;
+			     rw++;
+				}
+						
+						
+		      
+	 }
+	 
+
+	 FileOutputStream fos=new FileOutputStream(path);
+		wb.write(fos);
+		fos.close();
+		
+	GlobalVariables.result=TestBaseConstants.RESULT_PASSVALUE;
+    GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+   	rATUStatus(GlobalVariables.result,msg);	
+	}
+	catch(Exception e)
+	{
+		GlobalVariables.exceptionMsgVal=e.getMessage();
+		String ermsg="Error while executing mT1_TH3_TCN_ReadXLSX keyword";
+		keywordsErrormsg(GlobalVariables.errormsg,GlobalVariables.exceptionMsgVal,ermsg);
+		GlobalVariables.result=TestBaseConstants.RESULT_FAILVALUE;
+		GlobalVariables.testusappend=ExcelTestUtil.runStatusAdd(GlobalVariables.result);
+		GlobalVariables.APPICATION_LOGS.error(ermsg);
+		Logs.errorLog(ermsg);
+		rATUStatus(GlobalVariables.result,ermsg);
+	}
+	
+	}//mT3_TH2_TCN_ReadXLSX
+	
 }

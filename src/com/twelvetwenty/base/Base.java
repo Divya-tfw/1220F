@@ -34,7 +34,7 @@ import atu.testng.reports.listeners.MethodListener;
 *********************************************************************************************/
 @Listeners({ ATUReportsListener.class, ConfigurationListener.class,
 	MethodListener.class })
-public class Base extends ListenerClass
+public class Base /*extends ListenerClass*/
 {	
 	
 	/******************************************************************************************

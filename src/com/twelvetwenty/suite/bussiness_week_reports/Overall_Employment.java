@@ -1,4 +1,4 @@
-package com.twelvetwenty.suite.nalp_reports;
+package com.twelvetwenty.suite.bussiness_week_reports;
 
 import java.util.Hashtable;
 
@@ -11,19 +11,19 @@ import com.twelvetwenty.constants.TestBaseConstants;
 import com.twelvetwenty.util.ExcelTestUtil;
 import com.twelvetwenty.util.Logs;
 
-public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords  
+public class Overall_Employment extends App_Specific_Keywords
 {
 
 	/*****************************************************************************************************************
   	 * 	Author						:	Divya Raju.R
-  	 * 	LastModifiedDate			:	19-5-2015  	  
+  	 * 	LastModifiedDate			:	17-6-2015  	  
   	 * 	Annotation					:	@Test
-  	 * 	MethodName					: 	test_Emp_Sttus_by_RaceorEthnicity
+  	 * 	MethodName					: 	test_Overall_Employment
   	 * 	Description					:	This method is used to perform required functionality test on app
   	 * 
   	 ***************************************************************************************************************/	
 	@Test(dataProvider="ExcelData")
-	public void test_Emp_Sttus_by_RaceorEthnicity(Hashtable<String,String> data) 
+	public void test_Overall_Employment(Hashtable<String,String> data) 
 	{
 		//Start of script
 		GlobalVariables.APPICATION_LOGS.info("--------Execution of test---- "+
@@ -75,21 +75,21 @@ public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords
 		 
 		 //click standard reports
 		 click(TestBaseConstants.BUTTON_STANDARD_REPORTS,"Click on Standard Reports");
-		 
-		 // wait till page load
-		 webdriverWait(data.get(TestBaseConstants.WAIT_VALUE));
-	 
+			 
 		 Thread.sleep(3000);
-		 //click on Table report
-	 
+		 		 
+		 // Click on Business week report link
+		 click("lnk_Bussiness_week_report","Click on Business week report link");
+		 
+		//click on Table report
 		 GlobalVariables.driver.findElement(By.xpath
 				 ( "//tr[td[contains(text(),'"+
 		 data.get(TestBaseConstants.SUB_REPORT_NAME)+"')]]//*[text()='Generate']"))
 				 .click();
-		 Logs.infoLog("Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");	
-	 
+		 Logs.infoLog("Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");		 
 		 rATUStatus("Pass","Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");
 		 Thread.sleep(2000);
+		 
 	 
 		 // select graduation year
 		 selectValueFromDropDown(
@@ -106,23 +106,6 @@ public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords
 		 TestBaseConstants.DROP_SELECT_USING_TEXT,data.get(TestBaseConstants.GRADDUATION_TERM),
 				 "Select Graduation Term-->"+data.get(TestBaseConstants.GRADDUATION_TERM));
 		 Thread.sleep(2000);
-		 
-		// select offer timing
-		 selectValueFromDropDown(
-				 getObjectValue(TestBaseConstants.DROP_DOWN_OFFER_TIMING),
-				 TestBaseConstants.DROP_SELECT_USING_TEXT,
-				 data.get(TestBaseConstants.OFFER_TIMING),
-				 "Select Job Phase Id-->"+data.get(TestBaseConstants.OFFER_TIMING));
-		 Thread.sleep(1000);
-		 
-	 //select cut off date if with is given else clear it
-		if(data.get(TestBaseConstants.CUT_OFF_DATE).
-				equalsIgnoreCase(TestBaseConstants.CUT_OFF_DATE_WITHOUT))
-		{
-			 getObjectValue(TestBaseConstants.DROP_DOWN_CUT_OFF_DATE).click();
-			 getObjectValue(TestBaseConstants.DROP_DOWN_CUT_OFF_DATE).clear();
-		}
-		 
 		
 		//click on generate report
 		 click(TestBaseConstants.BUTTON_GENERATE_REPORT,"Clicking on generate report");
@@ -137,11 +120,11 @@ public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords
 				
 				{
 					 Logs.infoLog( "Started writing to excel as Baseline is the build Type");				 	
-					 mT1_TH2_TBH2_TCN_WriteXLSX(
+					 mT1_TCN_LST_WriteXLSX(
 							 GlobalVariables.testCaseIdentifier				 			
 					 			,GlobalVariables.testCaseIdentifier,
 					 			"Writing contents of "+data.get(TestBaseConstants.SUB_REPORT_NAME)+
-					 			" to excel",GlobalVariables.OR.getProperty("report_Nalp")
+					 			" to excel"
 					 			,data.get(TestBaseConstants.SUB_REPORT_NAME));
 							
 				}
@@ -150,10 +133,10 @@ public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords
 						TestBaseConstants.ACTUAL_BUILD_TYPE))
 					
 				{
-					Logs.infoLog( "Started reading from excel as Actual is the build Type");					
-					mT1_TH2_TBH2_TCN_ReadXLSX(GlobalVariables.testCaseIdentifier,
-							GlobalVariables.testCaseIdentifier
-							,GlobalVariables.OR.getProperty("report_Nalp")
+					Logs.infoLog( "Started reading from excel as Actual is the build Type");
+					GlobalVariables.APPICATION_LOGS.info("Calling read method now");
+					mT1_TCN_LST_READXLSX(GlobalVariables.testCaseIdentifier,
+							GlobalVariables.testCaseIdentifier							
 				 			,data.get(TestBaseConstants.SUB_REPORT_NAME),
 				 			"Validating contents of table "+
 				 			data.get(TestBaseConstants.SUB_REPORT_NAME)+"- with excel"
@@ -174,3 +157,4 @@ public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords
 	 	GlobalVariables.cverify.checkForVerificationErrors();
 	}
 }
+

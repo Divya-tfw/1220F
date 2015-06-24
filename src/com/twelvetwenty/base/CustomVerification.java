@@ -36,12 +36,12 @@ public class CustomVerification
 		  	 * 	Input							:	keywordName,Expected value & Actual value
 		  	 * 
 		  	 **********************************************************************************/	    
-		 public static String  assertEqualsTest(Object expected,Object actual)
+		 public static String  assertEqualsTest(Object actual,Object expected)
 		 {
 			 String status = null;
 			 try
 			 {
-				Assert.assertEquals(((String) expected).trim(),((String) actual).trim());
+				Assert.assertEquals(((String) actual).trim(),((String) expected).trim());
 				 
 				 status="Pass";
 			 }

@@ -1,29 +1,26 @@
 package com.twelvetwenty.suite.nalp_reports;
 
 import java.util.Hashtable;
-
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
-
 import com.twelvetwenty.base.App_Specific_Keywords;
 import com.twelvetwenty.constants.GlobalVariables;
 import com.twelvetwenty.constants.TestBaseConstants;
 import com.twelvetwenty.util.ExcelTestUtil;
 import com.twelvetwenty.util.Logs;
 
-public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords  
+public class Graduate_Demographics extends App_Specific_Keywords
 {
-
 	/*****************************************************************************************************************
   	 * 	Author						:	Divya Raju.R
-  	 * 	LastModifiedDate			:	19-5-2015  	  
+  	 * 	LastModifiedDate			:	15-6-2015  	  
   	 * 	Annotation					:	@Test
-  	 * 	MethodName					: 	test_Emp_Sttus_by_RaceorEthnicity
+  	 * 	MethodName					: 	test_Graduate_Demographics
   	 * 	Description					:	This method is used to perform required functionality test on app
   	 * 
   	 ***************************************************************************************************************/	
 	@Test(dataProvider="ExcelData")
-	public void test_Emp_Sttus_by_RaceorEthnicity(Hashtable<String,String> data) 
+	public void test_Graduate_Demographics(Hashtable<String,String> data) 
 	{
 		//Start of script
 		GlobalVariables.APPICATION_LOGS.info("--------Execution of test---- "+
@@ -137,7 +134,7 @@ public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords
 				
 				{
 					 Logs.infoLog( "Started writing to excel as Baseline is the build Type");				 	
-					 mT1_TH2_TBH2_TCN_WriteXLSX(
+					 mT1_TH3_TCN_WriteXLSX(
 							 GlobalVariables.testCaseIdentifier				 			
 					 			,GlobalVariables.testCaseIdentifier,
 					 			"Writing contents of "+data.get(TestBaseConstants.SUB_REPORT_NAME)+
@@ -151,7 +148,7 @@ public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords
 					
 				{
 					Logs.infoLog( "Started reading from excel as Actual is the build Type");					
-					mT1_TH2_TBH2_TCN_ReadXLSX(GlobalVariables.testCaseIdentifier,
+					mT1_TH3_TCN_ReadXLSX(GlobalVariables.testCaseIdentifier,
 							GlobalVariables.testCaseIdentifier
 							,GlobalVariables.OR.getProperty("report_Nalp")
 				 			,data.get(TestBaseConstants.SUB_REPORT_NAME),
@@ -174,3 +171,4 @@ public class Emp_Sttus_by_RaceorEthnicity extends App_Specific_Keywords
 	 	GlobalVariables.cverify.checkForVerificationErrors();
 	}
 }
+

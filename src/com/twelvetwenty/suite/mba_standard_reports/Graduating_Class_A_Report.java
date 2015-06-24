@@ -26,121 +26,127 @@ public class Graduating_Class_A_Report extends App_Specific_Keywords
 	{
 		
 		//Start of script
-		GlobalVariables.APPICATION_LOGS.info("--------Execution of test---- "+
-				GlobalVariables.scriptName+"  Started--------");
-		GlobalVariables.testCaseIdentifier=data.get("Automation_Id");
-	
-		Logs.openLogFile(GlobalVariables.logFolderPath, GlobalVariables.testCaseIdentifier); 	
-		GlobalVariables.dataRunStatus=data.get("Runmode");			 
-		GlobalVariables.suiteRunStatus =	ExcelTestUtil.suiteRunstatus(GlobalVariables.suiteName);
-		GlobalVariables. testRunStatus=ExcelTestUtil.testRunStatus(GlobalVariables.suiteName,GlobalVariables.scriptName); 			
-		boolean trs = ExcelTestUtil.checkSkiptests(GlobalVariables.suiteRunStatus,GlobalVariables.testRunStatus,
-				GlobalVariables.dataRunStatus);
-		
-		dbUpdate(trs,GlobalVariables.scriptName,GlobalVariables.testCaseIdentifier);
-		Logs.infoLog("--------Execution of test---- "+GlobalVariables.scriptName+"  Started----");	
+				GlobalVariables.APPICATION_LOGS.info("--------Execution of test---- "+
+						GlobalVariables.scriptName+"  Started--------");
+				GlobalVariables.testCaseIdentifier=data.get(TestBaseConstants.AUTOMATION_ID);
+				
+				Logs.openLogFile(GlobalVariables.logFolderPath, GlobalVariables.testCaseIdentifier); 	
+				GlobalVariables.dataRunStatus=data.get(TestBaseConstants.DATA_RUNMODE);			 
+				GlobalVariables.suiteRunStatus =	ExcelTestUtil.suiteRunstatus(GlobalVariables.suiteName);
+				GlobalVariables. testRunStatus=ExcelTestUtil.testRunStatus(GlobalVariables.suiteName,GlobalVariables.scriptName); 			
+				boolean trs = ExcelTestUtil.checkSkiptests(GlobalVariables.suiteRunStatus,GlobalVariables.testRunStatus,
+						GlobalVariables.dataRunStatus);
+				
+				dbUpdate(trs,GlobalVariables.scriptName,GlobalVariables.testCaseIdentifier);
+				Logs.infoLog("--------Execution of test---- "+GlobalVariables.scriptName+"  Started----");	
 		
 
 		 try
 		 {
-				Logs.infoLog("*****Launch Browser******");
+			 Logs.infoLog("*****Launch Browser******");
+			 	
+			 
 				// Launch Browser
 			 	navigate();	
-			 	rATUConfigInfo("12Twenty Reports of execution",
-					
-			 			data.get("sSub_Report_Name"),
+			 	rATUConfigInfo(TestBaseConstants.ATU_INDEX_PAGE_DESCRIPTION,							
+			 			data.get(TestBaseConstants.SUB_REPORT_NAME),
 						 GlobalVariables.scriptName,
-						 "Divya","1.0")	;
-			 	 rATUStatus("Info","Open the browser");
-				 Logs.infoLog("Navigate to the Data fectch URL of application");
-				 rATUStatus("Pass","Navigate to the Data fectch URL of application");
-				 
+						 TestBaseConstants.AUTHOR_NAME,
+						 TestBaseConstants.VERSION_VALUE)	;
+			 	
+			 	 rATUStatus(TestBaseConstants.INFO_VALUE,
+			 			 "Open the browser");
+				 		 
 				 //navigate to url of application
-				 String url=data.get("sSchoolName");
-				 launchSite(cleanPath(GlobalVariables.CONFIG.getProperty("site_"+url)));
+				 String url=data.get(TestBaseConstants.SCHOOL_NAME);
+				 launchSite(
+				 cleanPath(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE
+				 +url)));
+			 	
+				 //Call the login method to perform login with valid credentials & 
+				 //click on data analysis tab	
 				 
-				 // Call the login method to perform login with valid credentials & 
-				 //click on data analysis tab	 
-				 loginToSite(data.get("iWait"),
-						 GlobalVariables.CONFIG.getProperty("s1220User"),
-						 cleanContent(GlobalVariables.CONFIG.getProperty("s1220pwd")));
-				 webdriverWait(data.get("iWait"));			
+				 loginToSite(data.get(TestBaseConstants.WAIT_VALUE),
+				 GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE_USER_NAME),
+				 cleanContent(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE_PASSWORD)));
+				 webdriverWait(data.get(TestBaseConstants.WAIT_VALUE));			
 				
 				 
-				 //click std reports
-				 click("btn_std_reports","Click on Standard Reports");
-				 
+				 //click standard reports
+				 click(TestBaseConstants.BUTTON_STANDARD_REPORTS,"Click on Standard Reports");
+								 
 				 // wait till page load
 				Thread.sleep(5000);
-				 rATUStatus("Pass","Click on "+data.get("sSub_Report_Name")+" report");
-				// click on report 
-				 GlobalVariables.driver.findElement(By.xpath(
-						 "//tr[td[contains(text(),'"+data.get("sSub_Report_Name")+"')]]//*[text()='Generate']")).click();
-				 Logs.infoLog("Click on "+data.get("sSub_Report_Name")+" report");	
-				 
-				
+				 GlobalVariables.driver.findElement(By.xpath
+						 ( "//tr[td[contains(text(),'"+
+				 data.get(TestBaseConstants.SUB_REPORT_NAME)+"')]]//*[text()='Generate']"))
+						 .click();
+				 Logs.infoLog("Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");	
+			 
+				 rATUStatus("Pass","Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");
 				 Thread.sleep(2000);
 				 
 				 if(url.contains("Texas_FTMBA") ||url.contains("Harvard_FTMBA"))
 	 				{
-	 				 // select graduation year
-	 				 selectValueFromDropDown(
-	 						getObjectValue("dpdown_GraduationYr"),
-	 				 "Text",data.get("iGraduationYr"),"Select Graduation Year-->"+data.get("iGraduationYr"));
-	 				 Logs.infoLog("Select Graduation Year-->"+data.get("iGraduationYr"));	
-	 				 Thread.sleep(2000);
+					 
+					 
+					 // select graduation year
+					 selectValueFromDropDown(
+					 getObjectValue(TestBaseConstants.DROP_DOWN_GRADUATION_YEAR),
+						 TestBaseConstants.DROP_SELECT_USING_TEXT,
+						 data.get(TestBaseConstants.GRADUATION_YEAR),
+						 "Select Graduation Year-->"+data.get(TestBaseConstants.GRADUATION_YEAR));
+					 Thread.sleep(1000);
 	 				 
-	 				 // select graduation term
-	 				 selectValueFromDropDown(
-	 						getObjectValue("dpdown_GraduationTerm"),
-	 						 "Text",data.get("sGraduationTerm"),
-	 						 "Select Graduation Term-->"+data.get("sGraduationTerm"));
-	 				 
-	 				 Logs.infoLog( "Select Graduation Term-->"+data.get("sGraduationTerm"));			 
-	 				 
-	 				 Thread.sleep(2000);
+					// select graduation term
+					 selectValueFromDropDown(
+					 getObjectValue(TestBaseConstants.DROP_DOWN_GRADDUATION_TERM),
+					 TestBaseConstants.DROP_SELECT_USING_INDEX,data.get(TestBaseConstants.GRADDUATION_TERM),
+							 "Select Graduation Term-->"+data.get(TestBaseConstants.GRADDUATION_TERM));
+					 Thread.sleep(2000);
 	 			
 	 				 // select job phase 
 					 selectValueFromDropDown(
-							 getObjectValue("dpdown_JobPhaseId"),
-							 "Text",data.get("sJobPhaseId"),
-							 "Select Job Phase Id-->"+data.get("sJobPhaseId"));
-					 Logs.infoLog( "Select Job Phase Id-->"+data.get("sJobPhaseId"));
+							 getObjectValue(TestBaseConstants.DROP_DOWN_JOB_PHASE),
+							 TestBaseConstants.DROP_SELECT_USING_TEXT,data.get("sJobPhaseId"),
+							 "Select Job Phase Id-->"+data.get(TestBaseConstants.JOB_PHASE));
+					 Logs.infoLog( "Select Job Phase Id-->"+data.get(TestBaseConstants.JOB_PHASE));
 					 
-					 //select joint degree
-					 
-					 selectValueFromDropDown(getObjectValue("dpdown_JointDegree"),
-							 "Text",data.get("sJoint_Degree"),
-							 "Select Job Phase Id-->"+data.get("sJoint_Degree"));
-					 Logs.infoLog( "Select Job Phase Id-->"+data.get("sJoint_Degree"));
+					 //select joint degree					 
+					 selectValueFromDropDown(getObjectValue(TestBaseConstants.DROP_DOWN_JOINT_DEGREE),
+							 TestBaseConstants.DROP_SELECT_USING_TEXT,data.get(TestBaseConstants.JOINT_DEGREE),
+							 "Select Job Phase Id-->"+data.get(TestBaseConstants.JOINT_DEGREE));
+					 Logs.infoLog( "Select Job Phase Id-->"+data.get(TestBaseConstants.JOINT_DEGREE));
 					 Thread.sleep(2000);
 	 				}
 					 else if(url.contains("Texas_PTMBA"))
 	 				 {
-						// select graduation year
-		 				 selectValueFromDropDown
-		 				 (getObjectValue("dpdown_GraduationYr"),
-		 				 "Text",data.get("iGraduationYr"),"Select Graduation Year-->"+data.get("iGraduationYr"));
-		 				 Logs.infoLog("Select Graduation Year-->"+data.get("iGraduationYr"));	
-		 				 Thread.sleep(1000);
+						 // select graduation year
+						 selectValueFromDropDown(
+						 getObjectValue(TestBaseConstants.DROP_DOWN_GRADUATION_YEAR),
+							 TestBaseConstants.DROP_SELECT_USING_TEXT,
+							 data.get(TestBaseConstants.GRADUATION_YEAR),
+							 "Select Graduation Year-->"+data.get(TestBaseConstants.GRADUATION_YEAR));
+						 Thread.sleep(1000);
 		 				 
-		 				 // select graduation term
-		 				 selectValueFromDropDown
-		 				 (getObjectValue("dpdown_GraduationTerm"),
-		 						 "Text",data.get("sGraduationTerm"),
-		 						 "Select Graduation Term-->"+data.get("sGraduationTerm"));
-		 				 
-		 				 Logs.infoLog( "Select Graduation Term-->"+data.get("sGraduationTerm"));			 
+						// select graduation term
+						 selectValueFromDropDown(
+						 getObjectValue(TestBaseConstants.DROP_DOWN_GRADDUATION_TERM),
+						 TestBaseConstants.DROP_SELECT_USING_INDEX,data.get(TestBaseConstants.GRADDUATION_TERM),
+								 "Select Graduation Term-->"+data.get(TestBaseConstants.GRADDUATION_TERM));
+						 Thread.sleep(2000); 
 		 				 
 		 				 Thread.sleep(2000);
-		 				 if(!data.get("sProgram").equalsIgnoreCase("All"))
+		 				 if(!data.get(TestBaseConstants.PROGRAM).equalsIgnoreCase("All"))
 		 				 {
 		 				 //select program
 		 					 selectValueFromDropDown(
-		 							getObjectValue("dpdown_Program"),
-		 					 "Index",data.get("sProgram"),"Select program-->"+data.get("sProgram")); 					
+		 					 getObjectValue(TestBaseConstants.DROP_DOWN_PROGRAM),
+		 					TestBaseConstants.DROP_SELECT_USING_INDEX,
+		 					data.get(TestBaseConstants.PROGRAM),
+		 					"Select program-->"+data.get(TestBaseConstants.PROGRAM)); 					
 		 					 Thread.sleep(2000);
-		 					 Logs.infoLog( "Select program-->"+data.get("sProgram"));
+		 					 Logs.infoLog( "Select program-->"+data.get(TestBaseConstants.PROGRAM));
 		 				 }
 	 					 
 	 				 }
@@ -149,11 +155,7 @@ public class Graduating_Class_A_Report extends App_Specific_Keywords
 				 click("btn_GenerateReport","Clicking on generate report");
 				 
 				 //scroll the page upwards
-				 scrollPageUp(450);
-				 // Clicking on generate report
-				 click("btn_GenerateReport","Clicking on generate report");
-				 //scroll the page upwards
-				 	scrollPageUp(450);
+				 scrollPageUp(450);				
 				 	
 				 	
 				 	//perform write or read to excel using Build type value present in excel
@@ -164,12 +166,11 @@ public class Graduating_Class_A_Report extends App_Specific_Keywords
 				 Logs.infoLog( "Started writing to excel as Baseline is the build Type");
 			 	//call method to store contents of web table to excel
 				mT1_TH2_TCN_WriteXLSX(
-						GlobalVariables.testCaseIdentifier
-				 			
-				 			,GlobalVariables.testCaseIdentifier,
-				 			"Writing contents of "+data.get("sSub_Report_Name")+" to excel",
-				 			GlobalVariables.OR.getProperty("report_Graduating_Class_A_Report")
-				 			,data.get("sSub_Report_Name"));
+						GlobalVariables.testCaseIdentifier				 			
+				 		,GlobalVariables.testCaseIdentifier,
+				 		"Writing contents of "+data.get(TestBaseConstants.SUB_REPORT_NAME)+" to excel",
+				 		GlobalVariables.OR.getProperty("report_Graduating_Class_A_Report")
+						,data.get(TestBaseConstants.SUB_REPORT_NAME));
 						
 			}
 			else if(GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE).
@@ -182,9 +183,9 @@ public class Graduating_Class_A_Report extends App_Specific_Keywords
 				mT1_TH2_TCN_ReadXLSX(
 						GlobalVariables.testCaseIdentifier,GlobalVariables.testCaseIdentifier,
 						GlobalVariables.OR.getProperty("report_Graduating_Class_A_Report")
-			 			,data.get("sSub_Report_Name"),
+			 			,data.get(TestBaseConstants.SUB_REPORT_NAME),
 			 			"Validating contents of table "+
-			 			data.get("sSub_Report_Name")+"- with excel"
+			 			data.get(TestBaseConstants.SUB_REPORT_NAME)+"- with excel"
 						);			
 			}			
 		 }
@@ -198,15 +199,7 @@ public class Graduating_Class_A_Report extends App_Specific_Keywords
 			}
 		
 		 GlobalVariables.cverify.checkForVerificationErrors();
-	}
-
-	 
-	 
-	
-
-
-
-	
+	}	
 
 }
 

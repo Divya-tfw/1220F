@@ -285,7 +285,7 @@ public class Keywords extends ExcelTestBase
 		 if(custErrMsg!=null)
 		 {
 			CustomVerification.verifyContent(false,keywordmsg +" "+ custErrMsg);						
-			ExcelTestUtil. custReporter(keywordmsg +" "+ custErrMsg);
+			ExcelTestUtil.custReporter(keywordmsg +" "+ custErrMsg);
 			GlobalVariables.APPICATION_LOGS.error(keywordmsg+" "+custErrMsg);
 		 }
 		 else

@@ -24,13 +24,12 @@ public class Source_of_Job_by_Employer_Type extends App_Specific_Keywords
 	@Test(dataProvider="ExcelData")
 	public void test_Source_of_Job_by_Employer_Type(Hashtable<String,String> data) 
 	{
-		//Start of script
 		GlobalVariables.APPICATION_LOGS.info("--------Execution of test---- "+
 				GlobalVariables.scriptName+"  Started--------");
-		GlobalVariables.testCaseIdentifier=data.get("Automation_Id");
-	
+		GlobalVariables.testCaseIdentifier=data.get(TestBaseConstants.AUTOMATION_ID);
+		
 		Logs.openLogFile(GlobalVariables.logFolderPath, GlobalVariables.testCaseIdentifier); 	
-		GlobalVariables.dataRunStatus=data.get("Runmode");			 
+		GlobalVariables.dataRunStatus=data.get(TestBaseConstants.DATA_RUNMODE);			 
 		GlobalVariables.suiteRunStatus =	ExcelTestUtil.suiteRunstatus(GlobalVariables.suiteName);
 		GlobalVariables. testRunStatus=ExcelTestUtil.testRunStatus(GlobalVariables.suiteName,GlobalVariables.scriptName); 			
 		boolean trs = ExcelTestUtil.checkSkiptests(GlobalVariables.suiteRunStatus,GlobalVariables.testRunStatus,
@@ -40,90 +39,108 @@ public class Source_of_Job_by_Employer_Type extends App_Specific_Keywords
 		Logs.infoLog("--------Execution of test---- "+GlobalVariables.scriptName+"  Started----");	
 			
 
- try
- {
+	 try
+	 {
 	
-	Logs.infoLog("Launch Browser");
-	// Launch Browser
- 	navigate();	
- 	rATUConfigInfo("12Twenty Reports of execution",
-		
- 			data.get("sSub_Report_Name"),
-			 GlobalVariables.scriptName,
-			 "Divya","1.0")	;
- 	 rATUStatus("Info","Open the browser");
-	 Logs.infoLog("Navigate to the Data fectch URL of application");
-	 rATUStatus("Pass","Navigate to the Data fectch URL of application");
-	 
-	 //navigate to url of application
-	 String url=data.get("sSchoolName");
-	 launchSite(cleanPath(GlobalVariables.CONFIG.getProperty("site_"+url)));
-	 
-	 // Call the login method to perform login with valid credentials & 
-	 //click on data analysis tab	 
-	 loginToSite(data.get("iWait"),
-			 GlobalVariables.CONFIG.getProperty("s1220User"),
-			 cleanContent(GlobalVariables.CONFIG.getProperty("s1220pwd")));
-	 webdriverWait(data.get("iWait"));
-	
-	 //System.out.println(driver.findElement(By.xpath("//*[text()='Standard Reports']")).isDisplayed());
-	 
-	 //click std reports
-	 click("btn_std_reports","Click on Standard Reports");
-	 
-	 Thread.sleep(5000);
-	 webdriverWait(data.get("iWait"));
-	 //click on Table report
-	 
-	 GlobalVariables.driver.findElement(By.xpath(
-	"//tr[td[contains(text(),'"+data.get("sSub_Report_Name")+"')]]//*[text()='Generate']")).click();
-	 Logs.infoLog("Click on "+data.get("sSub_Report_Name")+" report");	
-	 
-	 rATUStatus("Pass","Click on "+data.get("sSub_Report_Name")+" report");
-	 
-	 Thread.sleep(2000);
-	 // select graduation year
-	 selectValueFromDropDown(getObjectValue("dpdown_GraduationYr"),
-	 "Text",data.get("iGraduationYr"),"Select Graduation Year-->"+data.get("iGraduationYr"));
-	 Logs.infoLog("Select Graduation Year-->"+data.get("iGraduationYr"));	
-	 Thread.sleep(2000);
-	 // select graduation term
-	
-		 // select graduation term
-		 selectValueFromDropDown( GlobalVariables.driver.findElement(By.id("GraduationTermId")),
-				 "Text",data.get("sGraduationTerm"),"Select Graduation Term-->"+data.get("sGraduationTerm"));
-		 Thread.sleep(2000);
-		 // select offer timing
-		 selectValueFromDropDown( GlobalVariables.driver.findElement(By.name("LawOfferTiming")),
-				 "Text",data.get("sOffer_Timing"),"Select Job Phase Id-->"+data.get("sOffer_Timing"));
-		 Thread.sleep(1000);
-		 //select cut off date if with is given else clear it
-		if(data.get("sCutoff_Date").equalsIgnoreCase("Without"))
-		{
-			 GlobalVariables.driver.findElement(By.id("LawCutoffDate")).click();
-			 GlobalVariables.driver.findElement(By.id("LawCutoffDate")).clear();
-		}
-		
+	 	Logs.infoLog("*****Launch Browser******");
+	 	
+		 
+		// Launch Browser
+	 	navigate();	
+	 	rATUConfigInfo(TestBaseConstants.ATU_INDEX_PAGE_DESCRIPTION,							
+	 			data.get(TestBaseConstants.SUB_REPORT_NAME),
+				 GlobalVariables.scriptName,
+				 TestBaseConstants.AUTHOR_NAME,
+				 TestBaseConstants.VERSION_VALUE)	;
+	 	
+	 	 rATUStatus(TestBaseConstants.INFO_VALUE,
+	 			 "Open the browser");
 		 		 
-		 click("btn_GenerateReport","Clicking on generate report");
+		 //navigate to url of application
+		 String url=data.get(TestBaseConstants.SCHOOL_NAME);
+		 launchSite(
+		 cleanPath(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE
+		 +url)));
+	 	
+		 //Call the login method to perform login with valid credentials & 
+		 //click on data analysis tab	
+		 
+		 loginToSite(data.get(TestBaseConstants.WAIT_VALUE),
+		 GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE_USER_NAME),
+		 cleanContent(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE_PASSWORD)));
+		 webdriverWait(data.get(TestBaseConstants.WAIT_VALUE));			
+		
+		 
+		 //click standard reports
+		 click(TestBaseConstants.BUTTON_STANDARD_REPORTS,"Click on Standard Reports");
+		 
+		 // wait till page load
+		 webdriverWait(data.get(TestBaseConstants.WAIT_VALUE));
+	 
+		 Thread.sleep(3000);
+		 //click on Table report
+	 
+		 GlobalVariables.driver.findElement(By.xpath
+				 ( "//tr[td[contains(text(),'"+
+		 data.get(TestBaseConstants.SUB_REPORT_NAME)+"')]]//*[text()='Generate']"))
+				 .click();
+		 Logs.infoLog("Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");	
+	 
+		 rATUStatus("Pass","Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");
+		 Thread.sleep(2000);
+	 
+		 // select graduation year
+		 selectValueFromDropDown(
+		 getObjectValue(TestBaseConstants.DROP_DOWN_GRADUATION_YEAR),
+			 TestBaseConstants.DROP_SELECT_USING_TEXT,
+			 data.get(TestBaseConstants.GRADUATION_YEAR),
+			 "Select Graduation Year-->"+data.get(TestBaseConstants.GRADUATION_YEAR));
+		 Thread.sleep(1000);
+	 
+	
+		// select graduation term
+		 selectValueFromDropDown(
+		 getObjectValue(TestBaseConstants.DROP_DOWN_GRADDUATION_TERM),
+		 TestBaseConstants.DROP_SELECT_USING_TEXT,data.get(TestBaseConstants.GRADDUATION_TERM),
+				 "Select Graduation Term-->"+data.get(TestBaseConstants.GRADDUATION_TERM));
+		 Thread.sleep(2000);
+		 
+		// select offer timing
+		 selectValueFromDropDown(
+				 getObjectValue(TestBaseConstants.DROP_DOWN_OFFER_TIMING),
+				 TestBaseConstants.DROP_SELECT_USING_TEXT,
+				 data.get(TestBaseConstants.OFFER_TIMING),
+				 "Select Job Phase Id-->"+data.get(TestBaseConstants.OFFER_TIMING));
+		 Thread.sleep(1000);
+		 
+	 //select cut off date if with is given else clear it
+		if(data.get(TestBaseConstants.CUT_OFF_DATE).
+				equalsIgnoreCase(TestBaseConstants.CUT_OFF_DATE_WITHOUT))
+		{
+			 getObjectValue(TestBaseConstants.DROP_DOWN_CUT_OFF_DATE).click();
+			 getObjectValue(TestBaseConstants.DROP_DOWN_CUT_OFF_DATE).clear();
+		}
+		 
+		
+		//click on generate report
+		 click(TestBaseConstants.BUTTON_GENERATE_REPORT,"Clicking on generate report");
+		 
 		 //scroll the page upwards
-		 	scrollPageUp(450);
-		 	//String sn_forwrite= ExcelTestUtil.now("dd_MMMMM_yyyy_hh.mm.ss aaa");
-		 	
-		 	//perform write or read to excel using Build type value present in excel
+		 scrollPageUp(450);
+				 	
+				 	
+		 //perform write or read to excel using Build type value present in excel
 		 	if(GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE).equalsIgnoreCase(
 					TestBaseConstants.BASELINE_BUILD_TYPE))	 	
 			
 			{
-				 Logs.infoLog( "Started writing to excel as Baseline is the build Type");
-			 	
+				 Logs.infoLog( "Started writing to excel as Baseline is the build Type");			 	
 				 mT1_TH2_TBH1_TCN_WriteXLSX(
-						GlobalVariables.testCaseIdentifier
-				 			
+						GlobalVariables.testCaseIdentifier				 			
 				 			,GlobalVariables.testCaseIdentifier,
-				 			"Writing contents of "+data.get("sSub_Report_Name")+" to excel",
-				 			"//*[@id='report-data']"
-				 			,data.get("sSub_Report_Name"));
+				 			"Writing contents of "+data.get(TestBaseConstants.SUB_REPORT_NAME)+
+				 			" to excel",GlobalVariables.OR.getProperty("report_Nalp")
+				 			,data.get(TestBaseConstants.SUB_REPORT_NAME));
 						
 			}
 			else if(GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE).
@@ -131,29 +148,26 @@ public class Source_of_Job_by_Employer_Type extends App_Specific_Keywords
 					TestBaseConstants.ACTUAL_BUILD_TYPE))
 				
 			{
-				Logs.infoLog( "Started reading from excel as Actual is the build Type");
-				//String sn_forRead=sn_forwrite;
-				mT1_TH2_TBH1_TCN_ReadXLSX(GlobalVariables.testCaseIdentifier,GlobalVariables.testCaseIdentifier
-						,"//*[@id='report-data']"
-			 			,data.get("sSub_Report_Name"),
-			 			"Validating contents of table "+data.get("sSub_Report_Name")+"- with excel"
+				Logs.infoLog( "Started reading from excel as Actual is the build Type");				
+				mT1_TH2_TBH1_TCN_ReadXLSX(GlobalVariables.testCaseIdentifier,
+						GlobalVariables.testCaseIdentifier
+						,GlobalVariables.OR.getProperty("report_Nalp")
+			 			,data.get(TestBaseConstants.SUB_REPORT_NAME),
+			 			"Validating contents of table "+
+			 			data.get(TestBaseConstants.SUB_REPORT_NAME)+"- with excel"
 						);
-				
-				
-			}		
+			}				
+			
+		 }
+		 
+		 catch(Exception e)
+			{			
+				 GlobalVariables.fail=true;			
+				 String s=e.getMessage();
+				  errorReporter(GlobalVariables.errormsg,s);				 
+			}
 	
-	
- }
- 
- catch(Exception e)
-	{			
-	 GlobalVariables.fail=true;			
-	 String s=e.getMessage();
-	  errorReporter(GlobalVariables.errormsg,s);
-	 
-	}
-
- GlobalVariables.cverify.checkForVerificationErrors();
+		 GlobalVariables.cverify.checkForVerificationErrors();
 }
 }
 

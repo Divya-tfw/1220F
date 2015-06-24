@@ -4,12 +4,12 @@
 
 	<!-- ========== Initialize Properties =================================== -->
 	<property environment="env"/>
-	<property name="tc_home_path" value="D:/Allworkspace/FD/workspace/1220"/>
+	<property name="tc_home_path" value="D:/Allworkspace/FD/workspace/12Twenty"/>
 	<property name="jars_path" value="D:/Allworkspace/jars"/>
-	<property name="run_path" value="D:/Allworkspace/Testresults/Celenium/FD/Build"/>
+	<property name="run_path" value="D:/Allworkspace/Testresults/Celenium/FD/Build1"/>
 	<property name="builddest_path" value="${run_path}/build"/>
 	<property name="src_path" value="src"/>
-	<property name="config_path" value="D:/Allworkspace/FD/workspace/1220/config/Config.properties"/>
+	<property name="config_path" value="D:/Allworkspace/FD/workspace/12Twenty/config/Config.properties"/>
 	<property name="browser_name" value="Firefox"/>
 	<property name="browser_path" value="Default"/>
 	<property name="environment_Name" value="QA"/>
@@ -144,7 +144,7 @@
 							    		</java>
 			<testng classpath="${test_classpath}:${builddest_path}" suitename="MBA_Standard_Reports"
 			     outputdir="${testng_report_path}">	
-				<xmlfileset dir="${builddest_path}/suites" includes="Mba_Standard_Reports.xml" />
+				<xmlfileset dir="${builddest_path}/suites" includes="Aba_Reports.xml" />
 				
 			</testng>
 	    	</target>

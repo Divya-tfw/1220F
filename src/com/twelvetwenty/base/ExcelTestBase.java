@@ -324,12 +324,14 @@ public class ExcelTestBase extends Base
 					for(int rowNum=2; rowNum<=rows; rowNum++)
 					{
 						table = new Hashtable<String,String>();
+						
+						GlobalVariables.dataFileRowCount=rowNum;
 						for(int colNum=0; colNum<cols; colNum++)
 						{
 							table.put(GlobalVariables.sheetPath.getCellData(GlobalVariables.scriptName,
 									colNum, 1),GlobalVariables.sheetPath.getCellData
 									(GlobalVariables.scriptName, colNum, rowNum));
-							// System.out.print(xls.getCellData("CreateProject", colNum, rowNum)+" - ");
+							
 						}
 						data[rowNum-2][0] = table;
 					}
@@ -381,11 +383,14 @@ public class ExcelTestBase extends Base
 	@AfterMethod
 	 public static void afterMethod()
 	 {
-		 
-		 if(GlobalVariables.driver!=null )
+		/* System.out.println("Data row count is -->"+GlobalVariables.dataFileRowCount);
+		 System.out.println("Flag count --------->"+GlobalVariables.executeflag);*/
+		 if(GlobalVariables.driver!=null && 
+				 GlobalVariables.executeflag <GlobalVariables.dataFileRowCount  )
 		 {
 			 GlobalVariables.driver.close();
 			 GlobalVariables.driver=null;
+			 GlobalVariables.executeflag =0;
 		 }	
 		 if(GlobalVariables.flag2==0)
 		 {
@@ -700,7 +705,8 @@ public class ExcelTestBase extends Base
 	@AfterSuite
 	public void suiteEnd() throws Exception
 	{
-		if(GlobalVariables.driver!=null && GlobalVariables.dataFileRowCount==GlobalVariables.executeflag)
+		if(GlobalVariables.driver!=null && 
+				GlobalVariables.executeflag ==0)
 		{
 			GlobalVariables.driver.quit();	
 		}

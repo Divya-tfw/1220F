@@ -11,18 +11,18 @@ import com.twelvetwenty.constants.TestBaseConstants;
 import com.twelvetwenty.util.ExcelTestUtil;
 import com.twelvetwenty.util.Logs;
 
-public class Location_of_Instate_Jobs extends App_Specific_Keywords
+public class Class_Summary extends App_Specific_Keywords
 {
 	/*****************************************************************************************************************
   	 * 	Author						:	Divya Raju.R
-  	 * 	LastModifiedDate			:	19-5-2015  	  
+  	 * 	LastModifiedDate			:	4-6-2015  	  
   	 * 	Annotation					:	@Test
-  	 * 	MethodName					: 	test_Location_of_Instate_Jobs
+  	 * 	MethodName					: 	test_Class_Summary
   	 * 	Description					:	This method is used to perform required functionality test on app
   	 * 
   	 ***************************************************************************************************************/	
 	@Test(dataProvider="ExcelData")
-	public void test_Location_of_Instate_Jobs(Hashtable<String,String> data) 
+	public void test_Class_Summary(Hashtable<String,String> data) 
 	{
 		//Start of script
 				GlobalVariables.APPICATION_LOGS.info("--------Execution of test---- "+
@@ -58,7 +58,7 @@ public class Location_of_Instate_Jobs extends App_Specific_Keywords
 			 			 "Open the browser");
 				 		 
 				 //navigate to url of application
-				 String url=data.get(TestBaseConstants.SCHOOL_NAME);
+				 /*String url=data.get(TestBaseConstants.SCHOOL_NAME);
 				 launchSite(
 				 cleanPath(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE
 				 +url)));
@@ -89,8 +89,26 @@ public class Location_of_Instate_Jobs extends App_Specific_Keywords
 			 
 				 rATUStatus("Pass","Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");
 				 Thread.sleep(2000);
+			 */
+			 	 
+			 	 
+			 	 
+			 GlobalVariables.driver.get("http://law-ucla.admin.data-temp-12twenty.com/ReportNalp/ClassSummary");
+				
+			
+			 // input email address
+			 input("txt_EmailAddress",GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE_USER_NAME),
+					"Enter valid email address");
 			 
-				 // select graduation year
+			 // input password
+			 input("txt_Password", cleanContent(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE_PASSWORD)),
+					 "Enter valid password");
+			 
+			 //click on login button
+			 click("btn_Log_in","Click on login button");
+			 
+			 Thread.sleep(2000);
+			 // select graduation year
 				 selectValueFromDropDown(
 				 getObjectValue(TestBaseConstants.DROP_DOWN_GRADUATION_YEAR),
 					 TestBaseConstants.DROP_SELECT_USING_TEXT,
@@ -137,11 +155,12 @@ public class Location_of_Instate_Jobs extends App_Specific_Keywords
 			{
 				 Logs.infoLog( "Started writing to excel as Baseline is the build Type");
 			 	//call method to write to excel
-				 mT1_TH1_TCN_WriteXLSX(
+				 mT2_TH2_TCN_WriteXLSX(
 						 GlobalVariables.testCaseIdentifier				 			
 				 			,GlobalVariables.testCaseIdentifier,
 				 			"Writing contents of "+data.get(TestBaseConstants.SUB_REPORT_NAME)+
-				 			" to excel",GlobalVariables.OR.getProperty("report_Nalp")
+				 			" to excel",GlobalVariables.OR.getProperty("report_Nalp"),
+				 			GlobalVariables.OR.getProperty("report_class_summary_table2")				 			
 				 			,data.get(TestBaseConstants.SUB_REPORT_NAME));
 						
 			}

@@ -5,20 +5,35 @@
    <test name="NALP_Reports">
     
     <classes>
+        
+          <class name="com.twelvetwenty.suite.nalp_reports.Emp_Detail_by_Gender"/>
+         <class name="com.twelvetwenty.suite.nalp_reports.Emp_Detail_by_RaceorEthnicity"/>
+         
+      <!--  
+      <class name="com.twelvetwenty.suite.nalp_reports.Private_Prctic_Dtl_by_Gndr"/> 
+       <class name="com.twelvetwenty.suite.nalp_reports.Emp_Typ_by_Age_at_Grad"/>
+        
          <class name="com.twelvetwenty.suite.nalp_reports.Emp_Typ_by_RaceorEthnicity"/>
-          <class name="com.twelvetwenty.suite.nalp_reports.Private_PD_by_RaceorEthnicity"/>
-           <class name="com.twelvetwenty.suite.nalp_reports.Emp_Typ_by_Age_at_Grad"/>
-            <class name="com.twelvetwenty.suite.nalp_reports.Emp_Detail_by_Gender"/>
+         <class name="com.twelvetwenty.suite.nalp_reports.Private_PD_by_RaceorEthnicity"/>
+         <class name="com.twelvetwenty.suite.nalp_reports.FulndPartimeJobsby_Emplyer_Type"/>
+         
+        
+         <class name="com.twelvetwenty.suite.nalp_reports.Emp_Status_by_Age_at_Grad"/>
+        
+         
+          
+           
+            
              <class name="com.twelvetwenty.suite.nalp_reports.Emp_Sttus_by_RaceorEthnicity"/>
       <class name="com.twelvetwenty.suite.nalp_reports.Employment_Status_by_Gender"/>
-        <class name="com.twelvetwenty.suite.nalp_reports.Emp_Status_by_Age_at_Grad"/>
+       
          <class name="com.twelvetwenty.suite.nalp_reports.Employer_Types_by_Gender"/>
           <class name="com.twelvetwenty.suite.nalp_reports.Emp_Sttus_by_RaceorEthnicity"/>
-           <class name="com.twelvetwenty.suite.nalp_reports.Emp_Detail_by_RaceorEthnicity"/>
+          
             <class name="com.twelvetwenty.suite.nalp_reports.Source_of_Job_by_Employer_Type"/>
              <class name="com.twelvetwenty.suite.nalp_reports.NoofJobsReported_Taken_by_State"/>
               <class name="com.twelvetwenty.suite.nalp_reports.Location_of_Instate_Jobs"/>
-       
+       -->
       
       </classes>     
        

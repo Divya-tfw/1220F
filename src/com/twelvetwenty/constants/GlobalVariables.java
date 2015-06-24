@@ -164,6 +164,7 @@ public class GlobalVariables extends CustomVerification
 	
 	public static int dataFileRowCount=0;
 	public static int executeflag=0;
+	public static boolean filecopied=false;
 	
 	
 }

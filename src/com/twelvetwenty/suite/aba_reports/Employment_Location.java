@@ -77,24 +77,6 @@ public class Employment_Location extends App_Specific_Keywords
 						 //click std reports
 						 click(TestBaseConstants.BUTTON_STANDARD_REPORTS,"Click on Standard Reports");
 						 
-
-						/* Used only when navigating to time out page 
-						 * 
-						 * String wrongPage=GlobalVariables.driver.getTitle();
-						//login again only when navigated to log out page 
-						 if(wrongPage.contains("SAGE | Login"))
-						 {
-							 input("txt_EmailAddress",GlobalVariables.CONFIG.getProperty("s1220User"),
-									 "Enter valid email address");
-							 
-							 // input password
-							 input("txt_Password",cleanContent(GlobalVariables.CONFIG.getProperty("s1220pwd")),
-									 "Enter valid password");
-							 
-							 //click on login button
-							 click("btn_Log_in","Click on login button");
-																 
-						 }*/
 						 // wait till page load
 						 webdriverWait(data.get(TestBaseConstants.WAIT_VALUE));
 						 //click on aba report
@@ -150,7 +132,7 @@ public class Employment_Location extends App_Specific_Keywords
 							 GlobalVariables.driver.findElement(By.id("LawCutoffDate")).clear();*/
 							 
 							 getObjectValue(TestBaseConstants.DROP_DOWN_CUT_OFF_DATE).click();
-							 getObjectValue(TestBaseConstants.DROP_DOWN_CUT_OFF_DATE).click();
+							 getObjectValue(TestBaseConstants.DROP_DOWN_CUT_OFF_DATE).clear();
 							 
 						}
 						 
