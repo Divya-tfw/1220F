@@ -100,7 +100,7 @@ public class Compensation_by_Industries extends App_Specific_Keywords
 					 "Select Graduation Term-->"+data.get(TestBaseConstants.GRADDUATION_TERM));
 			 Thread.sleep(2000);
 			
-				 // select job phase 
+			// select job phase 
 			 selectValueFromDropDown(
 					 getObjectValue(TestBaseConstants.DROP_DOWN_JOB_PHASE),
 					 TestBaseConstants.DROP_SELECT_USING_TEXT,data.get("sJobPhaseId"),

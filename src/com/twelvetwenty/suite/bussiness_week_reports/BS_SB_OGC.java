@@ -35,12 +35,10 @@ public class BS_SB_OGC extends App_Specific_Keywords
 		GlobalVariables.suiteRunStatus =	ExcelTestUtil.suiteRunstatus(GlobalVariables.suiteName);
 		GlobalVariables. testRunStatus=ExcelTestUtil.testRunStatus(GlobalVariables.suiteName,GlobalVariables.scriptName); 			
 		boolean trs = ExcelTestUtil.checkSkiptests(GlobalVariables.suiteRunStatus,GlobalVariables.testRunStatus,
-				GlobalVariables.dataRunStatus);
-		
+				GlobalVariables.dataRunStatus);		
 		dbUpdate(trs,GlobalVariables.scriptName,GlobalVariables.testCaseIdentifier);
 		Logs.infoLog("--------Execution of test---- "+GlobalVariables.scriptName+"  Started----");	
-			
-
+		
 	 try
 	 {
 	

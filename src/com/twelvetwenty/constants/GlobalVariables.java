@@ -28,6 +28,8 @@ import atu.testrecorder.ATUTestRecorder;
 
 
 
+
+
 import com.twelvetwenty.base.CustomVerification;
 import com.twelvetwenty.base.ExcelTestBase;
 import com.twelvetwenty.util.Xls_Reader;
@@ -166,5 +168,5 @@ public class GlobalVariables extends CustomVerification
 	public static int executeflag=0;
 	public static boolean filecopied=false;
 	
-	
+	public static Object buildNumber=null;
 }

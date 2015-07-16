@@ -58,7 +58,7 @@ public class Class_Summary extends App_Specific_Keywords
 			 			 "Open the browser");
 				 		 
 				 //navigate to url of application
-				 /*String url=data.get(TestBaseConstants.SCHOOL_NAME);
+				 String url=data.get(TestBaseConstants.SCHOOL_NAME);
 				 launchSite(
 				 cleanPath(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE
 				 +url)));
@@ -89,10 +89,10 @@ public class Class_Summary extends App_Specific_Keywords
 			 
 				 rATUStatus("Pass","Click on "+ data.get(TestBaseConstants.SUB_REPORT_NAME)+" report");
 				 Thread.sleep(2000);
-			 */
+			 
 			 	 
 			 	 
-			 	 
+			/* 	 
 			 GlobalVariables.driver.get("http://law-ucla.admin.data-temp-12twenty.com/ReportNalp/ClassSummary");
 				
 			
@@ -105,7 +105,7 @@ public class Class_Summary extends App_Specific_Keywords
 					 "Enter valid password");
 			 
 			 //click on login button
-			 click("btn_Log_in","Click on login button");
+			 click("btn_Log_in","Click on login button");*/
 			 
 			 Thread.sleep(2000);
 			 // select graduation year
@@ -159,9 +159,9 @@ public class Class_Summary extends App_Specific_Keywords
 						 GlobalVariables.testCaseIdentifier				 			
 				 			,GlobalVariables.testCaseIdentifier,
 				 			"Writing contents of "+data.get(TestBaseConstants.SUB_REPORT_NAME)+
-				 			" to excel",GlobalVariables.OR.getProperty("report_Nalp"),
-				 			GlobalVariables.OR.getProperty("report_class_summary_table2")				 			
-				 			,data.get(TestBaseConstants.SUB_REPORT_NAME));
+				 			" to excel",GlobalVariables.OR.getProperty("report_Nalp")
+				 			,GlobalVariables.OR.getProperty("report_class_summary_table2"),
+				 			data.get(TestBaseConstants.SUB_REPORT_NAME));
 						
 			}
 			else if(GlobalVariables.CONFIG.getProperty(TestBaseConstants.BUILD_TYPE).
@@ -171,16 +171,14 @@ public class Class_Summary extends App_Specific_Keywords
 			{
 				Logs.infoLog( "Started reading from excel as Actual is the build Type");
 			// call method to read from excel
-				mT1_TH1_TCN_ReadXLSX(GlobalVariables.testCaseIdentifier,
+				mT2_TH2_TCN_ReadXLSX(GlobalVariables.testCaseIdentifier,
 						GlobalVariables.testCaseIdentifier
-						,GlobalVariables.OR.getProperty("report_Nalp")
+						,GlobalVariables.OR.getProperty("report_Nalp"),
+						GlobalVariables.OR.getProperty("report_class_summary_table2")
 			 			,data.get(TestBaseConstants.SUB_REPORT_NAME),
 			 			"Validating contents of table "+
 			 			data.get(TestBaseConstants.SUB_REPORT_NAME)+"- with excel"
 						);
-				
-				
-				
 			}		
 	
 	

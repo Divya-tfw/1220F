@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="BWR" parallel="none">
+  <test name="SR">
+    <classes>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Base_Salary_By_EL"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Top_15_Employees"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Internships"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Base_Salary_By_NAR"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Base_Salary_By_Industry"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.BS_SB_OGC"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Overall_Employment"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Base_Salary_By_FA"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Base_Salary_By_GR"/>
+      <class name="com.twelvetwenty.suite.bussiness_week_reports.Forgone_Salary"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

@@ -42,23 +42,24 @@ public class Full_Time_Employment  extends App_Specific_Keywords
 		
 		 try
 		 {
-			 	Logs.infoLog("*****Launch Browser******");
-			 	
+			 Logs.infoLog("*****Launch Browser******");	 	
 			 
 				// Launch Browser
 			 	navigate();	
-			 	rATUConfigInfo("12Twenty Reports of execution",
-					
-			 			data.get("sSub_Report_Name"),
+			 	rATUConfigInfo(TestBaseConstants.ATU_INDEX_PAGE_DESCRIPTION,							
+			 			data.get(TestBaseConstants.SUB_REPORT_NAME),
 						 GlobalVariables.scriptName,
-						 "Divya","1.0")	;
-			 	 rATUStatus("Info","Open the browser");
-				 Logs.infoLog("Navigate to the Data fectch URL of application");
-				 rATUStatus("Pass","Navigate to the Data fectch URL of application");
-				 
+						 TestBaseConstants.AUTHOR_NAME,
+						 TestBaseConstants.VERSION_VALUE)	;
+			 	
+			 	 rATUStatus(TestBaseConstants.INFO_VALUE,
+			 			 "Open the browser");
+				 		 
 				 //navigate to url of application
-				 String url=data.get("sSchoolName");
-				 launchSite(cleanPath(GlobalVariables.CONFIG.getProperty("site_"+url)));
+				 String url=data.get(TestBaseConstants.SCHOOL_NAME);
+				 launchSite(
+				 cleanPath(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE
+				 +url)));
 			 	
 				 // Call the login method to perform login with valid credentials & 
 				 //click on data analysis tab	 
@@ -72,20 +73,7 @@ public class Full_Time_Employment  extends App_Specific_Keywords
 				 click("btn_std_reports","Click on Standard Reports");
 				 // wait till page load
 				 Thread.sleep(5000);
-				/* String logoutPage=GlobalVariables.driver.getTitle();
-					//login again only when navigated to log out page 
-					 if(!logoutPage.isEmpty())
-					 {
-						 input("txt_EmailAddress",GlobalVariables.CONFIG.getProperty("s1220User"),
-								 "Enter valid email address");
-						 
-						 // input password
-						 input("txt_Password",cleanContent(GlobalVariables.CONFIG.getProperty("s1220pwd")),"Enter valid password");
-						 
-						 //click on login button
-						 click("btn_Log_in","Click on login button");
-						 Thread.sleep(2000);									 
-					 }*/
+				
 				// click on report 
 				 rATUStatus("Pass","Click on "+data.get("sSub_Report_Name")+" report");						
 				 GlobalVariables.driver.findElement(By.xpath
@@ -124,7 +112,7 @@ public class Full_Time_Employment  extends App_Specific_Keywords
 				 //select reporting major
 				 selectValueFromDropDown( 
 						 getObjectValue("dpdown_Reporting_Major"),
-						 "Value",data.get("sReportingMajor"),"Select Reporting major-->"+data.get("sReportingMajor"));
+						 "Index",data.get("sReportingMajor"),"Select Reporting major-->"+data.get("sReportingMajor"));
 				 Thread.sleep(2000);
 				 //select degree level
 				 selectValueFromDropDown( 

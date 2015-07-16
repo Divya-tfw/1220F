@@ -225,7 +225,14 @@ public static String MOBILE_APP_TYPE="Mobile";
 		public static String DROP_DOWN_JOB_PHASE="dpdown_JobPhaseId";
 		public static String DROP_DOWN_JOINT_DEGREE="dpdown_JointDegree";
 		public static String DROP_DOWN_PROGRAM="dpdown_Program";
-		
+		public static String DROP_DOWN_WORK_AUTHORIZATION="dpdown_WorkAuthorisation";
+		public static String DROP_DOWN_DESIRED_INDUSTRY="dpdown_DesiredIndustry";
+		public static String DROP_DOWN_INCLUDE_RUMOUR_JOBS="dpdown_IncludeRumourJobs";
+		public static String DROP_DOWN_INCLUDED_IN_REPORTING="dpdown_sIncludedInReporting"; 
+		public static String DROP_DOWN_DEGREE_LEVEL="dpdown_sDegreelevel";
+		public static String DROP_DOWN_UNDER_GRADUATE_MAJOR="dpdown_sUndergraduateMajor";
+		public static String DROP_DOWN_COLLEGE="dpdown_sCollege";
+		public static String DROP_DOWN_DEPARTMENT="dpdown_sDepartment";
 		
 		//SCRIPT DATA CONSTANTS
 		public static String SUB_REPORT_NAME="sSub_Report_Name";
@@ -235,7 +242,15 @@ public static String MOBILE_APP_TYPE="Mobile";
 		public static String CUT_OFF_DATE="sCutoff_Date";
 		public static String JOB_PHASE="sJobPhaseId";
 		public static String JOINT_DEGREE="sJoint_Degree";
-		public static String PROGRAM="sProgram";
+		public static String PROGRAM="sProgram";		
+		public static String WORK_AUTHORIZATION="sWorkAuthorisation";
+		public static String INDUSTRY="sDesiredIndustry";
+		public static String INCLUDE_RUMOUR_JOBS="sIncludeRumourJobs";
+		public static String INCLUDED_IN_REPORTING="sIncludedInReporting";		
+		public static String DEGREE_LEVEL="sDegreelevel";
+		public static String UNDER_GRADUATE_MAJOR="sUndergraduateMajor";
+		public static String COLLEGE="sCollege";
+		public static String DEPARTMENT="sDepartment";
 		
 		
 		//ATU CONSTANTS
@@ -296,12 +311,33 @@ public static String MOBILE_APP_TYPE="Mobile";
 		public static String SCHOOL_TEXAS_FTMBA="Texas_FTMBA";
 		public static String SCHOOL_TEXAS_PTMBA="Texas_PTMBA";
 		public static String SCHOOL_HARDVARD_FTMBA="Harvard_FTMBA";
+		public static String SCHOOL_COLUMBIA_CENTRALISED="Columbia_Centralized";
 		
-		//Business Week Report
+		//Business Week Report Base Salary, Signing Bonus, & Other Guaranteed Compensation
 		public static String BWR_FORGONE_SALARY="Forgone Salary";
 		public static String BWR_OVERALL_EMPLOYEMENT="Overall Employment";
 		public static String BWR_TOP_15_EMPLOYESS="Top 15 Employers";
+		public static String BWR_BASE_SALRY_SIGNING_BONUS_OTHER_GC="Base Salary, Signing Bonus, & Other Guaranteed Compensation";
+		public static String BWR_INTERNSHIPS="Internships";
+		public static String BWR_BASE_SALARY_BY_FUNCTIONAL_AREA="Base Salary by Functional Area";
+		public static String BWR_BASE_SALARY_BY_INDUSTRY="Base Salary by Industry";
+		public static String BWR_BASE_SALARY_BY_GR="Base Salary by Geographic Region";
+		public static String BWR_BASE_SALARY_BY_NAR="Base Salary by North America Region";
+		public static String BWR_BASE_SALARY_BY_EXP_LEVEL="Base Salary by Experience Level";
 		
+		//Class summary constants
+		public static String COLUMBIA_CENTRALISED_STUDENT_REPORTING="Columbia_Centalised_Student_Reporting";
+		public static String UNC_CENTRALISED_STUDENT_REPORTING="UNC_Centalised_Student_Reporting";
+		public static String UCLA_LAW_STUDENT_REPORTING="UCLA_Law_Student Reporting";
+		public static String OHIO_STATE_BSBA_STUDENT_REPORTING="Ohio_state_BSBA_Student Reporting";
+		public static String TEXAS_FTMBA_STUDENT_REPORTING="Texas_FTMBA_Student Reporting";
+		public static String HARVARD_FTMBA_STUDENT_REPORTING="Harvard_FTMBA_Student Reporting";
+		
+		
+		public static String ACTUAL_BUILD_NUMBER ="actual_BuildNumber";
+		public static String BASELINE_BUILD_NUMBER="baseline_BuildNumber";
+		public static String ACTUAL_ITERATION_VALUE="actual_iteration_value";
+		public static String BASELINE_ITERATION_VALUE="baseline_iteration_value";
 		
 		
 }

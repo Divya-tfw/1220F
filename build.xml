@@ -4,21 +4,22 @@
 
 	<!-- ========== Initialize Properties =================================== -->
 	<property environment="env"/>
-	<property name="tc_home_path" value="D:/Allworkspace/FD/workspace/12Twenty"/>
+	<property name="tc_home_path" value="${basedir}"/>
 	<property name="jars_path" value="D:/Allworkspace/jars"/>
-	<property name="run_path" value="D:/Allworkspace/Testresults/Celenium/FD/Build1"/>
+	<property name="run_path" value="D:/Teamcity/Build"/>
 	<property name="builddest_path" value="${run_path}/build"/>
 	<property name="src_path" value="src"/>
-	<property name="config_path" value="D:/Allworkspace/FD/workspace/12Twenty/config/Config.properties"/>
-	<property name="browser_name" value="Firefox"/>
+	<property name="config_path" value="${basedir}/config/Config.properties"/>
+	<property name="browser_name" value=""/>
 	<property name="browser_path" value="Default"/>
-	<property name="environment_Name" value="QA"/>
-	<property name="build_Number" value="1"/>
-	<property name="test_cycle" value="1.5"/>
-	<property name="build_Type" value="BaseLine"/>
-	<property name="1220User_Name" value="admin@12twenty.com"/>
-	<property name="1220User_Pwd" value="Salaryview1!"/>
+	<property name="environment_Name" value="Data Temp"/>
+	<property name="build_Number" value=""/>
+	<property name="test_cycle" value="{build_Number}"/>
+	<property name="build_Type" value=""/>
+	<property name="1220User_Name" value=""/>
+	<property name="1220User_Pwd" value=""/>
 	<property name="grid_run" value="N"/>
+	<property name="Baseline_buildNumber" value=""/>
 	<property name="reports_path" value="D:/Allworkspace/testresults/Celenium/FD/Reports"/>
 		<property name="xslt_stylesheet_path" value="D:/Allworkspace/Cloudmunch/TCRunner/XSLT_Stylesheet"/>
 		<property name="testng_report_path" value="${reports_path}/test-output"/>
@@ -76,31 +77,7 @@
  
 		<mkdir dir="${builddest_path}"/>
 		
-		
-    		
-					
-		
-		<javac 
-			debug="true" 
-			destdir="${builddest_path}" 
-			srcdir="${tc_home_path}/${src_path}" 
-			target="1.8"
-			classpath="${test_classpath}"
-			includeantruntime="false"
-		/>
-			
-		<copy todir="${builddest_path}">
-			<fileset dir="${tc_home_path}" excludes="**/*.java, **/${src_path}/**"/>
-		</copy>
-	</target>
-
-
-	<!-- build -->
-	<target name="build" depends="init">
-	</target>
-	<target name="run" depends="init">
-		    	<mkdir dir="${reports_path}"/>
-		    	<java jar="${jars_path}/changebrowser.jar" fork="true">			
+		<java jar="${jars_path}/changebrowser.jar" fork="true">			
         		<arg line="${config_path} ${browser_name}"/>				
     		</java>
 		
@@ -142,7 +119,34 @@
 		<java jar="${jars_path}/GridRun.jar" fork="true">
 							        		<arg line="${config_path} ${grid_run}"/>			
 							    		</java>
-			<testng classpath="${test_classpath}:${builddest_path}" suitename="MBA_Standard_Reports"
+			<java jar="${jars_path}/ChangeBaseline_buildnumber.jar" fork="true">
+							        		<arg line="${config_path} ${Baseline_buildNumber}"/>			
+							    		</java>				    	
+    		
+					
+		
+		<javac 
+			debug="true" 
+			destdir="${builddest_path}" 
+			srcdir="${tc_home_path}/${src_path}" 
+			target="1.8"
+			classpath="${test_classpath}"
+			includeantruntime="false"
+		/>
+			
+		<copy todir="${builddest_path}">
+			<fileset dir="${tc_home_path}" excludes="**/*.java, **/${src_path}/**"/>
+		</copy>
+	</target>
+
+
+	<!-- build -->
+	<target name="build" depends="init">
+	</target>
+	<target name="run" depends="init">
+		    	<mkdir dir="${reports_path}"/>
+		    		
+			<testng classpath="${test_classpath}:${builddest_path}" suitename="Standard_Reports"
 			     outputdir="${testng_report_path}">	
 				<xmlfileset dir="${builddest_path}/suites" includes="Aba_Reports.xml" />
 				

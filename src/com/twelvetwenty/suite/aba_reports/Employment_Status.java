@@ -26,40 +26,42 @@ public class Employment_Status extends App_Specific_Keywords
 	public void test_Employment_Status(Hashtable<String,String> data) 
 	{
 		//Start of script
-		GlobalVariables.APPICATION_LOGS.info("--------Execution of test---- "+
-				GlobalVariables.scriptName+"  Started--------");
-		GlobalVariables.testCaseIdentifier=data.get("Automation_Id");
-		GlobalVariables.executeflag++;
-		Logs.openLogFile(GlobalVariables.logFolderPath, GlobalVariables.testCaseIdentifier); 	
-		GlobalVariables.dataRunStatus=data.get("Runmode");			 
-		GlobalVariables.suiteRunStatus =	ExcelTestUtil.suiteRunstatus(GlobalVariables.suiteName);
-		GlobalVariables. testRunStatus=ExcelTestUtil.testRunStatus(GlobalVariables.suiteName,GlobalVariables.scriptName); 			
-		boolean trs = ExcelTestUtil.checkSkiptests(GlobalVariables.suiteRunStatus,GlobalVariables.testRunStatus,
-				GlobalVariables.dataRunStatus);
-		
-		dbUpdate(trs,GlobalVariables.scriptName,GlobalVariables.testCaseIdentifier);
-		Logs.infoLog("--------Execution of test---- "+GlobalVariables.scriptName+"  Started----");	
+				GlobalVariables.APPICATION_LOGS.info("--------Execution of test---- "+
+						GlobalVariables.scriptName+"  Started--------");
+				GlobalVariables.testCaseIdentifier=data.get(TestBaseConstants.AUTOMATION_ID);
+				
+				Logs.openLogFile(GlobalVariables.logFolderPath, GlobalVariables.testCaseIdentifier); 	
+				GlobalVariables.dataRunStatus=data.get(TestBaseConstants.DATA_RUNMODE);			 
+				GlobalVariables.suiteRunStatus =	ExcelTestUtil.suiteRunstatus(GlobalVariables.suiteName);
+				GlobalVariables. testRunStatus=ExcelTestUtil.testRunStatus(GlobalVariables.suiteName,GlobalVariables.scriptName); 			
+				boolean trs = ExcelTestUtil.checkSkiptests(GlobalVariables.suiteRunStatus,GlobalVariables.testRunStatus,
+						GlobalVariables.dataRunStatus);		
+				dbUpdate(trs,GlobalVariables.scriptName,GlobalVariables.testCaseIdentifier);
+				Logs.infoLog("--------Execution of test---- "+GlobalVariables.scriptName+"  Started----");	
 		
 
 		 try
 		 {
-			 	Logs.infoLog("*****Launch Browser******");
-			 	
+			 Logs.infoLog("*****Launch Browser******");	 	
 			 
 				// Launch Browser
 			 	navigate();	
-			 	rATUConfigInfo("12Twenty Reports of execution",
-					
-			 			data.get("sSub_Report_Name"),
+			 	rATUConfigInfo(TestBaseConstants.ATU_INDEX_PAGE_DESCRIPTION,							
+			 			data.get(TestBaseConstants.SUB_REPORT_NAME),
 						 GlobalVariables.scriptName,
-						 "Divya","1.0")	;
-			 	 rATUStatus("Info","Open the browser");
-				 Logs.infoLog("Navigate to the Data fectch URL of application");
-				 rATUStatus("Pass","Navigate to the Data fectch URL of application");
-				 
+						 TestBaseConstants.AUTHOR_NAME,
+						 TestBaseConstants.VERSION_VALUE)	;
+			 	
+			 	 rATUStatus(TestBaseConstants.INFO_VALUE,
+			 			 "Open the browser");
+				 		 
 				 //navigate to url of application
-				 String url=data.get("sSchoolName");
-				 launchSite(cleanPath(GlobalVariables.CONFIG.getProperty("site_"+url)));
+				 String url=data.get(TestBaseConstants.SCHOOL_NAME);
+				 launchSite(
+				 cleanPath(GlobalVariables.CONFIG.getProperty(TestBaseConstants.SITE
+				 +url)));
+				 
+				 
 			 	
 				 // Call the login method to perform login with valid credentials & 
 				 //click on data analysis tab	 

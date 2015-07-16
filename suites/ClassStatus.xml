@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="none">
+  <test name="Test">
+    <classes>
+      <class name="com.twelvetwenty.suite.class_status.BSBA"/>
+      <class name="com.twelvetwenty.suite.class_status.Centralized"/>
+      <class name="com.twelvetwenty.suite.class_status.FTMBA"/>
+      <class name="com.twelvetwenty.suite.class_status.Law"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

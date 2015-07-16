@@ -73,20 +73,7 @@ public class Continuing_Education  extends App_Specific_Keywords
 				 // wait till page load
 				 Thread.sleep(5000);
 				// System.out.println(GlobalVariables.driver.getTitle());
-				 /*String logoutPage=GlobalVariables.driver.getTitle();
-					//login again only when navigated to log out page 
-					 if(!logoutPage.isEmpty())
-					 {
-						 input("txt_EmailAddress",GlobalVariables.CONFIG.getProperty("s1220User"),
-								 "Enter valid email address");
-						 
-						 // input password
-						 input("txt_Password",cleanContent(GlobalVariables.CONFIG.getProperty("s1220pwd")),"Enter valid password");
-						 
-						 //click on login button
-						 click("btn_Log_in","Click on login button");
-						 Thread.sleep(2000);									 
-					 }*/
+				
 				// click on report 
 				 rATUStatus("Pass","Click on "+data.get("sSub_Report_Name")+" report");						
 				 GlobalVariables.driver.findElement(By.xpath
@@ -125,7 +112,7 @@ public class Continuing_Education  extends App_Specific_Keywords
 				 //select reporting major
 				 selectValueFromDropDown( 
 						 getObjectValue("dpdown_Reporting_Major"),
-						 "Value",data.get("sReportingMajor"),"Select Reporting major-->"+data.get("sReportingMajor"));
+						 "Index",data.get("sReportingMajor"),"Select Reporting major-->"+data.get("sReportingMajor"));
 				 Thread.sleep(2000);
 				 //select degree level
 				 selectValueFromDropDown( 

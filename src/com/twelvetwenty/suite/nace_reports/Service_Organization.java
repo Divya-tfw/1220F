@@ -109,7 +109,7 @@ public class Service_Organization extends App_Specific_Keywords
 				 //select reporting major
 				 selectValueFromDropDown( 
 						 getObjectValue("dpdown_Reporting_Major"),
-						 "Value",data.get("sReportingMajor"),"Select Reporting major-->"+data.get("sReportingMajor"));
+						 "Index",data.get("sReportingMajor"),"Select Reporting major-->"+data.get("sReportingMajor"));
 				 Thread.sleep(2000);
 				 //select degree level
 				 selectValueFromDropDown( 
