@@ -618,7 +618,7 @@ public class App_Specific_Keywords extends Keywords {
 					+ TestBaseConstants.PATH_SIGN;
 
 			File f = new File(filePath);
-			System.out.println("File path exists --->" + filePath);
+			// System.out.println("File path exists --->" + filePath);
 			boolean folder = ExcelTestUtil.createFolder(GlobalVariables.CONFIG
 					.getProperty(TestBaseConstants.BUILD_TYPE));
 			GlobalVariables.APPICATION_LOGS
@@ -7052,7 +7052,7 @@ public class App_Specific_Keywords extends Keywords {
 				+ GlobalVariables.CONFIG
 						.getProperty(TestBaseConstants.BUILD_NUMBER);
 
-		System.out.println(path);
+		// System.out.println(path);
 		File f = new File(path);
 		if (f.exists()) {
 			// System.out.println("file exists");

@@ -5,23 +5,20 @@
 	<!-- ========== Initialize Properties =================================== -->
 	<property environment="env"/>
 	<property name="tc_home_path" value="${basedir}"/>
-	<property name="jars_path" value="D:/Allworkspace/jars"/>
+	<property name="jars_path" value="${basedir}/jars"/>
 	<property name="run_path" value="D:/Teamcity/Build"/>
 	<property name="builddest_path" value="${run_path}/build"/>
 	<property name="src_path" value="src"/>
 	<property name="config_path" value="${basedir}/config/Config.properties"/>
 	<property name="browser_name" value=""/>
-	<property name="browser_path" value="Default"/>
-	<property name="environment_Name" value="Data Temp"/>
-	<property name="build_Number" value=""/>
-	<property name="test_cycle" value="{build_Number}"/>
+	<property name="browser_path" value=""/>	
+	<property name="build_Number" value=""/>	
 	<property name="build_Type" value=""/>
 	<property name="1220User_Name" value=""/>
-	<property name="1220User_Pwd" value=""/>
-	<property name="grid_run" value="N"/>
+	<property name="1220User_Pwd" value=""/>	
 	<property name="Baseline_buildNumber" value=""/>
-	<property name="reports_path" value="D:/Allworkspace/testresults/Celenium/FD/Reports"/>
-		<property name="xslt_stylesheet_path" value="D:/Allworkspace/Cloudmunch/TCRunner/XSLT_Stylesheet"/>
+	<property name="reports_path" value="D:/Teamcity/Reports"/>
+		<property name="xslt_stylesheet_path" value="${basedir}/jars"/>
 		<property name="testng_report_path" value="${reports_path}/test-output"/>
 
 
@@ -77,7 +74,7 @@
  
 		<mkdir dir="${builddest_path}"/>
 		
-		<java jar="${jars_path}/changebrowser.jar" fork="true">			
+		<java jar="${jars_path}/ChangeBrowser.jar" fork="true">			
         		<arg line="${config_path} ${browser_name}"/>				
     		</java>
 		
@@ -87,19 +84,15 @@
 				
 	
 		
-		<java jar="${jars_path}/ChangeEnvironment.jar" fork="true">
-				        		<arg line="${config_path} ${environment_Name}"/>			
-				    		</java>
-		
 		<java jar="${jars_path}/ChangeBuildType.jar" fork="true">
 				        		<arg line="${config_path} ${build_Type}"/>			
 				    		</java>
 				    		
-		<java jar="${jars_path}/ChangeUserName.jar" fork="true">
+		<java jar="${jars_path}/ChangeUsername.jar" fork="true">
 				        		<arg line="${config_path} ${1220User_Name}"/>			
 				    		</java>
 				    		
-		<java jar="${jars_path}/ChangeUserPassword.jar" fork="true">
+		<java jar="${jars_path}/ChangePassword.jar" fork="true">
 				        		<arg line="${config_path} ${1220User_Pwd}"/>			
 				    		</java>
 			
@@ -108,18 +101,7 @@
 					        		<arg line="${config_path} ${build_Number}"/>			
 					    		</java>
 			
-		
-		
-		
-		<java jar="${jars_path}/ChangeTestCycle.jar" fork="true">
-					        		<arg line="${config_path} ${test_cycle}"/>			
-					    		</java>
-			
-		
-		<java jar="${jars_path}/GridRun.jar" fork="true">
-							        		<arg line="${config_path} ${grid_run}"/>			
-							    		</java>
-			<java jar="${jars_path}/ChangeBaseline_buildnumber.jar" fork="true">
+			<java jar="${jars_path}/BaselineBuildNumber.jar" fork="true">
 							        		<arg line="${config_path} ${Baseline_buildNumber}"/>			
 							    		</java>				    	
     		
