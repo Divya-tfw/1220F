@@ -354,3 +354,119 @@ Session ID: 656a7d0ce79d9d7eae17adc4c75d5901
 2015-07-17 16:27:05,684 ERROR  [ExcelTestBase] Data value run mode is set to N 
 2015-07-17 16:27:05,691 INFO   [ExcelTestBase] *************************Execution of test----> Employment_Location  Ended******************************************************** 
 2015-07-17 16:27:05,752 INFO   [ExcelTestBase] Ending suite in user report 
+2015-07-17 22:20:49,299 INFO   [ExcelTestBase] Executing Before suite 
+2015-07-17 22:20:49,300 INFO   [ExcelTestBase] ./config/Config.properties 
+2015-07-17 22:20:49,300 INFO   [ExcelTestBase] Config File loaded -------------------------------> 
+2015-07-17 22:20:50,439 INFO   [ExcelTestBase] Log folder path is D:/Allworkspace/Test_Results/FD_Excel/Excel_Logs//AutomationLogs/Build_4-Cycle_56/17.July.2015.10.20.50.PM_ABA_REPORTS/Logs 
+2015-07-17 22:20:50,472 INFO   [ExcelTestBase] Old Logs Folder Deleted successfully 
+2015-07-17 22:20:50,473 INFO   [ExcelTestBase] New Logs folder created successfully ...... 
+2015-07-17 22:20:50,473 INFO   [ExcelTestBase] ScreenShotsPath folder path is D:/Allworkspace/Test_Results/FD_Excel/Excel_Logs//AutomationLogs/Build_4-Cycle_56/17.July.2015.10.20.50.PM_ABA_REPORTS/ScreenShots 
+2015-07-17 22:20:50,473 INFO   [ExcelTestBase] Old Screenshots folder : ABA_REPORTS deleted successfully ...... 
+2015-07-17 22:20:50,473 INFO   [ExcelTestBase] Screenshots folder created successfully ...... 
+2015-07-17 22:20:50,482 INFO   [ExcelTestBase] OR File  found -------------------------------> 
+2015-07-17 22:20:50,482 INFO   [ExcelTestBase] OR File loaded -------------------------------> 
+2015-07-17 22:20:51,740 INFO   [ExcelTestBase] --------Execution of test---- Employment_Location  Started-------- 
+2015-07-17 22:21:37,392 INFO   [ExcelTestBase] Enter valid email address 
+2015-07-17 22:21:38,857 INFO   [ExcelTestBase] Enter valid password 
+2015-07-17 22:21:39,490 INFO   [ExcelTestBase] Click on login button 
+2015-07-17 22:21:42,112 INFO   [ExcelTestBase] Click on Data Analysis 
+2015-07-17 22:22:01,627 INFO   [ExcelTestBase] Click on Standard Reports 
+2015-07-17 22:22:07,201 INFO   [ExcelTestBase] Click on ABA Reports 
+2015-07-17 22:22:16,425 INFO   [ExcelTestBase] Selecting [[FirefoxDriver: firefox on WINDOWS (ba56314c-0d5b-43a7-80cb-3ac88fb91ed6)] -> name: GraduationYearId] from drop down using text--->2013 
+2015-07-17 22:22:19,052 INFO   [ExcelTestBase] Selecting [[FirefoxDriver: firefox on WINDOWS (ba56314c-0d5b-43a7-80cb-3ac88fb91ed6)] -> name: GraduationTermId] from drop down using text--->Full Academic Year 
+2015-07-17 22:22:21,657 INFO   [ExcelTestBase] Selecting [[FirefoxDriver: firefox on WINDOWS (ba56314c-0d5b-43a7-80cb-3ac88fb91ed6)] -> name: LawOfferTiming] from drop down using text--->By graduation 
+2015-07-17 22:22:22,996 INFO   [ExcelTestBase] Clicking on generate report 
+2015-07-17 22:22:24,758 ERROR  [ExcelTestBase] Error while executing mT1_TH1_TCN_ReadXLSX keyword D:\QA\Build_number_3\Iteration_1\Baseline\Auto_Data_ABA4_1.xlsx (The system cannot find the path specified) 
+2015-07-17 22:22:24,939 ERROR  [ExcelTestBase] Error while executing mT1_TH1_TCN_ReadXLSX keyword 
+2015-07-17 22:22:26,018 INFO   [ExcelTestBase] Reported error successfully into Data sheet - false 
+2015-07-17 22:22:26,018 ERROR  [ExcelTestBase] Failed ------------------------------->Error while executing mT1_TH1_TCN_ReadXLSX keyword D:\QA\Build_number_3\Iteration_1\Baseline\Auto_Data_ABA4_1.xlsx (The system cannot find the path specified) 
+2015-07-17 22:22:26,187 INFO   [ExcelTestBase] *************************Execution of test----> Employment_Location  Ended******************************************************** 
+2015-07-17 22:22:26,366 INFO   [ExcelTestBase] --------Execution of test---- Employment_Location  Started-------- 
+2015-07-17 22:22:26,397 ERROR  [ExcelTestBase] Data value run mode is set to N 
+2015-07-17 22:22:26,410 INFO   [ExcelTestBase] *************************Execution of test----> Employment_Location  Ended******************************************************** 
+2015-07-17 22:22:26,573 INFO   [ExcelTestBase] --------Execution of test---- Employment_Location  Started-------- 
+2015-07-17 22:22:26,606 ERROR  [ExcelTestBase] Data value run mode is set to N 
+2015-07-17 22:22:26,636 INFO   [ExcelTestBase] *************************Execution of test----> Employment_Location  Ended******************************************************** 
+2015-07-17 22:22:26,810 INFO   [ExcelTestBase] --------Execution of test---- Employment_Location  Started-------- 
+2015-07-17 22:22:26,835 ERROR  [ExcelTestBase] Data value run mode is set to N 
+2015-07-17 22:22:26,846 INFO   [ExcelTestBase] *************************Execution of test----> Employment_Location  Ended******************************************************** 
+2015-07-17 22:22:28,013 INFO   [ExcelTestBase] --------Execution of test---- Employment_Location  Started-------- 
+2015-07-17 22:22:28,070 ERROR  [ExcelTestBase] Data value run mode is set to N 
+2015-07-17 22:22:28,578 INFO   [ExcelTestBase] *************************Execution of test----> Employment_Location  Ended******************************************************** 
+2015-07-17 22:22:28,892 INFO   [ExcelTestBase] Ending suite in user report 
+2015-07-20 13:45:55,458 INFO   [ExcelTestBase] Executing Before suite 
+2015-07-20 13:45:55,520 INFO   [ExcelTestBase] ./config/Config.properties 
+2015-07-20 13:45:55,520 INFO   [ExcelTestBase] Config File loaded -------------------------------> 
+2015-07-20 13:45:57,043 INFO   [ExcelTestBase] Log folder path is D:/Allworkspace/Test_Results/FD_Excel/Excel_Logs//AutomationLogs/Build_4-Cycle_56/20.July.2015.01.45.57.PM_NACE_REPORTS/Logs 
+2015-07-20 13:45:57,068 INFO   [ExcelTestBase] Old Logs Folder Deleted successfully 
+2015-07-20 13:45:57,086 INFO   [ExcelTestBase] New Logs folder created successfully ...... 
+2015-07-20 13:45:57,086 INFO   [ExcelTestBase] ScreenShotsPath folder path is D:/Allworkspace/Test_Results/FD_Excel/Excel_Logs//AutomationLogs/Build_4-Cycle_56/20.July.2015.01.45.57.PM_NACE_REPORTS/ScreenShots 
+2015-07-20 13:45:57,086 INFO   [ExcelTestBase] Old Screenshots folder : NACE_REPORTS deleted successfully ...... 
+2015-07-20 13:45:57,087 INFO   [ExcelTestBase] Screenshots folder created successfully ...... 
+2015-07-20 13:45:57,131 INFO   [ExcelTestBase] OR File  found -------------------------------> 
+2015-07-20 13:45:57,152 INFO   [ExcelTestBase] OR File loaded -------------------------------> 
+2015-07-20 13:45:59,816 INFO   [ExcelTestBase] --------Execution of test---- Continuing_Education  Started-------- 
+2015-07-20 13:46:44,449 INFO   [ExcelTestBase] Executing Before suite 
+2015-07-20 13:46:44,450 INFO   [ExcelTestBase] ./config/Config.properties 
+2015-07-20 13:46:44,452 INFO   [ExcelTestBase] Config File loaded -------------------------------> 
+2015-07-20 13:46:44,681 INFO   [ExcelTestBase] Log folder path is D:/Allworkspace/Test_Results/FD_Excel/Excel_Logs//AutomationLogs/Build_4-Cycle_56/20.July.2015.01.46.44.PM_NACE_REPORTS/Logs 
+2015-07-20 13:46:44,681 INFO   [ExcelTestBase] Old Logs Folder Deleted successfully 
+2015-07-20 13:46:44,682 INFO   [ExcelTestBase] New Logs folder created successfully ...... 
+2015-07-20 13:46:44,682 INFO   [ExcelTestBase] ScreenShotsPath folder path is D:/Allworkspace/Test_Results/FD_Excel/Excel_Logs//AutomationLogs/Build_4-Cycle_56/20.July.2015.01.46.44.PM_NACE_REPORTS/ScreenShots 
+2015-07-20 13:46:44,683 INFO   [ExcelTestBase] Old Screenshots folder : NACE_REPORTS deleted successfully ...... 
+2015-07-20 13:46:44,683 INFO   [ExcelTestBase] Screenshots folder created successfully ...... 
+2015-07-20 13:46:44,696 INFO   [ExcelTestBase] OR File  found -------------------------------> 
+2015-07-20 13:46:44,696 INFO   [ExcelTestBase] OR File loaded -------------------------------> 
+2015-07-20 13:46:46,400 INFO   [ExcelTestBase] --------Execution of test---- Continuing_Education  Started-------- 
+2015-07-20 13:47:11,702 INFO   [ExcelTestBase] Enter valid email address 
+2015-07-20 13:47:12,483 INFO   [ExcelTestBase] Enter valid password 
+2015-07-20 13:47:12,896 INFO   [ExcelTestBase] Click on login button 
+2015-07-20 13:47:15,260 INFO   [ExcelTestBase] Click on Data Analysis 
+2015-07-20 13:47:25,796 INFO   [ExcelTestBase] Click on Standard Reports 
+2015-07-20 13:47:35,904 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (7be6428c25308aebdd156371d4af3cd4)] -> name: GraduationYearId] from drop down using text--->2014 
+2015-07-20 13:47:37,428 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (7be6428c25308aebdd156371d4af3cd4)] -> name: GraduationTermId] from drop down using text--->Full Academic Year 
+2015-07-20 13:47:42,808 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (7be6428c25308aebdd156371d4af3cd4)] -> id: GetPrimaryMajorsOnly] from drop down using Index--->1 
+2015-07-20 13:47:45,234 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (7be6428c25308aebdd156371d4af3cd4)] -> id: DegreeLevelId] from drop down using text--->All 
+2015-07-20 13:47:47,530 INFO   [ExcelTestBase] Clicking on generate report 
+2015-07-20 13:47:49,788 ERROR  [ExcelTestBase] Error while executing mT1_TH1_TCN_ReadXLSX keyword D:\QA\Build_number_3\Iteration_1\Baseline\Auto_Data_NACE_Table6_1.xlsx (The system cannot find the path specified) 
+2015-07-20 13:47:50,153 ERROR  [ExcelTestBase] Error while executing mT1_TH1_TCN_ReadXLSX keyword 
+2015-07-20 13:47:50,487 INFO   [ExcelTestBase] Reported error successfully into Data sheet - false 
+2015-07-20 13:47:50,487 ERROR  [ExcelTestBase] Failed ------------------------------->Error while executing mT1_TH1_TCN_ReadXLSX keyword D:\QA\Build_number_3\Iteration_1\Baseline\Auto_Data_NACE_Table6_1.xlsx (The system cannot find the path specified) 
+2015-07-20 13:47:53,291 INFO   [ExcelTestBase] *************************Execution of test----> Continuing_Education  Ended******************************************************** 
+2015-07-20 13:47:53,938 INFO   [ExcelTestBase] --------Execution of test---- Continuing_Education  Started-------- 
+2015-07-20 14:03:53,943 INFO   [ExcelTestBase] Executing Before suite 
+2015-07-20 14:03:53,945 INFO   [ExcelTestBase] ./config/Config.properties 
+2015-07-20 14:03:53,948 INFO   [ExcelTestBase] Config File loaded -------------------------------> 
+2015-07-20 14:03:54,199 INFO   [ExcelTestBase] Log folder path is D:/Allworkspace/Test_Results/FD_Excel/Excel_Logs//AutomationLogs/Build_4-Cycle_56/20.July.2015.02.03.54.PM_NACE_REPORTS/Logs 
+2015-07-20 14:03:54,199 INFO   [ExcelTestBase] Old Logs Folder Deleted successfully 
+2015-07-20 14:03:54,201 INFO   [ExcelTestBase] New Logs folder created successfully ...... 
+2015-07-20 14:03:54,201 INFO   [ExcelTestBase] ScreenShotsPath folder path is D:/Allworkspace/Test_Results/FD_Excel/Excel_Logs//AutomationLogs/Build_4-Cycle_56/20.July.2015.02.03.54.PM_NACE_REPORTS/ScreenShots 
+2015-07-20 14:03:54,201 INFO   [ExcelTestBase] Old Screenshots folder : NACE_REPORTS deleted successfully ...... 
+2015-07-20 14:03:54,202 INFO   [ExcelTestBase] Screenshots folder created successfully ...... 
+2015-07-20 14:03:54,211 INFO   [ExcelTestBase] OR File  found -------------------------------> 
+2015-07-20 14:03:54,212 INFO   [ExcelTestBase] OR File loaded -------------------------------> 
+2015-07-20 14:03:55,802 INFO   [ExcelTestBase] --------Execution of test---- Continuing_Education  Started-------- 
+2015-07-20 14:04:06,366 INFO   [ExcelTestBase] Enter valid email address 
+2015-07-20 14:04:06,737 INFO   [ExcelTestBase] Enter valid password 
+2015-07-20 14:04:07,105 INFO   [ExcelTestBase] Click on login button 
+2015-07-20 14:04:09,417 INFO   [ExcelTestBase] Click on Data Analysis 
+2015-07-20 14:04:17,514 INFO   [ExcelTestBase] Click on Standard Reports 
+2015-07-20 14:04:28,358 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (755fc09891b9afcd2115830832102219)] -> name: GraduationYearId] from drop down using text--->2014 
+2015-07-20 14:04:29,751 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (755fc09891b9afcd2115830832102219)] -> name: GraduationTermId] from drop down using text--->Full Academic Year 
+2015-07-20 14:04:35,072 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (755fc09891b9afcd2115830832102219)] -> id: GetPrimaryMajorsOnly] from drop down using Index--->1 
+2015-07-20 14:04:37,412 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (755fc09891b9afcd2115830832102219)] -> id: DegreeLevelId] from drop down using text--->All 
+2015-07-20 14:04:39,637 INFO   [ExcelTestBase] Clicking on generate report 
+2015-07-20 14:05:07,613 INFO   [ExcelTestBase] *************************Execution of test----> Continuing_Education  Ended******************************************************** 
+2015-07-20 14:05:08,153 INFO   [ExcelTestBase] --------Execution of test---- Continuing_Education  Started-------- 
+2015-07-20 14:05:18,626 INFO   [ExcelTestBase] Enter valid email address 
+2015-07-20 14:05:18,999 INFO   [ExcelTestBase] Enter valid password 
+2015-07-20 14:05:19,329 INFO   [ExcelTestBase] Click on login button 
+2015-07-20 14:05:21,596 INFO   [ExcelTestBase] Click on Data Analysis 
+2015-07-20 14:05:29,179 INFO   [ExcelTestBase] Click on Standard Reports 
+2015-07-20 14:05:38,838 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (1888c2215a056fbd613a6e093e196372)] -> name: GraduationYearId] from drop down using text--->2014 
+2015-07-20 14:05:40,168 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (1888c2215a056fbd613a6e093e196372)] -> name: GraduationTermId] from drop down using text--->Full Academic Year 
+2015-07-20 14:05:45,501 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (1888c2215a056fbd613a6e093e196372)] -> id: GetPrimaryMajorsOnly] from drop down using Index--->1 
+2015-07-20 14:05:47,831 INFO   [ExcelTestBase] Selecting [[ChromeDriver: chrome on XP (1888c2215a056fbd613a6e093e196372)] -> id: DegreeLevelId] from drop down using text--->Associate 
+2015-07-20 14:05:50,102 INFO   [ExcelTestBase] Clicking on generate report 
+2015-07-20 14:05:58,835 INFO   [ExcelTestBase] *************************Execution of test----> Continuing_Education  Ended******************************************************** 
+2015-07-20 14:05:59,358 INFO   [ExcelTestBase] --------Execution of test---- Continuing_Education  Started-------- 
