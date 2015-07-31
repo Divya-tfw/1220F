@@ -5,18 +5,18 @@
 	<!-- ========== Initialize Properties =================================== -->
 	<property environment="env"/>
 	<property name="tc_home_path" value="${basedir}"/>
-	<property name="jars_path" value="D:/Allworkspace/jars"/>
+	<property name="jars_path" value="${basedir}/jars"/>
 	<property name="run_path" value="D:/Teamcity/Build"/>
 	<property name="builddest_path" value="${run_path}/build"/>
 	<property name="src_path" value="src"/>
 	<property name="config_path" value="${basedir}/config/Config.properties"/>
-	<property name="browser_name" value=""/>
-	<property name="browser_path" value=""/>	
-	<property name="build_Number" value=""/>	
-	<property name="build_Type" value=""/>
-	<property name="1220User_Name" value=""/>
-	<property name="1220User_Pwd" value=""/>	
-	<property name="Baseline_buildNumber" value=""/>
+	<property name="browser_name" value="Firefox"/>
+	<property name="browser_path" value="Default"/>	
+	<property name="build_Number" value="1"/>	
+	<property name="build_Type" value="Actual"/>
+	<property name="1220User_Name" value="admin@12twenty.com"/>
+	<property name="1220User_Pwd" value="Salaryview1!"/>	
+	<property name="Baseline_buildNumber" value="1"/>
 	<property name="reports_path" value="D:/Teamcity/Reports"/>
 		<property name="xslt_stylesheet_path" value="${basedir}/jars"/>
 		<property name="testng_report_path" value="${reports_path}/test-output"/>
@@ -111,7 +111,7 @@
 			debug="true" 
 			destdir="${builddest_path}" 
 			srcdir="${tc_home_path}/${src_path}" 
-			target="1.7"
+			target="1.8"
 			classpath="${test_classpath}"
 			includeantruntime="false"
 		/>
