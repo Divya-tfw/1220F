@@ -32,11 +32,13 @@ public class App_Specific_Keywords extends Keywords {
 	 * Author : DivyaRaju.R LastModifiedDate : 1st may 2015 Method name :
 	 * loginToSite Description : This method is used for launching 1220
 	 * application
+	 * 
+	 * @throws InterruptedException
 	 *
 	 *********************************************************************************************/
 
 	public static void loginToSite(String waitVal, String emailAddress,
-			String pwd)
+			String pwd) throws InterruptedException
 
 	{
 		Logs.infoLog("-------------------------------------------------------");
@@ -54,12 +56,13 @@ public class App_Specific_Keywords extends Keywords {
 		click("btn_Log_in", "Click on login button");
 
 		// wait for page load
-		webdriverWait(waitVal);
+		Thread.sleep(3000);
 
 		// click on data analysis tab
 		click("btn_DA", "Click on Data Analysis");
 		// click on standard reports btn
-		webdriverWait(waitVal);
+		// webdriverWait(waitVal);
+		Thread.sleep(3000);
 
 		if (GlobalVariables.driver.findElement(By.id("modalDialogConfirm"))
 				.isDisplayed()) {
@@ -3639,9 +3642,17 @@ public class App_Specific_Keywords extends Keywords {
 				// enter values to cols 2 to 18
 				while (cellVal < Columns_header.size() + 1
 						&& colVal < Columns_header.size()) {
+
 					updateError(1, cellVal, s.getRow(1).getCell(cellVal)
 							.getStringCellValue(), Columns_header.get(colVal)
 							.getText());
+
+					/*
+					 * System.out.println("2nd row");
+					 * System.out.println(s.getRow(1).getCell(cellVal)
+					 * .getStringCellValue());
+					 * System.out.println(Columns_header.get(colVal).getText());
+					 */
 					cellVal++;
 					colVal++;
 				}
@@ -3653,9 +3664,16 @@ public class App_Specific_Keywords extends Keywords {
 							.get(row)
 							.findElements(
 									By.tagName(TestBaseConstants.TABLE_HEAD_TAG));
+
 					updateError(row, 0, s.getRow(row).getCell(0)
 							.getStringCellValue(), Columns_row.get(0).getText());
 
+					/*
+					 * System.out.println("Expected is " +
+					 * s.getRow(row).getCell(0).getStringCellValue());
+					 * System.out.println("Actual is  " +
+					 * Columns_row.get(0).getText());
+					 */
 					// To locate columns(cells) of that specific row.
 					Columns_row = rows_table.get(row).findElements(
 							By.tagName(TestBaseConstants.TABLE_COLUMN_TAG));
@@ -3663,6 +3681,13 @@ public class App_Specific_Keywords extends Keywords {
 					colVal = 0;
 					while (cellVal < Columns_row.size() + 1
 							&& colVal < Columns_row.size()) {
+						/*
+						 * System.out.println("Expected is " +
+						 * s.getRow(row).getCell(cellVal)
+						 * .getStringCellValue());
+						 * System.out.println("Actual is  " +
+						 * Columns_row.get(colVal).getText());
+						 */
 
 						updateError(row, cellVal, s.getRow(row)
 								.getCell(cellVal).getStringCellValue(),
